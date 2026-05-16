@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2026 Senate Polling Model</title>
+    <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> 	
+    <script  type="text/javascript" src="senatemap.js"></script>
+    <script type="text/javascript" src="senatemapdata.js"></script>	
+    <script type='text/javascript'>	
+        var map1 = simplemaps_usmap.create();
+    </script>		
+    <script  type="text/javascript" src="housemap.js"></script>
+    <script type="text/javascript" src="housemapdata.js"></script>
+    <script type='text/javascript'>	
+        var map2 = simplemaps_congressmap.create();
+    </script>
+    <script type="text/javascript" src="govmapdata.js"></script>
+    <script type='text/javascript'>	
+        var map3 = simplemaps_usmap.create();
+    </script>
+    <script src="mapfill.js"></script>
+    <script src="senate.js"></script>
+    <script src="house.js"></script>
+    
+</head>
+<body>
+<div class="map" id="map_grandparent" style="text-align: center;">
+    <br><br><br>
+    <h2>Senate Map</h2>
+    <div id="map_parent1" style="width: 75%; display: inline-block;">
+        <div id="map1"></div>	
+    </div>
+    <br><br><br>
+    <h2>House Map</h2>
+  <div id="map_parent2" style="width: 75%; display: inline-block;">	
+        <div id="map2"></div>
+    </div>
+    <br><br><br>
+    <h2>Governor Map</h2>
+  <div id="map_parent3" style="width: 75%; display: inline-block;">	
+        <div id="map3"></div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function removeElement() {
+            var element = document.querySelector('a[href="https://simplemaps.com"][title="For evaluation use only."]');
+            if (element) {
+                element.remove();
+            }
+        }
+
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    removeElement();
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        removeElement();
+    });
+</script>
+</body>
+</html>
