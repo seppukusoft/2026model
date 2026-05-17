@@ -24,14 +24,29 @@ const cookPVI = {
 
 const EXCLUDE_RE = /undecided|don't know|don’t know|other|refused|someone else|would not vote/i;
 
+const partyCache = Object.create(null);
+
 function normalizeParty(p) {
     if (!p) return "IND";
-    const x = String(p).toUpperCase();
 
-    if (x.includes("DEM")) return "DEM";
-    if (x.includes("REP")) return "REP";
-    if (x.includes("LIB")) return "LIB";
-    return "IND";
+    const key = String(p).toUpperCase();
+
+    return partyCache[key] ??= (
+        key.includes("DEM") ? "DEM" :
+        key.includes("REP") ? "REP" :
+        key.includes("LIB") ? "LIB" :
+        "IND"
+    );
+}
+
+function getLastName(name) {
+    if (!name) return "";
+    return name._lastName ??= name
+        .toLowerCase()
+        .replace(/[^a-z\s]/g, "")
+        .trim()
+        .split(/\s+/)
+        .pop();
 }
 
 function fixKnownIndependents(state, name) {
@@ -46,9 +61,10 @@ function groupByPollId(rows) {
         if (!row.poll_id || !row.question_id) continue;
 
         const key = row.poll_id + "_" + row.question_id;
-        let poll = polls[key];
 
+        let poll = polls[key];
         if (!poll) {
+            const endDate = new Date(row.end_date);
             poll = polls[key] = {
                 poll_id: row.poll_id,
                 question_id: row.question_id,
@@ -57,6 +73,9 @@ function groupByPollId(rows) {
                 start_date: row.start_date,
                 end_date: row.end_date,
                 sample_size: row.sample_size,
+                _endDate: endDate,
+                weight: Math.sqrt(row.sample_size || 500) *
+                        Math.exp(-(Date.now() - endDate) / 86400000 / 30),
                 responses: []
             };
         }
@@ -71,76 +90,39 @@ function groupByPollId(rows) {
     return Object.values(polls);
 }
 
-function countCandidatePolls(polls) {
+function applyCandidateThreshold(polls, minPolls = 3) {
     const counts = Object.create(null);
 
+    // First pass: count
     for (const poll of polls) {
         const state = poll.state;
+        const seen = new Set();
         counts[state] ??= Object.create(null);
 
         for (const r of poll.responses) {
             if (EXCLUDE_RE.test(r.candidate)) continue;
-
-            const name = r.candidate;
-            counts[state][name] ??= new Set();
-            counts[state][name].add(poll.poll_id);
+            if (seen.has(r.candidate)) continue;
+            seen.add(r.candidate);
+            counts[state][r.candidate] = (counts[state][r.candidate] || 0) + 1;
         }
     }
 
-    const out = Object.create(null);
-    for (const state in counts) {
-        out[state] = Object.create(null);
-        for (const c in counts[state]) {
-            out[state][c] = counts[state][c].size;
-        }
+    // Second pass: filter
+    for (const poll of polls) {
+        const allowed = counts[poll.state];
+        poll.responses = poll.responses.filter(r =>
+            !EXCLUDE_RE.test(r.candidate) &&
+            (allowed[r.candidate] || 0) >= minPolls
+        );
     }
 
-    return out;
-}
-
-function applyCandidateThreshold(polls, minPolls = 3) {
-    const counts = countCandidatePolls(polls);
-
-    return polls.map(poll => {
-        const allowed = counts[poll.state] || Object.create(null);
-
-        const filteredResponses = poll.responses.filter(r => {
-            if (EXCLUDE_RE.test(r.candidate)) return false;
-
-            const count = allowed[r.candidate] || 0;
-
-            if (count < minPolls) {
-                return false;
-            }
-
-            return true;
-        });
-
-        return {
-            ...poll,
-            responses: filteredResponses
-        };
-    });
-}
-
-function pollWeight(poll) {
-    const n = poll.sample_size || 500;
-    poll._endDate ??= new Date(poll.end_date);
-    const age = (Date.now() - poll._endDate) / 86400000;
-    return Math.sqrt(n) * Math.exp(-age / 30);
+    return polls;
 }
 
 function groupPollsByState(polls) {
     const byState = Object.create(null);
-
-    for (const poll of polls) {
-        (byState[poll.state] ??= []).push(poll);
-    }
-
-    return Object.entries(byState).map(([state, polls]) => ({
-        state,
-        polls
-    }));
+    for (const p of polls) (byState[p.state] ??= []).push(p);
+    return Object.entries(byState).map(([state, polls]) => ({ state, polls }));
 }
 
 function filterPolls(polls) {
@@ -154,19 +136,10 @@ function filterPolls(polls) {
 
         const required = primaryWinnersByState[poll.state];
         if (required) {
-            const requiredLast = required.toLowerCase()
-            .replace(/[^a-z\s]/g, "")
-            .trim()
-            .split(/\s+/)
-            .pop();
+            const requiredLast = getLastName(required);
 
             const match = poll.responses.some(r => {
-                const candidateLast = r.candidate.toLowerCase()
-                    .replace(/[^a-z\s]/g, "")
-                    .trim()
-                    .split(/\s+/)
-                    .pop();
-                return candidateLast === requiredLast;
+                return getLastName(r.candidate) === requiredLast;
             });
 
             if (!match) {
@@ -188,21 +161,23 @@ function filterPolls(polls) {
     });
 }
 
-function normalizeResponses(responses) {
-    const cleaned = [];
-    let sum = 0;
+function normalizeResponses(poll) {
+    if (poll._normalized) return poll._normalized;
 
-    for (const r of responses) {
+    let sum = 0;
+    const cleaned = [];
+
+    for (const r of poll.responses) {
         if (!EXCLUDE_RE.test(r.candidate)) {
             cleaned.push(r);
             sum += r.pct || 0;
         }
     }
 
-    if (sum === 0) return cleaned;
+    if (!sum) return poll._normalized = cleaned;
 
     const scale = 100 / sum;
-    return cleaned.map(r => ({
+    return poll._normalized = cleaned.map(r => ({
         ...r,
         pct: r.pct * scale
     }));
@@ -239,7 +214,7 @@ function computeStateEstimates(pollsByState) {
         const parties = Object.create(null);
 
         for (const poll of polls) {
-            const responses = normalizeResponses(poll.responses);
+            const responses = normalizeResponses(poll);
 
             for (const r of responses) {
                 const c = r.candidate;
@@ -314,20 +289,19 @@ function randomNormal(mean = 0, sigma = 1) {
     return mean + sigma * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
 }
 
-function monteCarloMulti(candidates, sigma, parties, pvi, iterations = 10000) {
-    const wins = Object.fromEntries(Object.keys(candidates).map(k => [k, 0]));
+function monteCarloMulti(candidates, sigma, parties, pvi, iterations = 25000) {
     const names = Object.keys(candidates);
+    const n = names.length;
+    const wins = Object.fromEntries(names.map(k => [k, 0]));
+    const draws = new Array(n);
 
     for (let i = 0; i < iterations; i++) {
-        const draws = [];
         let sum = 0;
 
-        for (let j = 0; j < names.length; j++) {
-            const n = names[j];
-            const bias = pviBiasForCandidate(parties[n], pvi);
-
-            const v = Math.max(0, randomNormal(candidates[n] + bias, sigma));
-
+        for (let j = 0; j < n; j++) {
+            const name = names[j];
+            const bias = pviBiasForCandidate(parties[name], pvi);
+            const v = Math.max(0, randomNormal(candidates[name] + bias, sigma));
             draws[j] = v;
             sum += v;
         }
@@ -337,7 +311,7 @@ function monteCarloMulti(candidates, sigma, parties, pvi, iterations = 10000) {
         let best = 0;
         let bestPct = 0;
 
-        for (let j = 0; j < names.length; j++) {
+        for (let j = 0; j < n; j++) {
             const pct = (draws[j] / sum) * 100;
             if (pct > bestPct) {
                 bestPct = pct;
@@ -349,7 +323,6 @@ function monteCarloMulti(candidates, sigma, parties, pvi, iterations = 10000) {
     }
 
     for (const k in wins) wins[k] /= iterations;
-
     return wins;
 }
 
@@ -394,14 +367,18 @@ function computeStateOutcomes(stateEstimates, pollsByState) {
             cookPVI[state] || 0
         );
 
+        const winProbEntries = Object.entries(winProbs)
+            .map(([c, p]) => [c, { pct: p, party: candidateParty[c] }])
+            .sort((a, b) => b[1].pct - a[1].pct);
+
+        const voteEntries = Object.entries(applied)
+            .sort((a, b) => b[1].pct - a[1].pct);
+
         outcomes[state] = {
             voteEstimates: applied,
-            winProbabilities: Object.fromEntries(
-                Object.entries(winProbs).map(([c,p]) => [
-                    c,
-                    { pct: p, party: candidateParty[c] }
-                ])
-            ),
+            winProbabilities: Object.fromEntries(winProbEntries),
+            _sortedWinProbabilities: winProbEntries,
+            _sortedVoteEstimates: voteEntries,
             margin
         };
     }
@@ -429,10 +406,7 @@ async function getData(url) {
     //console.log("Total polls:", polls);
     
     const thresholded = applyCandidateThreshold(polls, 2);
-    const filtered = filterPolls(thresholded).map(p => ({
-        ...p,
-        weight: pollWeight(p)
-    }));
+    const filtered = filterPolls(thresholded);
 
     const byState = groupPollsByState(filtered);
     const estimates = computeStateEstimates(byState);
@@ -457,14 +431,16 @@ function runSenateMap() {
             };
             applyColor("senate", state, Object.keys(prob).find(key => prob[key]) + winningParty[0]);
             let string = "<b>Win Probability:</b><br>";
-            Object.entries(outcome.winProbabilities).sort((a,b) => b[1].pct - a[1].pct).forEach(element => {
-                //console.log(element[0], ((element[1].pct* 100).toFixed(2)));
-                string += ["0.00"].includes((element[1].pct* 100).toFixed(2)) ? "" : `${element[0]}: ${((element[1].pct* 100).toFixed(2))}%<br>`;
+            outcome._sortedWinProbabilities.forEach(element => {
+                string += ["0.00"].includes((element[1].pct * 100).toFixed(2))
+                    ? ""
+                    : `${element[0]}: ${((element[1].pct * 100).toFixed(2))}%<br>`;
             });
             string += ["AK", "ME"].includes(state) ? "<b>Vote Estimate (first round):</b><br>" : "<b>Vote Estimate:</b><br>";
-            Object.entries(outcome.voteEstimates).sort((a,b) => b[1].pct - a[1].pct).forEach(element => {
-                //console.log(element[0], ((element[1].pct).toFixed(2)));
-                string += ["0.00"].includes((element[1].pct).toFixed(2)) ? "" : `${element[0]}: ${((element[1].pct).toFixed(2))}%<br>`;
+            outcome._sortedVoteEstimates.forEach(element => {
+                string += ["0.00"].includes((element[1].pct).toFixed(2))
+                    ? ""
+                    : `${element[0]}: ${((element[1].pct).toFixed(2))}%<br>`;
             });
             changeDesc("senate", state, string);
         }
@@ -474,7 +450,9 @@ function runSenateMap() {
             applyColor("senate", element, "noElec");
             changeDesc("senate", element, "No election");
         });
+        mapLookup["senate"].refresh();
+        console.timeEnd("Total time");
     });
 }
-
+console.time("Total time");
 runSenateMap();
