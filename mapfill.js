@@ -15,9 +15,8 @@ function applyColor(type, state, newColor) {
 
     const target = mapLookup[type];
     if (target) {
+        //console.log(type, target);
         target.mapdata.state_specific[state].color = colorMapping[newColor]; 
-        //console.log(target);
-        target.refresh(); 
     } 
 }
 
