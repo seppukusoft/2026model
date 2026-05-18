@@ -8,7 +8,7 @@ var simplemaps_usmap_mapdata={
 			  popups: "detect",
 			  
 			  //State defaults
-			  state_description: "State Description",
+			  state_description: "Waiting for more polls/primaries to conclude",
 			  state_color: "#808080",
 			  state_hover_color: "off",
 			  state_url: "",

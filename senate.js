@@ -93,7 +93,6 @@ function groupByPollId(rows) {
 function applyCandidateThreshold(polls, minPolls = 3) {
     const counts = Object.create(null);
 
-    // First pass: count
     for (const poll of polls) {
         const state = poll.state;
         const seen = new Set();
@@ -107,7 +106,6 @@ function applyCandidateThreshold(polls, minPolls = 3) {
         }
     }
 
-    // Second pass: filter
     for (const poll of polls) {
         const allowed = counts[poll.state];
         poll.responses = poll.responses.filter(r =>
@@ -398,6 +396,7 @@ async function getData(url) {
     const rows = parsed.data.filter(r =>
         r.stage === "general" &&
         r.state &&
+        r.display_name !== "Praecones Analytica" &&
         !notGenYet.includes(r.state) &&
         new Date(r.created_at) >= new Date("2026-1-01")
     );
@@ -451,8 +450,8 @@ function runSenateMap() {
             changeDesc("senate", element, "No election");
         });
         mapLookup["senate"].refresh();
-        console.timeEnd("Total time");
+        //console.timeEnd("Total time");
     });
 }
-console.time("Total time");
+//console.time("Total time");
 runSenateMap();
