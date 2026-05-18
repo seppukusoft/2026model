@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        #senateChartWrapper {
+    height: 45px;          
+    width: 70%;
+    position: relative;
+    margin: 0 auto;
+            
+}
+
+#senateChart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+    </style>
     <title>2026 Senate Polling Model</title>
     <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> 	
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 	
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script  type="text/javascript" src="senatemap.js"></script>
     <script type="text/javascript" src="senatemapdata.js"></script>	
     <script type='text/javascript'>	
@@ -20,6 +38,7 @@
         var map3 = simplemaps_usmap.create();
     </script>
     <script src="mapfill.js"></script>
+    <script src="poly.js"></script>
     <script src="senate.js"></script>
     <script src="house.js"></script>
     <script src="governor.js"></script>
@@ -34,6 +53,10 @@
     </div>
     <br><br><br>
     <h2>Senate Map</h2>
+    <div id="senateChartWrapper">
+        <canvas id="senateChart"></canvas>
+    </div>
+    <br>
     <div id="map_parent1" style="width: 75%; display: inline-block;">
         <div id="map1"></div>	
     </div>
@@ -43,6 +66,7 @@
         <div id="map2"></div>
     </div>
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         function removeElement() {
@@ -56,6 +80,7 @@
             mutations.forEach(function(mutation) {
                 if (mutation.addedNodes.length) {
                     removeElement();
+                    document.querySelector('#senateChart').style.display = "block";
                 }
             });
         });
@@ -63,6 +88,7 @@
         observer.observe(document.body, { childList: true, subtree: true });
         removeElement();
     });
+
 </script>
 </body>
 </html>

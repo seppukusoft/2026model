@@ -57,6 +57,18 @@ function fixKnownIndependents_gov(state_gov, name_gov) {
     return null;
 }
 
+function applyPartisanSponsorDiscount_gov(poll) {
+    const sp = poll.sponsorParty;
+
+    return poll.responses.map(r => {
+        if (r.party === sp) {
+            //console.log("Discounting", r.candidate, "from", r.pct, "to", (r.pct || 0) * 0.85);
+            return { ...r, pct: (r.pct || 0) * 0.85 };
+        }
+        return r;
+    });
+}
+
 function groupByPollId_gov(rows_gov) {
     const polls_gov = Object.create(null);
 
@@ -76,6 +88,7 @@ function groupByPollId_gov(rows_gov) {
                 start_date: row_gov.start_date,
                 end_date: row_gov.end_date,
                 sample_size: row_gov.sample_size,
+                sponsorParty: normalizeParty_gov(row_gov.partisan),
                 _endDate_gov: endDate_gov,
                 weight: Math.sqrt(row_gov.sample_size || 500) *
                         Math.exp(-(Date.now() - endDate_gov) / 86400000 / 30),
@@ -166,10 +179,12 @@ function filterPolls_gov(polls_gov) {
 function normalizeResponses_gov(poll_gov) {
     if (poll_gov._normalized_gov) return poll_gov._normalized_gov;
 
+    const discounted_gov = applyPartisanSponsorDiscount_gov(poll_gov);
+
     let sum_gov = 0;
     const cleaned_gov = [];
 
-    for (const r_gov of poll_gov.responses) {
+    for (const r_gov of discounted_gov) {
         if (!EXCLUDE_RE_gov.test(r_gov.candidate)) {
             cleaned_gov.push(r_gov);
             sum_gov += r_gov.pct || 0;

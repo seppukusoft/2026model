@@ -50,6 +50,18 @@ function houseDistrictCode(row) {
     return `${row.state}${row.seat_number}`;
 }
 
+function houseApplyPartisanSponsorDiscount(poll) {
+    const sp = poll.sponsorParty;
+
+    return poll.responses.map(r => {
+        if (r.party === sp) {
+            //console.log("Discounting", r.candidate, "from", r.pct, "to", (r.pct || 0) * 0.85);
+            return { ...r, pct: (r.pct || 0) * 0.85 };
+        }
+        return r;
+    });
+}
+
 function houseGroupByPollId(rows) {
     const polls = Object.create(null);
 
@@ -71,6 +83,7 @@ function houseGroupByPollId(rows) {
                 start_date: row.start_date,
                 end_date: row.end_date,
                 sample_size: row.sample_size,
+                sponsorParty:normalizeParty(row.partisan),
                 _endDate: endDate,
                 weight: Math.sqrt(row.sample_size || 500) *
                         Math.exp(-(Date.now() - endDate) / 86400000 / 30),
@@ -160,10 +173,12 @@ function houseFilterPolls(polls) {
 function houseNormalizeResponses(poll) {
     if (poll._houseNormalized) return poll._houseNormalized;
 
+    const discounted = houseApplyPartisanSponsorDiscount(poll);
+
     let sum = 0;
     const cleaned = [];
 
-    for (const r of poll.responses) {
+    for (const r of discounted) {
         if (!houseExcludeRe.test(r.candidate)) {
             cleaned.push(r);
             sum += r.pct || 0;

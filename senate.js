@@ -1,6 +1,6 @@
 const senateLink = "https://www.nytimes.com/newsgraphics/polls/senate.csv";
 
-const notGenYet = ["US","MI","TX","FL","MA","KS","MT","MN","MS"];
+const notGenYet = ["US","TX"];
 
 const primaryWinnersByState = {
     NE: "dan osborn",
@@ -9,7 +9,12 @@ const primaryWinnersByState = {
     SD: "julian beaudion",
     IA: "josh turek",
     GA: "mike collins",
-    NH: "john sununu"
+    NH: "john sununu",
+    MN: "x flanagan",
+    KS: "x schmidt",
+    MA: "x markey",
+    FL: "x vindman",
+    MI: "x el-sayed",
 };
 
 const cookPVI = {
@@ -22,9 +27,34 @@ const cookPVI = {
     WV: 21, WI: 0, WY: 23
 };
 
+
 const EXCLUDE_RE = /undecided|don't know|don’t know|other|refused|someone else|would not vote/i;
 
 const partyCache = Object.create(null);
+
+
+let senateSeats = {
+    DEM: 32,
+    REP: 31,
+    IND: 2,    
+    UNK: 0,
+    solidR: 0,
+    likelyR: 0,
+    leanR: 0,
+    tiltR: 0,
+    tiltD: 0,
+    leanD: 0,
+    likelyD: 0,
+    solidD: 0,
+    tiltI: 0,
+    leanI: 0,
+    likelyI: 0,
+    solidI: 0,
+    tiltL: 0,
+    leanL: 0,
+    likelyL: 0,
+    solidL: 0,
+};
 
 function normalizeParty(p) {
     if (!p) return "IND";
@@ -54,6 +84,18 @@ function fixKnownIndependents(state, name) {
     return null;
 }
 
+function applyPartisanSponsorDiscount(poll) {
+    const sp = poll.sponsorParty;
+    //console.log("Applying partisan sponsor discount for", poll.pollster, "with sponsor party", sp);
+    return poll.responses.map(r => {
+        if (r.party === sp) {
+            //console.log("Discounting", r.candidate, "from", r.pct, "to", (r.pct || 0) * 0.85);
+            return { ...r, pct: (r.pct || 0) * 0.85 };
+        }
+        return r;
+    });
+}
+
 function groupByPollId(rows) {
     const polls = Object.create(null);
 
@@ -73,6 +115,7 @@ function groupByPollId(rows) {
                 start_date: row.start_date,
                 end_date: row.end_date,
                 sample_size: row.sample_size,
+                sponsorParty: normalizeParty(row.partisan),
                 _endDate: endDate,
                 weight: Math.sqrt(row.sample_size || 500) *
                         Math.exp(-(Date.now() - endDate) / 86400000 / 30),
@@ -162,10 +205,12 @@ function filterPolls(polls) {
 function normalizeResponses(poll) {
     if (poll._normalized) return poll._normalized;
 
+    const discounted = applyPartisanSponsorDiscount(poll);
+
     let sum = 0;
     const cleaned = [];
 
-    for (const r of poll.responses) {
+    for (const r of discounted) {
         if (!EXCLUDE_RE.test(r.candidate)) {
             cleaned.push(r);
             sum += r.pct || 0;
@@ -384,6 +429,257 @@ function computeStateOutcomes(stateEstimates, pollsByState) {
     return outcomes;
 }
 
+const chartAreaBorder = {
+  id: 'chartAreaBorder',
+  beforeDraw(chart, args, options) {
+    const { ctx, chartArea } = chart;
+
+    ctx.save();
+    ctx.strokeStyle = options.borderColor || 'white';
+    ctx.lineWidth = options.borderWidth || 2;
+
+    ctx.strokeRect(
+      chartArea.left,
+      chartArea.top,
+      chartArea.right - chartArea.left,
+      chartArea.bottom - chartArea.top
+    );
+
+    ctx.restore();
+  }
+};
+
+function testSeats() {
+    const ctx = document.getElementById('senateChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Seats'],
+            datasets: [
+                {
+                    label: 'Republican (no election)',
+                    data: [senateSeats.REP],
+                    backgroundColor: '#dc354671',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Solid Republican',
+                    data: [senateSeats.solidR],
+                    backgroundColor: '#d22532',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Likely Republican',
+                    data: [senateSeats.likelyR],
+                    backgroundColor: '#ff5865',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Lean Republican',
+                    data: [senateSeats.leanR],
+                    backgroundColor: '#ff8b98',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Tilt Republican',
+                    data: [senateSeats.tiltR],
+                    backgroundColor: '#cf8980',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Solid Libertarian',
+                    data: [senateSeats.solidL],
+                    backgroundColor: '#ffdb00',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Likely Libertarian',
+                    data: [senateSeats.likelyL],
+                    backgroundColor: '#ffe66e',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Lean Libertarian',
+                    data: [senateSeats.leanL],
+                    backgroundColor: '#fff1a0',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Tilt Libertarian',
+                    data: [senateSeats.tiltL],
+                    backgroundColor: '#fff9c2',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Unknown',
+                    data: [senateSeats.UNK],
+                    backgroundColor: '#808080',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Tilt Independent',
+                    data: [senateSeats.tiltI],
+                    backgroundColor: '#c4aeee',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Lean Independent',
+                    data: [senateSeats.leanI],
+                    backgroundColor: '#b57edc',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Likely Independent',
+                    data: [senateSeats.likelyI],
+                    backgroundColor: '#a14fd2',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Solid Independent',
+                    data: [senateSeats.solidI],
+                    backgroundColor: '#8e20c7',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Independent (no election)',
+                    data: [senateSeats.IND],
+                    backgroundColor: '#8e20c771',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Tilt Democratic',
+                    data: [senateSeats.tiltD],
+                    backgroundColor: '#848fb3',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Lean Democratic',
+                    data: [senateSeats.leanD],
+                    backgroundColor: '#90acfc',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Likely Democratic',
+                    data: [senateSeats.likelyD],
+                    backgroundColor: '#577ccc',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Solid Democratic',
+                    data: [senateSeats.solidD],
+                    backgroundColor: '#244999',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                },
+                {
+                    label: 'Democratic (no election)',
+                    data: [senateSeats.DEM],
+                    backgroundColor: '#24499971',
+                    barThickness: 22,
+                    categoryPercentage: 1.0,
+                    barPercentage: 1.0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            layout: {
+                padding: {
+                    left: 20,
+                    right: 20,
+                    top: 10,
+                    bottom: 10
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                chartAreaBorder: {
+                borderColor: 'white',
+                borderWidth: 2
+                },
+
+                datalabels: {
+                    color: '#fff',
+                    formatter: v => v ? v : '',
+                    font: { weight: 'bold', size: 12 },
+                    anchor: 'center',
+                    align: 'center',
+                    clamp: true
+                },
+
+                annotation: {
+                    annotations: {
+                        majorityLine: {
+                            type: 'line',
+                            xMin: 50,
+                            xMax: 50,
+                            yMin: 'Seats',
+                            yMax: 'Seats',
+                            borderColor: '#ffffff',
+                            borderCapStyle: 'dashed',
+                            borderWidth: 2,
+                            borderDash: [6, 6]
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                    stacked: true,
+                    min: 0,
+                    max: 100
+                },
+                y: {
+                    display: false,
+                    stacked: true
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+}
+
 async function getData(url) {
     const response = await fetch(url);
     const csvText = await response.text();
@@ -421,6 +717,7 @@ function runSenateMap() {
             const outcome = outcomes[state];
             outcome.winner = Object.entries(outcome.winProbabilities).sort((a,b) => b[1].pct - a[1].pct)[0][0];
             let winningParty = outcome.winProbabilities[outcome.winner].party;
+            //console.log(senateSeats[winningParty]);
             //console.log(outcome);
             const prob = {
                 solid: outcome.winProbabilities[outcome.winner].pct > 0.95,
@@ -429,6 +726,9 @@ function runSenateMap() {
                 tilt: outcome.winProbabilities[outcome.winner].pct >= 0.5 
             };
             applyColor("senate", state, Object.keys(prob).find(key => prob[key]) + winningParty[0]);
+            //console.log(Object.keys(prob).find(key => prob[key]) + winningParty[0]);
+            senateSeats[Object.keys(prob).find(key => prob[key]) + winningParty[0]] = (senateSeats[Object.keys(prob).find(key => prob[key]) + winningParty[0]] || 0) + 1;
+
             let string = "<b>Win Probability:</b><br>";
             outcome._sortedWinProbabilities.forEach(element => {
                 string += ["0.00"].includes((element[1].pct * 100).toFixed(2))
@@ -450,7 +750,10 @@ function runSenateMap() {
             changeDesc("senate", element, "No election");
         });
         mapLookup["senate"].refresh();
+        senateSeats.UNK = 100 - senateSeats.DEM - senateSeats.solidD - senateSeats.leanD - senateSeats.likelyD - senateSeats.tiltD - senateSeats.REP - senateSeats.solidR - senateSeats.leanR - senateSeats.likelyR - senateSeats.tiltR - senateSeats.IND - senateSeats.solidI - senateSeats.leanI - senateSeats.likelyI - senateSeats.tiltI - senateSeats.solidL - senateSeats.leanL - senateSeats.likelyL - senateSeats.tiltL;
         //console.timeEnd("Total time");
+        Chart.register(chartAreaBorder);
+        testSeats();
     });
 }
 //console.time("Total time");
