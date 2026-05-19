@@ -27,4 +27,18 @@ function changeDesc(type, state, string) {
     }
 }
 
+function changeName(type, state, string) {
+    const target = mapLookup[type];
+    if (target) {
+        target.mapdata.state_specific[state].name += `${string}`;
+    }
+}
 
+function pulseMap(type, state) {
+    const target = mapLookup[type];
+    for (let i = 0; i < 10000; i++) {
+        setTimeout(() => {
+            target.pulse_state(state);
+        }, i * 5000);
+    }
+}

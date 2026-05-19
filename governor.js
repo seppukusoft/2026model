@@ -20,9 +20,20 @@ const cookPVI_gov = {
     FL: 5, GA: 1, HI: -13, ID: 18, IL: -6, IN: 9, IA: 7, KS: 8,
     KY: 15, LA: 11, ME: -4, MD: -15, MA: -14, MI: 3, MN: -3,
     MS: 11, MO: 9, MT: 10, NE: 10, NV: 1, NH: -2, NJ: -4, NM: -4,
-    NY: -8, NC: 1, ND: 18, OH: 3, OK: 17, OR: -8, PA: 1, RI: -8,
+    NY: -8, NC: 1, ND: 18, OH: 3, OK: 17, OR: -8, PA: 2, RI: -8,
     SC: 8, SD: 15, TN: 14, TX: 5, UT: 11, VT: -17, VA: -3, WA: -10,
     WV: 21, WI: 0, WY: 23
+};
+
+let govSeats = {
+    DEM: 6,  
+    REP: 8,
+    IND: 0,
+    UNK: 0,
+    solidR: 0, likelyR: 0, leanR: 0, tiltR: 0,
+    tiltD: 0, leanD: 0, likelyD: 0, solidD: 0,
+    tiltI: 0, leanI: 0, likelyI: 0, solidI: 0,
+    tiltL: 0, leanL: 0, likelyL: 0, solidL: 0,
 };
 
 const EXCLUDE_RE_gov = /undecided|don't know|demings|dixon|lytle|pizzo|bell|don’t know|other|refused|someone else|would not vote/i;
@@ -273,7 +284,7 @@ function pviBiasForCandidate_gov(party_gov, pvi_gov) {
 }
 
 function applyPviToEstimates_gov(state_gov, estimates_gov, polls_gov) {
-    const pvi_gov = cookPVI_gov[state_gov] || 0;
+    const pvi_gov = cookPVI_gov[state_gov] + 1 || 0;
 
     let nEff_gov = 0;
     for (const p_gov of polls_gov) nEff_gov += p_gov.weight;
@@ -349,7 +360,7 @@ function sigmaFromPolls_gov(polls_gov) {
     return nEff_gov <= 0 ? 5 : Math.max(7, 10 / Math.sqrt(nEff_gov));
 }
 
-function computeStateOutcomes_gov(stateEstimates_gov, pollsByState_gov) {
+function computeStateOutcomes_gov(stateEstimates_gov, pollsByState_gov, marketPriors = {}) {
     const pollMap_gov = Object.fromEntries(pollsByState_gov.map(p_gov => [p_gov.state, p_gov.polls]));
     const outcomes_gov = Object.create(null);
 
@@ -367,34 +378,38 @@ function computeStateOutcomes_gov(stateEstimates_gov, pollsByState_gov) {
             candidateParty_gov[c_gov] = estimates_gov[c_gov].party;
         }
 
-        const applied_gov = renormalizeEstimates_gov(
+        const pviAdjusted_gov = renormalizeEstimates_gov(
             applyPviToEstimates_gov(state_gov, estimates_gov, polls_gov)
         );
 
-        const sorted_gov = Object.entries(applied_gov)
-            .sort((a_gov,b_gov)=>b_gov[1].pct-a_gov[1].pct);
+        const marketAdjusted_gov = applyMarketPriorToEstimates(state_gov, pviAdjusted_gov, marketPriors);
 
-        const margin_gov =
-            sorted_gov.length >= 2
-                ? sorted_gov[0][1].pct - sorted_gov[1][1].pct
-                : 0;
+        for (const c_gov in marketAdjusted_gov) candidatePct_gov[c_gov] = marketAdjusted_gov[c_gov].pct;
+
+        const sorted_gov = Object.entries(marketAdjusted_gov)
+            .sort((a_gov, b_gov) => b_gov[1].pct - a_gov[1].pct);
+
+        const margin_gov = sorted_gov.length >= 2
+            ? sorted_gov[0][1].pct - sorted_gov[1][1].pct
+            : 0;
+
 
         const winProbs_gov = monteCarloMulti_gov(
             candidatePct_gov,
             sigma_gov,
             candidateParty_gov,
-            cookPVI_gov[state_gov] || 0
+            0
         );
 
         const winProbEntries_gov = Object.entries(winProbs_gov)
             .map(([c_gov, p_gov]) => [c_gov, { pct: p_gov, party: candidateParty_gov[c_gov] }])
             .sort((a_gov, b_gov) => b_gov[1].pct - a_gov[1].pct);
 
-        const voteEntries_gov = Object.entries(applied_gov)
+        const voteEntries_gov = Object.entries(marketAdjusted_gov)
             .sort((a_gov, b_gov) => b_gov[1].pct - a_gov[1].pct);
 
         outcomes_gov[state_gov] = {
-            voteEstimates: applied_gov,
+            voteEstimates: marketAdjusted_gov,
             winProbabilities: Object.fromEntries(winProbEntries_gov),
             _sortedWinProbabilities_gov: winProbEntries_gov,
             _sortedVoteEstimates_gov: voteEntries_gov,
@@ -406,7 +421,10 @@ function computeStateOutcomes_gov(stateEstimates_gov, pollsByState_gov) {
 }
 
 async function getData_gov(url_gov) {
-    const response_gov = await fetch(url_gov);
+    const [response_gov, marketPrior] = await Promise.all([
+        fetch(url_gov),
+        getPolymarketPriors()
+    ]);
     const csvText_gov = await response_gov.text();
 
     const parsed_gov = Papa.parse(csvText_gov, {
@@ -427,7 +445,7 @@ async function getData_gov(url_gov) {
 
     const byState_gov = groupPollsByState_gov(filtered_gov);
     const estimates_gov = computeStateEstimates_gov(byState_gov);
-    const outcomes_gov = computeStateOutcomes_gov(estimates_gov, byState_gov);
+    const outcomes_gov = computeStateOutcomes_gov(estimates_gov, byState_gov, marketPrior);
 
     return outcomes_gov;
 }
@@ -449,11 +467,15 @@ function runMap_gov() {
                 tilt: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct >= 0.5 
             };
 
+            const rating_gov = Object.keys(prob_gov).find(key_gov => prob_gov[key_gov]);
             applyColor(
                 "gov",
                 state_gov,
                 Object.keys(prob_gov).find(key_gov => prob_gov[key_gov]) + winningParty_gov[0]
             );
+
+            const ratingKey_gov = rating_gov + winningParty_gov[0];
+            govSeats[ratingKey_gov] = (govSeats[ratingKey_gov] || 0) + 1;
 
             let string_gov = "<b>Win Probability:</b><br>";
             outcome_gov._sortedWinProbabilities_gov.forEach(element_gov => {
@@ -483,6 +505,12 @@ function runMap_gov() {
 
         mapLookup["gov"].refresh();
         //console.timeEnd("Total gov time");
+        govSeats.UNK = 50 - govSeats.DEM - govSeats.REP - govSeats.IND
+            - govSeats.solidD - govSeats.likelyD - govSeats.leanD - govSeats.tiltD
+            - govSeats.solidR - govSeats.likelyR - govSeats.leanR - govSeats.tiltR
+            - govSeats.solidI - govSeats.likelyI - govSeats.leanI - govSeats.tiltI
+            - govSeats.solidL - govSeats.likelyL - govSeats.leanL - govSeats.tiltL;
+        testGovSeats();
     });
 }
 

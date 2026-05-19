@@ -6,6 +6,7 @@ var simplemaps_usmap_mapdata={
 			  background_transparent: "yes",
 			  border_color: "#ffffff",
 			  popups: "detect",
+			  keyboard_navigation: "no",
 			  
 			  //State defaults
 			  state_description: "Waiting for more polls/primaries to conclude",

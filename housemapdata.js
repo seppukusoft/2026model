@@ -5,6 +5,7 @@ var simplemaps_congressmap_mapdata={
     background_color: "#FFFFFF",
     background_transparent: "yes",
     popups: "detect",
+		keyboard_navigation: "no",
     
 		//State defaults
 		state_description: "Waiting for more polls/primaries to conclude",
@@ -775,10 +776,10 @@ var simplemaps_congressmap_mapdata={
     MS04: {
       name: "MS-04"
     },
-    MT00: {
+    MT01: {
       name: "MT-01"
     },
-    MT01: {
+    MT02: {
       name: "MT-02"
     },
     NC01: {
@@ -1272,6 +1273,12 @@ var simplemaps_congressmap_mapdata={
     },
     TX36: {
       name: "TX-36"
+    },
+    TX37: {
+      name: "TX-37"
+    },
+    TX38: {
+      name: "TX-38"
     },
     UT01: {
       name: "UT-01"

@@ -6,6 +6,7 @@ var simplemaps_usmap_mapdata={
 			  background_transparent: "yes",
 			  border_color: "#ffffff",
 			  popups: "detect",
+			  keyboard_navigation: "no",
 			  
 			  //State defaults
 			  state_description: "Waiting for more polls/primaries to conclude",
@@ -13,6 +14,7 @@ var simplemaps_usmap_mapdata={
 			  state_hover_color: "off",
 			  state_url: "",
 			  border_hover_color: "#FFEE8C",
+			  state_pulse_color: "#000000",
 			  border_size: 1.5,
 			  all_states_inactive: "no",
 			  all_states_zoomable: "yes",
@@ -113,7 +115,8 @@ var simplemaps_usmap_mapdata={
 				name: "West Virginia"
 			  },
 			  OH: {
-				name: "Ohio"
+				name: "Ohio",			
+			    pill: "yes"
 			  },
 			  IN: {
 				name: "Indiana"

@@ -2,19 +2,18 @@
 <html>
 <head>
     <style>
-        #senateChartWrapper {
-    height: 45px;          
-    width: 70%;
-    position: relative;
-    margin: 0 auto;
-            
-}
-
-#senateChart {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-}
+        #senateChartWrapper, #govChartWrapper {
+            height: 45px;          
+            width: 70%;
+            position: relative;
+            margin: 0 auto;
+                    
+        }
+        #senateChart, #govChart {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
     </style>
     <title>2026 Senate Polling Model</title>
     <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
@@ -37,6 +36,7 @@
     <script type='text/javascript'>	
         var map3 = simplemaps_usmap.create();
     </script>
+    <script src="bar.js"></script>
     <script src="mapfill.js"></script>
     <script src="poly.js"></script>
     <script src="senate.js"></script>
@@ -46,20 +46,28 @@
 </head>
 <body>
 <div class="map" id="map_grandparent" style="text-align: center;">
+
     <br><br><br>
     <h2>Gubernatorial Map</h2>
-  <div id="map_parent3" style="width: 75%; display: inline-block;">	
+    <div id="govChartWrapper">
+        <canvas id="govChart"></canvas>
+    </div>
+
+    <div id="map_parent3" style="width: 75%; display: inline-block;">	
         <div id="map3"></div>
     </div>
+
     <br><br><br>
     <h2>Senate Map</h2>
+
     <div id="senateChartWrapper">
         <canvas id="senateChart"></canvas>
     </div>
-    <br>
+    
     <div id="map_parent1" style="width: 75%; display: inline-block;">
         <div id="map1"></div>	
     </div>
+    
     <br><br><br>
     <h2>House Map</h2>
   <div id="map_parent2" style="width: 75%; display: inline-block;">	
@@ -71,6 +79,26 @@
     document.addEventListener("DOMContentLoaded", function() {
         function removeElement() {
             var element = document.querySelector('a[href="https://simplemaps.com"][title="For evaluation use only."]');
+            if (element) {
+                element.remove();
+            }
+        }
+
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    removeElement();
+                    document.querySelector('#senateChart').style.display = "block";
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        removeElement();
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        function removeElement() {
+            var element = document.querySelector('map3_access');
             if (element) {
                 element.remove();
             }
