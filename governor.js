@@ -463,18 +463,13 @@ function runMap_gov() {
             const prob_gov = {
                 solid: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct > 0.95,
                 likely: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct > 0.8,
-                lean: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct > 0.66,
+                lean: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct > 0.65,
                 tilt: outcome_gov.winProbabilities[outcome_gov.winner_gov].pct >= 0.5 
             };
 
             const rating_gov = Object.keys(prob_gov).find(key_gov => prob_gov[key_gov]);
-            applyColor(
-                "gov",
-                state_gov,
-                Object.keys(prob_gov).find(key_gov => prob_gov[key_gov]) + winningParty_gov[0]
-            );
-
             const ratingKey_gov = rating_gov + winningParty_gov[0];
+            applyColor("gov", state_gov, ratingKey_gov);
             govSeats[ratingKey_gov] = (govSeats[ratingKey_gov] || 0) + 1;
 
             let string_gov = "<b>Win Probability:</b><br>";
@@ -504,15 +499,14 @@ function runMap_gov() {
         });
 
         mapLookup["gov"].refresh();
-        //console.timeEnd("Total gov time");
         govSeats.UNK = 50 - govSeats.DEM - govSeats.REP - govSeats.IND
             - govSeats.solidD - govSeats.likelyD - govSeats.leanD - govSeats.tiltD
             - govSeats.solidR - govSeats.likelyR - govSeats.leanR - govSeats.tiltR
             - govSeats.solidI - govSeats.likelyI - govSeats.leanI - govSeats.tiltI
             - govSeats.solidL - govSeats.likelyL - govSeats.leanL - govSeats.tiltL;
         testGovSeats();
+        console.timeEnd("gov");
     });
 }
-
-//console.time("Total gov time");
-runMap_gov();
+console.time("gov");
+document.addEventListener('DOMContentLoaded', () => runMap_gov());

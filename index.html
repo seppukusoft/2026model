@@ -2,14 +2,14 @@
 <html>
 <head>
     <style>
-        #senateChartWrapper, #govChartWrapper {
+        #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
             height: 45px;          
             width: 70%;
             position: relative;
             margin: 0 auto;
                     
         }
-        #senateChart, #govChart {
+        #senateChart, #govChart, #houseChart {
             width: 100% !important;
             height: 100% !important;
             display: block;
@@ -67,10 +67,15 @@
     <div id="map_parent1" style="width: 75%; display: inline-block;">
         <div id="map1"></div>	
     </div>
-    
+
     <br><br><br>
     <h2>House Map</h2>
-  <div id="map_parent2" style="width: 75%; display: inline-block;">	
+
+    <div id="houseChartWrapper">
+        <canvas id="houseChart"></canvas>
+    </div>
+<br>
+    <div id="map_parent2" style="width: 75%; display: inline-block;">	
         <div id="map2"></div>
     </div>
 </div>

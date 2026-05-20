@@ -1,6 +1,6 @@
 const senateLink = "https://www.nytimes.com/newsgraphics/polls/senate.csv";
 
-const notGenYet = ["US","TX"];
+const notGenYet = ["US"];
 
 const primaryWinnersByState = {
     NE: "dan osborn",
@@ -15,6 +15,7 @@ const primaryWinnersByState = {
     MA: "x markey",
     FL: "x vindman",
     MI: "x el-sayed",
+    TX: "x cornyn"
 };
 
 const cookPVI = {
@@ -28,7 +29,7 @@ const cookPVI = {
 };
 
 
-const EXCLUDE_RE = /undecided|don't know|don’t know|other|refused|someone else|would not vote/i;
+const EXCLUDE_RE = /undecided|don't know|daines|crockett|don’t know|other|refused|someone else|would not vote/i;
 
 const partyCache = Object.create(null);
 
@@ -474,12 +475,13 @@ function runSenateMap() {
             const prob = {
                 solid: outcome.winProbabilities[outcome.winner].pct > 0.95,
                 likely: outcome.winProbabilities[outcome.winner].pct > 0.8,
-                lean: outcome.winProbabilities[outcome.winner].pct > 0.66,
+                lean: outcome.winProbabilities[outcome.winner].pct > 0.65,
                 tilt: outcome.winProbabilities[outcome.winner].pct >= 0.5 
             };
-            applyColor("senate", state, Object.keys(prob).find(key => prob[key]) + winningParty[0]);
-            //console.log(Object.keys(prob).find(key => prob[key]) + winningParty[0]);
-            senateSeats[Object.keys(prob).find(key => prob[key]) + winningParty[0]] = (senateSeats[Object.keys(prob).find(key => prob[key]) + winningParty[0]] || 0) + 1;
+            const rating = Object.keys(prob).find(key => prob[key]);
+            const ratingKey = rating + winningParty[0];
+            applyColor("senate", state, ratingKey);
+            senateSeats[ratingKey] = (senateSeats[ratingKey] || 0) + 1;
 
             let string = "<b>Win Probability:</b><br>";
             outcome._sortedWinProbabilities.forEach(element => {
@@ -504,9 +506,9 @@ function runSenateMap() {
         
         mapLookup["senate"].refresh();
         senateSeats.UNK = 100 - senateSeats.DEM - senateSeats.solidD - senateSeats.leanD - senateSeats.likelyD - senateSeats.tiltD - senateSeats.REP - senateSeats.solidR - senateSeats.leanR - senateSeats.likelyR - senateSeats.tiltR - senateSeats.IND - senateSeats.solidI - senateSeats.leanI - senateSeats.likelyI - senateSeats.tiltI - senateSeats.solidL - senateSeats.leanL - senateSeats.likelyL - senateSeats.tiltL;
-        //console.timeEnd("Total time");
         testSeats();
+        console.timeEnd("senate");
     });
 }
-//console.time("Total time");
-runSenateMap();
+console.time("senate");
+document.addEventListener('DOMContentLoaded', () => runSenateMap());

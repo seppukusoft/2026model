@@ -14,6 +14,14 @@ const houseDistrictPVI = {
 
 };
 
+let houseSeats = {
+    DEM: 0, REP: 0, IND: 0, UNK: 0,
+    solidR: 0, likelyR: 0, leanR: 0, tiltR: 0,
+    tiltD: 0, leanD: 0, likelyD: 0, solidD: 0,
+    tiltI: 0, leanI: 0, likelyI: 0, solidI: 0,
+    tiltL: 0, leanL: 0, likelyL: 0, solidL: 0,
+};
+
 const houseExcludeRe = /undecided|don't know|dembo|dotson|don't know|other|refused|someone else|would not vote/i;
 
 const housePartyCache = Object.create(null);
@@ -458,8 +466,8 @@ function runHouseMap() {
 
             const prob = {
                 solid:  outcome.winProbabilities[outcome.winner].pct > 0.95,
-                likely: outcome.winProbabilities[outcome.winner].pct > 0.8,
-                lean:   outcome.winProbabilities[outcome.winner].pct > 0.66,
+                likely: outcome.winProbabilities[outcome.winner].pct > 0.80,
+                lean:   outcome.winProbabilities[outcome.winner].pct > 0.65,
                 tilt:   outcome.winProbabilities[outcome.winner].pct >= 0
             };
 
@@ -468,6 +476,9 @@ function runHouseMap() {
 
             //console.log(mapDistrict, outcome.winner, winningParty, rating);
             applyColor("house", mapDistrict, rating + winningParty[0]);
+
+            const ratingKey = rating + winningParty[0];
+            houseSeats[ratingKey] = (houseSeats[ratingKey] || 0) + 1;
 
             let string = "<b>Win Probability:</b><br>";
             outcome._sortedWinProbabilities.forEach(element => {
@@ -487,10 +498,15 @@ function runHouseMap() {
         }
 
         mapLookup["house"].refresh();
-        //console.timeEnd("House total time");
+        houseSeats.UNK = 435 - houseSeats.DEM - houseSeats.REP - houseSeats.IND
+            - houseSeats.solidD - houseSeats.likelyD - houseSeats.leanD - houseSeats.tiltD
+            - houseSeats.solidR - houseSeats.likelyR - houseSeats.leanR - houseSeats.tiltR
+            - houseSeats.solidI - houseSeats.likelyI - houseSeats.leanI - houseSeats.tiltI
+            - houseSeats.solidL - houseSeats.likelyL - houseSeats.leanL - houseSeats.tiltL;
+        testHouseSeats();
+        console.timeEnd("house");
     });
 }
-
-//console.time("House total time");
-runHouseMap();
+console.time("house");
+document.addEventListener('DOMContentLoaded', () => runHouseMap());
 
