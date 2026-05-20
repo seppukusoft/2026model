@@ -15,7 +15,7 @@ const primaryWinnersByState = {
     MA: "x markey",
     FL: "x vindman",
     MI: "x el-sayed",
-    TX: "x cornyn"
+    TX: "x paxton"
 };
 
 const cookPVI = {
