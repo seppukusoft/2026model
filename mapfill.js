@@ -4,8 +4,7 @@ let mapLookup = {
         "gov": map3
     };
 
-function applyColor(type, state, newColor) {
-    const colorMapping = {
+const colorMapping = {
         "solidR": "#d22532", "likelyR": "#ff5865", "leanR": "#ff8b98", "tiltR": "#cf8980",
         "tiltD": "#848fb3", "leanD": "#90acfc", "likelyD": "#577ccc", "solidD": "#244999",
         "tiltI": "#c4aeee", "leanI": "#b57edc", "likelyI": "#a14fd2", "solidI": "#8e20c7",
@@ -13,6 +12,7 @@ function applyColor(type, state, newColor) {
         "noElec": "#575757"
     };
 
+function applyColor(type, state, newColor) {
     const target = mapLookup[type];
     if (target) {
         //console.log(type, target);
@@ -36,9 +36,5 @@ function changeName(type, state, string) {
 
 function pulseMap(type, state) {
     const target = mapLookup[type];
-    for (let i = 0; i < 10000; i++) {
-        setTimeout(() => {
-            target.pulse_state(state);
-        }, i * 5000);
-    }
+    setInterval(() => target.pulse_state(state), 2500);
 }

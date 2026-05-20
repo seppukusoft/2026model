@@ -34,7 +34,7 @@ var simplemaps_usmap_mapdata={
 			  all_locations_hidden: "no",
 			  
 			  //Label defaults
-			  label_color: "#d5ddec",
+			  label_color: "#ffffff",
 			  label_hover_color: "#d5ddec",
 			  label_size: 22,
 			  label_font: "Arial",
@@ -134,7 +134,8 @@ var simplemaps_usmap_mapdata={
 				name: "North Carolina"
 			  },
 			  DC: {
-				name: "District of Columbia"
+				name: "District of Columbia",
+				hide: "yes"
 			  },
 			  MA: {
 				name: "Massachusetts"

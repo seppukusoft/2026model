@@ -1,8 +1,5 @@
-let _polyPriorPromise = null;
-
 async function getPolymarketPriors() {
-    if (_polyPriorPromise) return _polyPriorPromise;
-    _polyPriorPromise = (async () => { try {
+    try {
         const res = await fetch(`https://gamma-api.polymarket.com/events/32224`);
         const data = await res.json();
         const markets = data.markets;
@@ -39,22 +36,23 @@ async function getPolymarketPriors() {
     } catch (err) {
         console.warn(`Polymarket fetch failed:`, err);
         return null;
-    }})();
-    return _polyPriorPromise;
+    }
 }
 
 function applyMarketPriorToEstimates(state, estimates, marketPrior) {
-    if (!marketPrior) return estimates; 
-
+    if (!marketPrior) {
+        console.log("no priors; check polymarket api"); 
+        return estimates; 
+    }
     const out = Object.create(null);
 
     for (const candidate in estimates) {
         const { pct, party } = estimates[candidate];
-        const marketTarget = marketPrior[party]; 
+        const marketTarget = marketPrior[party]; // undefined for IND/LIB
 
         out[candidate] = {
             pct: marketTarget !== undefined
-                ? (1 - 0.2) * pct + 0.2 * marketTarget
+                ? (1 - 0.08) * pct + 0.08 * marketTarget
                 : pct,
             party
         };

@@ -10,7 +10,7 @@ var simplemaps_congressmap_mapdata={
 		//State defaults
 		state_description: "Waiting for more polls/primaries to conclude",
     state_color: "#808080",
-    state_hover_color: "#3B729F",
+    state_hover_color: "off",
     state_url: "",
     border_size: 1,
     border_color: "#ffffff",
