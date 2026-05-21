@@ -41,6 +41,11 @@ const GOV_NO_ELECTION = [
     "KY", "IN", "WV", "VA", "NC", "DE", "NJ"
 ];
 
+const govCurrentParty = { "AL": "REP", "AK": "REP", "AZ": "DEM", "AR": "REP", "CA": "DEM", "CO": "DEM", "CT": "DEM", "FL": "REP", "GA": "REP", "HI": "DEM", "ID": "REP", "IL": "DEM", "IA": "REP", "KS": "DEM", "ME": "DEM", "MD": "DEM", "MA": "DEM", "MI": "DEM", "MN": "DEM", "NE": "REP", "NV": "REP", "NH": "REP", "NM": "DEM", "NY": "DEM", "OH": "REP", "OK": "REP", "OR": "DEM", "PA": "DEM", "RI": "DEM", "SC": "REP", "SD": "REP", "TN": "REP", "TX": "REP", "VT": "REP", "WI": "DEM", "WY": "REP" };
+
+let govGains = { DEM: 0, REP: 0, IND: 0 };
+let govLosses = { DEM: 0, REP: 0, IND: 0 };
+
 function runMap_gov() {
     runRacePipeline(Link_gov, {
         excludeRe:            GOV_EXCLUDE_RE,
@@ -51,17 +56,38 @@ function runMap_gov() {
             state === "MN" && name?.toLowerCase().includes("klobuchar") ? "DEM" : null,
         getRegionFromRow:     row => row.state,
         regionKey:            "state",
+        defaults:             govDefaults,
+        currentParty: govCurrentParty,
+        rcvRegions: ["AK"]
     }).then(outcomes => {
         for (const state in outcomes) {
             const outcome = outcomes[state];
             const [[winner, winnerData]] = outcome._sortedWinProbabilities;
             const winningParty = winnerData.party;
             const p = winnerData.pct;
-
+            const isFlip = govCurrentParty[state] && winningParty !== govCurrentParty[state];
             const rating    = p >= 0.95 ? "solid" : p >= 0.8 ? "likely" : p >= 0.65 ? "lean" : "tilt";
             const ratingKey = rating + winningParty[0];
+
             applyColor("gov", state, ratingKey);
             govSeats[ratingKey] = (govSeats[ratingKey] || 0) + 1;
+           
+            if (outcome._isDefault) {
+                changeName("gov", state, "* (default values)");
+                changeNameColor("gov", state, "#FF0000");
+            }
+
+            if (isFlip) {
+                if (outcome._isDefault) changeName("gov", state, `<br>`);
+                //console.log(state)
+                govGains[winningParty] = (govGains[winningParty] || 0) + 1;
+                govLosses[govCurrentParty[state]] = (govLosses[govCurrentParty[state]] || 0) + 1;
+                pulseMap("gov", state); 
+                changeName("gov", state, ` (FLIP ${govCurrentParty[state]} → ${winningParty})`);
+                changeNameColor("gov", state, colorMapping["likely"+winningParty.slice(0, 1)]);
+                //changeBorderColor("gov", state, colorMapping["likely"+govCurrentParty[state].slice(0, 1)]);
+                //console.log("gov", state, govCurrentParty[state])
+            }
 
             let string = "<b>Win Probability:</b><br>";
             for (const [name, { pct }] of outcome._sortedWinProbabilities) {
@@ -75,6 +101,16 @@ function runMap_gov() {
                 if (pct.toFixed(2) !== "0.00")
                     string += `${name}: ${pct.toFixed(2)}%<br>`;
             }
+            if (outcome._rcvFinalEstimates) {
+                string += "<b>Vote Estimate (final round):</b><br>";
+                const finalSorted = Object.entries(outcome._rcvFinalEstimates).sort((a, b) => b[1].pct - a[1].pct);
+                for (const [name, { pct }] of finalSorted) {
+                    string += `${name}: ${pct.toFixed(2)}%<br>`;
+                }
+                if (outcome._rcvEliminationOrder.length) {
+                    string += `<i>Eliminated: ${outcome._rcvEliminationOrder.join(" → ")}</i><br>`;
+                }
+            }
             changeDesc("gov", state, string);
         }
 
@@ -84,6 +120,7 @@ function runMap_gov() {
         }
 
         mapLookup["gov"].refresh();
+
         govSeats.UNK = 50
             - govSeats.DEM    - govSeats.REP    - govSeats.IND
             - govSeats.solidD - govSeats.likelyD - govSeats.leanD - govSeats.tiltD
@@ -91,6 +128,27 @@ function runMap_gov() {
             - govSeats.solidI - govSeats.likelyI - govSeats.leanI - govSeats.tiltI
             - govSeats.solidL - govSeats.likelyL - govSeats.leanL - govSeats.tiltL;
         renderSeatChart('govChart', govSeats, 25, 50);
+
+        const seatD = govSeats.solidD + govSeats.likelyD + govSeats.leanD + govSeats.tiltD;
+        const seatR = govSeats.solidR + govSeats.likelyR + govSeats.leanR + govSeats.tiltR;
+        const seatI = govSeats.solidI + govSeats.likelyI + govSeats.leanI + govSeats.tiltI;
+
+        function netStr(party, color) {
+            const net = (govGains[party] || 0) - (govLosses[party] || 0);
+            if (net === 0) return "";
+            const arrow = net > 0
+                ? `<span style="color:#22c55e">▲ ${net}</span>`
+                : `<span style="color:#ef4444">▼ ${Math.abs(net)}</span>`;
+            return `<span style="color:${color}">${arrow}</span>`;
+        }
+
+        document.getElementById("govSummary").innerHTML = `
+            <span style="color:#577ccc"><b>D: ${seatD + govSeats.DEM}</b>  ${netStr("DEM", "#577ccc")}</span>            
+            ${seatI ? `&nbsp;|&nbsp; <span style="color:#8e20c7"><b>+ ${seatI + govSeats.IND} I (caucus D)</b> ${netStr("IND", "#8e20c7")}</span>` : ""}
+            &nbsp;|&nbsp;
+            <span style="color:#d22532"><b>R: ${seatR + govSeats.REP}</b>  ${netStr("REP", "#d22532")}</span>
+        `;
+
         console.timeEnd("gov");
     });
 }

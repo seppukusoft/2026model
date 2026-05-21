@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark">
 <head>
     <style>
+        @media only screen and (min-width: 992px){
+            body {
+                width: 60% !important;
+                margin: 0 auto !important;
+            }
+        }
         #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
             height: 45px;          
             width: 70%;
@@ -20,7 +26,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 	
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script  type="text/javascript" src="senatemap.js"></script>
     <script type="text/javascript" src="senatemapdata.js"></script>	
@@ -36,6 +42,7 @@
     <script type='text/javascript'>	
         var map3 = simplemaps_usmap.create();
     </script>
+    <script src="defaults.js"></script>
     <script src="pipeline.js"> </script>
     <script src="bar.js"></script>
     <script src="mapfill.js"></script>
@@ -46,10 +53,17 @@
     
 </head>
 <body>
+
 <div class="map" id="map_grandparent" style="text-align: center;">
 
     <br><br><br>
+    <div style="text-align:center; margin-bottom: 10px;">
+    <button id="pulseToggle" onclick="togglePulse()">Pulse Flipped Seats</button>
+</div>
+<br>
     <h2>Gubernatorial Map</h2>
+
+    <div id="govSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
     <div id="govChartWrapper">
         <canvas id="govChart"></canvas>
     </div>
@@ -61,6 +75,7 @@
     <br><br><br>
     <h2>Senate Map</h2>
 
+    <div id="senateSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
     <div id="senateChartWrapper">
         <canvas id="senateChart"></canvas>
     </div>
@@ -72,6 +87,7 @@
     <br><br><br>
     <h2>House Map</h2>
 
+    <div id="houseSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
     <div id="houseChartWrapper">
         <canvas id="houseChart"></canvas>
     </div>
@@ -103,27 +119,6 @@
         observer.observe(document.body, { childList: true, subtree: true });
         removeElement();
     });
-    document.addEventListener("DOMContentLoaded", function() {
-        function removeElement() {
-            var element = document.querySelector('map3_access');
-            if (element) {
-                element.remove();
-            }
-        }
-
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    removeElement();
-                    document.querySelector('#senateChart').style.display = "block";
-                }
-            });
-        });
-
-        observer.observe(document.body, { childList: true, subtree: true });
-        removeElement();
-    });
-
 </script>
 </body>
 </html>

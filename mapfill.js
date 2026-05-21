@@ -12,6 +12,8 @@ const colorMapping = {
         "noElec": "#575757"
     };
 
+let pulseEnabled = false;
+
 function applyColor(type, state, newColor) {
     const target = mapLookup[type];
     if (target) {
@@ -34,7 +36,30 @@ function changeName(type, state, string) {
     }
 }
 
+function changeNameColor(type, state, color) {
+    const target = mapLookup[type];
+    if (target) {
+        let name = target.mapdata.state_specific[state].name.trim();
+        target.mapdata.state_specific[state].name = `<span style="color: ${color};">${name}</span>`;
+    }
+}
+
+function togglePulse() {
+    pulseEnabled = !pulseEnabled;
+    document.getElementById("pulseToggle").textContent = pulseEnabled ? "Pause Pulses" : "Pulse Flipped Seats";
+}
+
 function pulseMap(type, state) {
     const target = mapLookup[type];
-    setInterval(() => target.pulse_state(state), 2500);
+    setInterval(() => {
+        if (pulseEnabled) target.pulse_state(state);
+    }, 4000);
+}
+
+function changeBorderColor(type, state, color) {
+    const target = mapLookup[type];
+    if (target) {
+        target.mapdata.state_specific[state].border_color = `${color}`;
+        target.mapdata.state_specific[state].border_size = 300;
+    }
 }

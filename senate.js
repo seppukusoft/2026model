@@ -1,6 +1,6 @@
 const senateLink = "https://www.nytimes.com/newsgraphics/polls/senate.csv";
 
-const senateNotGenYet = ["US"];
+const senateNotGenYet = ["US", "MS"];
 
 const primaryWinnersByState = {
     NE: "dan osborn",
@@ -15,7 +15,7 @@ const primaryWinnersByState = {
     MA: "x markey",
     FL: "x vindman",
     MI: "x el-sayed",
-    TX: "x cornyn",
+    TX: "x paxton",
     KY: "x barr"
 };
 
@@ -29,7 +29,7 @@ const cookPVI = {
     WV:  21, WI: 0,  WY: 23
 };
 
-const SENATE_EXCLUDE_RE = /undecided|don't know|daines|ryan|crockett|other|refused|someone else|would not vote/i;
+const SENATE_EXCLUDE_RE = /undecided|don't know|daines|ryan|allred|crockett|other|refused|someone else|would not vote/i;
 
 let senateSeats = {
     DEM: 32, REP: 31, IND: 2, UNK: 0,
@@ -44,6 +44,11 @@ const SENATE_NO_ELECTION = [
     "WI", "IN", "PA", "NY", "MD", "VT", "CT"
 ];
 
+const senateCurrentParty = { "VA": "DEM", "AL": "REP", "NC": "REP", "AK": "REP", "MN": "DEM", "NH": "DEM", "SD": "REP", "ID": "REP", "NE": "REP", "RI": "DEM", "NM": "DEM", "MI": "DEM", "GA": "DEM", "WV": "REP", "FL": "REP", "OR": "DEM", "KY": "REP", "KS": "REP", "MA": "DEM", "WY": "REP", "OH": "REP", "MS": "REP", "CO": "DEM", "TN": "REP", "SC": "REP", "IA": "REP", "IL": "DEM", "MT": "REP", "AR": "REP", "TX": "REP", "DE": "DEM", "ME": "REP", "LA": "REP", "NJ": "DEM", "OK": "REP" };
+
+let senateGains = { DEM: 0, REP: 0, IND: 0 };
+let senateLosses = { DEM: 0, REP: 0, IND: 0 };
+
 function runSenateMap() {
     runRacePipeline(senateLink, {
         excludeRe:            SENATE_EXCLUDE_RE,
@@ -54,7 +59,10 @@ function runSenateMap() {
             state === "NE" && name?.toLowerCase().includes("osborn") ? "IND" : null,
         getRegionFromRow:     row => row.state,
         regionKey:            "state",
+        defaults: senateDefaults,
         extraRowFilter:       row => row.display_name !== "Praecones Analytica",
+        currentParty: senateCurrentParty,
+        rcvRegions: ["AK", "ME"]
     }).then(outcomes => {
         //console.log(outcomes)
         for (const state in outcomes) {
@@ -62,11 +70,22 @@ function runSenateMap() {
             const [[winner, winnerData]] = outcome._sortedWinProbabilities;
             const winningParty = winnerData.party;
             const p = winnerData.pct;
-
+            const isFlip = senateCurrentParty[state] && winningParty !== senateCurrentParty[state];
             const rating    = p >= 0.95 ? "solid" : p >= 0.8 ? "likely" : p >= 0.65 ? "lean" : "tilt";
             const ratingKey = rating + winningParty[0];
+
             applyColor("senate", state, ratingKey);
             senateSeats[ratingKey] = (senateSeats[ratingKey] || 0) + 1;
+
+            if (isFlip) {
+                if (outcome._isDefault) changeName("senate", state, `<br>`);
+                senateGains[winningParty] = (senateGains[winningParty] || 0) + 1;
+                senateLosses[senateCurrentParty[state]] = (senateLosses[senateCurrentParty[state]] || 0) + 1;
+                pulseMap("senate", state); 
+                changeName("senate", state, ` (FLIP ${senateCurrentParty[state]} → ${winningParty})`);
+                changeNameColor("senate", state, colorMapping["likely"+winningParty.slice(0, 1)]);
+                //changeBorderColor("senate", state, colorMapping["likely"+senateCurrentParty[state].slice(0, 1)]);
+            }
 
             let string = "<b>Win Probability:</b><br>";
             for (const [name, { pct }] of outcome._sortedWinProbabilities) {
@@ -80,7 +99,23 @@ function runSenateMap() {
                 if (pct.toFixed(2) !== "0.00")
                     string += `${name}: ${pct.toFixed(2)}%<br>`;
             }
+
+            if (outcome._rcvFinalEstimates) {
+                string += "<b>Vote Estimate (final round):</b><br>";
+                const finalSorted = Object.entries(outcome._rcvFinalEstimates).sort((a, b) => b[1].pct - a[1].pct);
+                for (const [name, { pct }] of finalSorted) {
+                    string += `${name}: ${pct.toFixed(2)}%<br>`;
+                }
+                if (outcome._rcvEliminationOrder.length) {
+                    string += `<i>Eliminated: ${outcome._rcvEliminationOrder.join(" → ")}</i><br>`;
+                }
+            }
             changeDesc("senate", state, string);
+
+            if (outcome._isDefault) {
+                changeName("senate", state, "* (default values)");
+                changeNameColor("senate", state, "#FF0000");
+            }
         }
 
         for (const state of SENATE_NO_ELECTION) {
@@ -96,6 +131,27 @@ function runSenateMap() {
             - senateSeats.solidI - senateSeats.likelyI - senateSeats.leanI - senateSeats.tiltI
             - senateSeats.solidL - senateSeats.likelyL - senateSeats.leanL - senateSeats.tiltL;
         renderSeatChart('senateChart', senateSeats, 50, 100);
+
+        const seatD = senateSeats.solidD + senateSeats.likelyD + senateSeats.leanD + senateSeats.tiltD;
+        const seatR = senateSeats.solidR + senateSeats.likelyR + senateSeats.leanR + senateSeats.tiltR;
+        const seatI = senateSeats.solidI + senateSeats.likelyI + senateSeats.leanI + senateSeats.tiltI;
+
+        function netStr(party, color) {
+            const net = (senateGains[party] || 0) - (senateLosses[party] || 0);
+            if (net === 0) return "";
+            const arrow = net > 0
+                ? `<span style="color:#22c55e">▲ ${net}</span>`
+                : `<span style="color:#ef4444">▼ ${Math.abs(net)}</span>`;
+            return `<span style="color:${color}">${arrow}</span>`;
+        }
+
+        document.getElementById("senateSummary").innerHTML = `
+            <span style="color:#577ccc"><b>D: ${seatD + senateSeats.DEM}</b>  ${netStr("DEM", "#577ccc")}</span>
+            ${seatI ? `<span style="color:#8e20c7"><b>+ ${seatI + senateSeats.IND} I</b> ${netStr("IND", "#8e20c7")}</span>` : ""}
+            &nbsp;|&nbsp;
+            <span style="color:#d22532"><b>R: ${seatR + senateSeats.REP}</b>  ${netStr("REP", "#d22532")}</span>
+        `;
+
         console.timeEnd("senate");
     });
 }

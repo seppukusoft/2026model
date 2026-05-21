@@ -13,8 +13,8 @@ var simplemaps_usmap_mapdata={
 			  state_color: "#808080",
 			  state_hover_color: "off",
 			  state_url: "",
-			  border_hover_color: "#FFEE8C",
-			  state_pulse_color: "#000000",
+			  border_hover_color: "off",
+			  state_pulse_color: "#ffffff",
 			  border_size: 1.5,
 			  all_states_inactive: "no",
 			  all_states_zoomable: "yes",
@@ -82,7 +82,7 @@ var simplemaps_usmap_mapdata={
 				name: "Florida"
 			  },
 			  NH: {
-				name: "New Hampshire"
+				name: "New Hampshire",
 			  },
 			  VT: {
 				name: "Vermont"

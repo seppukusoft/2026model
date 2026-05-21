@@ -13,7 +13,7 @@ var simplemaps_usmap_mapdata={
 			  state_color: "#808080",
 			  state_hover_color: "off",
 			  state_url: "",
-			  border_hover_color: "#FFEE8C",
+			  border_hover_color: "off",
 			  border_size: 1.5,
 			  all_states_inactive: "no",
 			  all_states_zoomable: "yes",
