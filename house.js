@@ -73,14 +73,14 @@ function runHouseMap() {
             houseSeats[ratingKey] = (houseSeats[ratingKey] || 0) + 1;
 
             if (isFlip) {
-                if (outcome._isDefault) changeName("house", district, `<br>`);
+                if (outcome._isDefault) changeName("house", mapDistrict, `<br>`);
                 //console.log(district)
                 houseGains[winningParty] = (houseGains[winningParty] || 0) + 1;
-                houseLosses[houseCurrentParty[district]] = (houseLosses[houseCurrentParty[district]] || 0) + 1;
-                pulseMap("house", district); 
-                changeName("house", district, ` (FLIP ${houseCurrentParty[district]} → ${winningParty})`);
-                changeNameColor("house", district, colorMapping["likely"+winningParty.slice(0, 1)]);
-                //changeBorderColor("house", district, colorMapping["likely"+senateCurrentParty[district].slice(0, 1)]);
+                houseLosses[houseCurrentParty[mapDistrict]] = (houseLosses[houseCurrentParty[mapDistrict]] || 0) + 1;
+                pulseMap("house", mapDistrict); 
+                changeName("house", mapDistrict, ` (FLIP ${houseCurrentParty[mapDistrict]} → ${winningParty})`);
+                changeNameColor("house", mapDistrict, colorMapping["likely"+winningParty.slice(0, 1)]);
+                //changeBorderColor("house", mapDistrict, colorMapping["likely"+houseCurrentParty[mapDistrict].slice(0, 1)]);
             }
 
             let string = "<b>Win Probability:</b><br>";
@@ -107,8 +107,8 @@ function runHouseMap() {
             changeDesc("house", mapDistrict, string);
 
             if (outcome._isDefault) {
-                changeName("house", state, "* (default values)");
-                changeNameColor("house", state, "#FF0000");
+                changeName("house", mapDistrict, "* (default values)");
+                changeNameColor("house", mapDistrict, "#FF0000");
             }
         }
 

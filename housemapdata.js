@@ -422,6 +422,9 @@ var simplemaps_congressmap_mapdata={
     FL27: {
       name: "FL-27"
     },
+    FL28: {
+      name: "FL-28"
+    },
     GA01: {
       name: "GA-01"
     },
@@ -821,6 +824,9 @@ var simplemaps_congressmap_mapdata={
     NC13: {
       name: "NC-13"
     },
+    NC14: {
+      name: "NC-14"
+    },
     ND00: {
       name: "ND-AL"
     },
@@ -1054,6 +1060,9 @@ var simplemaps_congressmap_mapdata={
     },
     OR05: {
       name: "OR-05"
+    },
+    OR06: {
+      name: "OR-06"
     },
     PA01: {
       name: "PA-01"

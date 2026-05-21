@@ -16,6 +16,10 @@ let pulseEnabled = false;
 
 function applyColor(type, state, newColor) {
     const target = mapLookup[type];
+    if (!target.mapdata.state_specific[state]) {
+        console.warn(`applyColor: no map entry for "${state}"`);
+        return;
+    }
     if (target) {
         //console.log(type, target);
         target.mapdata.state_specific[state].color = colorMapping[newColor]; 
@@ -24,6 +28,7 @@ function applyColor(type, state, newColor) {
 
 function changeDesc(type, state, string) {
     const target = mapLookup[type];
+    if (!target || !target.mapdata.state_specific[state]) return;
     if (target) {
         target.mapdata.state_specific[state].description = `${string}`;
     }
@@ -31,6 +36,7 @@ function changeDesc(type, state, string) {
 
 function changeName(type, state, string) {
     const target = mapLookup[type];
+    if (!target || !target.mapdata.state_specific[state]) return;
     if (target) {
         target.mapdata.state_specific[state].name += `${string}`;
     }
@@ -38,6 +44,7 @@ function changeName(type, state, string) {
 
 function changeNameColor(type, state, color) {
     const target = mapLookup[type];
+    if (!target || !target.mapdata.state_specific[state]) return;
     if (target) {
         let name = target.mapdata.state_specific[state].name.trim();
         target.mapdata.state_specific[state].name = `<span style="color: ${color};">${name}</span>`;
@@ -51,6 +58,7 @@ function togglePulse() {
 
 function pulseMap(type, state) {
     const target = mapLookup[type];
+    if (!target || !target.mapdata.state_specific[state]) return;
     setInterval(() => {
         if (pulseEnabled) target.pulse_state(state);
     }, 4000);
@@ -58,6 +66,7 @@ function pulseMap(type, state) {
 
 function changeBorderColor(type, state, color) {
     const target = mapLookup[type];
+    if (!target || !target.mapdata.state_specific[state]) return;
     if (target) {
         target.mapdata.state_specific[state].border_color = `${color}`;
         target.mapdata.state_specific[state].border_size = 300;
