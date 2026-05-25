@@ -1,3 +1,43 @@
+const _ratingsPromiseCache = Object.create(null);
+
+function buildRatingsMap(ratingsText) {
+    const parsed = Papa.parse(ratingsText, { header: true, dynamicTyping: true });
+    const map = new Map();
+    for (const row of parsed.data) {
+        if (!row.Pollster) continue;
+        const biasMatch = String(row["Mean-reverted bias"] || "").match(/@@(-?[\d.]+)/);
+        const bias = biasMatch ? parseFloat(biasMatch[1]) : 0;
+        const ppm  = parseFloat(row["Predictive Plus-Minus"]) || 0;
+        const key  = row.Pollster.toLowerCase().replace(/[^a-z0-9]/g, "");
+        map.set(key, { ppm, bias });
+    }
+    return map;
+}
+
+function findPollsterRating(pollsterName, ratingsMap) {
+    if (!pollsterName || !ratingsMap.size) return null;
+    const norm = pollsterName.toLowerCase().replace(/[^a-z0-9]/g, "");
+    let bestMatch = null, bestLen = 0;
+    for (const [key, rating] of ratingsMap) {
+        if ((norm.includes(key) || key.includes(norm)) && key.length > bestLen) {
+            bestLen = key.length;
+            bestMatch = rating;
+        }
+    }
+    return bestMatch;
+}
+
+function applyBiasCorrection(responses, bias) {
+    if (!bias) return responses;
+    return responses.map(r => {
+        const correction = (r.party === "DEM" || r.party === "WFP") ? -(bias / 2)
+                         :  r.party === "REP"                        ?  (bias / 2)
+                         : 0;
+        return correction ? { ...r, pct: Math.max(0, (r.pct || 0) + correction) } : r;
+    });
+}
+
+
 function renormalizeEstimates(estimates) {
     let sum = 0;
     for (const c in estimates) sum += estimates[c].pct;
@@ -6,7 +46,6 @@ function renormalizeEstimates(estimates) {
     const out = Object.create(null);
     for (const c in estimates) {
         out[c] = { pct: estimates[c].pct * scale, party: estimates[c].party };
-        //console.log(c, estimates[c].pct, estimates[c].party, scale)
     }
     return out;
 }
@@ -18,22 +57,17 @@ function randomNormal(mean = 0, sigma = 1) {
     return mean + sigma * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
-function sigmaFromPolls(polls) {
-    let nEff = 0;
-    for (const p of polls) nEff += p.weight;
-    return nEff <= 0 ? 5 : Math.max(7, 10 / Math.sqrt(nEff));
-}
-
 function monteCarloMulti(candidates, sigma, iterations = 25000) {
     const names = Object.keys(candidates);
     const n = names.length;
-    const wins = Object.fromEntries(names.map(k => [k, 0]));
-    const draws = new Array(n);
+    const wins  = new Int32Array(n);
+    const draws = new Float64Array(n);
+    const means = new Float64Array(names.map(k => candidates[k]));
 
     for (let i = 0; i < iterations; i++) {
         let sum = 0;
         for (let j = 0; j < n; j++) {
-            const v = Math.max(0, randomNormal(candidates[names[j]], sigma));
+            const v = Math.max(0, randomNormal(means[j], sigma));
             draws[j] = v;
             sum += v;
         }
@@ -41,14 +75,15 @@ function monteCarloMulti(candidates, sigma, iterations = 25000) {
 
         let best = 0, bestPct = 0;
         for (let j = 0; j < n; j++) {
-            const pct = (draws[j] / sum) * 100;
+            const pct = draws[j] / sum;
             if (pct > bestPct) { bestPct = pct; best = j; }
         }
-        wins[names[best]]++;
+        wins[best]++;
     }
 
-    for (const k in wins) wins[k] /= iterations;
-    return wins;
+    const result = Object.create(null);
+    for (let i = 0; i < n; i++) result[names[i]] = wins[i] / iterations;
+    return result;
 }
 
 //  * config = {
@@ -61,7 +96,7 @@ function monteCarloMulti(candidates, sigma, iterations = 25000) {
 //  *   getRegionFromRow     function — (csvRow) => region string
 //  *   regionKey            string   — property name on poll objects ("state" or "district")
 //  *   extraRowFilter       function — optional extra filter (csvRow) => boolean
-//  *   minPolls             number   — min polls a candidate must appear in 
+//  *   minPolls             number   — min polls a candidate must appear in
 //  * }
 //  *
 //  * Returns: Promise<{ [region]: outcomeObject }>
@@ -71,7 +106,7 @@ async function runRacePipeline(url, config) {
         excludeRe,
         primaryWinners,
         pviMap,
-        pviOffset = 3.15,
+        pviOffset = 2,
         notGenYet,
         fixKnownIndependents,
         getRegionFromRow,
@@ -79,11 +114,15 @@ async function runRacePipeline(url, config) {
         extraRowFilter,
         minPolls = 2,
         defaults = {},
-        rcvRegions = []
+        rcvRegions = [],
+        ratingsUrl
     } = config;
 
-    const partyCache = Object.create(null);
-    const lastNameCache = new Map();  
+    const notGenYetSet  = new Set(notGenYet);
+    const rcvRegionsSet = new Set(rcvRegions);
+
+    const partyCache    = Object.create(null);
+    const lastNameCache = new Map();
 
     function normalizeParty(p) {
         if (!p) return "IND";
@@ -106,6 +145,7 @@ async function runRacePipeline(url, config) {
 
     function applyPartisanSponsorDiscount(poll) {
         const sp = poll.sponsorParty;
+        if (sp === "IND") return poll.responses;  
         return poll.responses.map(r =>
             r.party === sp ? { ...r, pct: (r.pct || 0) * 0.85 } : r
         );
@@ -113,10 +153,11 @@ async function runRacePipeline(url, config) {
 
     function normalizeResponses(poll) {
         if (poll._normalized) return poll._normalized;
-        const discounted = applyPartisanSponsorDiscount(poll);
+        const discounted  = applyPartisanSponsorDiscount(poll);
+        const biasCorrect = applyBiasCorrection(discounted, poll.pollsterBias);
         let sum = 0;
         const cleaned = [];
-        for (const r of discounted) {
+        for (const r of biasCorrect) {
             if (!excludeRe.test(r.candidate)) {
                 cleaned.push(r);
                 sum += r.pct || 0;
@@ -127,27 +168,49 @@ async function runRacePipeline(url, config) {
         return (poll._normalized = cleaned.map(r => ({ ...r, pct: r.pct * scale })));
     }
 
-    function groupByPollId(rows) {
+    function groupByPollId(rows, ratingsMap) {
         const polls = Object.create(null);
+        const pollsterCache = new Map();
+        const now = Date.now();
+
         for (const row of rows) {
             if (!row.poll_id || !row.question_id) continue;
             const key = row.poll_id + "_" + row.question_id;
             let poll = polls[key];
             if (!poll) {
+                const methodology = row.methodology || "";
+                const methodologyMultiplier =
+                    methodology.includes("Probability Panel") ? 1.4:
+                    methodology.includes("Online")            ? 0.6:
+                    1.0;
+
+                const pollster = row.pollster;
+                if (!pollsterCache.has(pollster)) {
+                    const r = findPollsterRating(pollster, ratingsMap);
+                    pollsterCache.set(pollster, {
+                        ppmMultiplier: r ? Math.exp(-r.ppm * 0.5) : 0.75,
+                        bias:          r?.bias ?? 0
+                    });
+                }
+                const { ppmMultiplier, bias } = pollsterCache.get(pollster);
+
                 const endDate = new Date(row.end_date);
-                const region = getRegionFromRow(row);
+                const region  = getRegionFromRow(row);
                 poll = polls[key] = {
                     poll_id:      row.poll_id,
                     question_id:  row.question_id,
                     [regionKey]:  region,
                     state:        row.state,
-                    pollster:     row.pollster,
+                    pollster,
                     start_date:   row.start_date,
                     end_date:     row.end_date,
                     sample_size:  row.sample_size,
                     sponsorParty: normalizeParty(row.partisan),
-                    weight: Math.sqrt(row.sample_size || 500) *
-                            Math.exp(-(Date.now() - endDate) / 86400000 / 30),
+                    pollsterBias: bias,
+                    weight: Math.sqrt(row.sample_size / 2 || 250) *
+                            Math.exp(-(now - endDate) / 86400000 / 30) *
+                            methodologyMultiplier *
+                            ppmMultiplier,
                     responses: []
                 };
             }
@@ -234,16 +297,14 @@ async function runRacePipeline(url, config) {
         return results;
     }
 
-    function applyPviToEstimates(region, estimates, polls) {
+    function applyPviToEstimates(region, estimates, nEff) {
         const pvi = pviMap[region] != null ? pviMap[region] + pviOffset : 0;
-        let nEff = 0;
-        for (const p of polls) nEff += p.weight;
-        const strength = 0.2 * Math.min(1, 5 / Math.sqrt(nEff || 1));
+        const strength = 0.2 * Math.min(2, 5 / Math.sqrt(nEff || 1));
         const out = Object.create(null);
         for (const c in estimates) {
             const { pct: base, party } = estimates[c];
-            const shift = party === "DEM" ? -pvi * strength
-                        : party === "REP" ?  pvi * strength : 0;
+            const shift = party === "DEM" || party === "WFP" ? -pvi * strength
+                        : party === "REP"                    ?  pvi * strength : 0;
             out[c] = { pct: base + shift, party };
         }
         return out;
@@ -252,40 +313,40 @@ async function runRacePipeline(url, config) {
     function computeOutcomes(estimates, pollsByRegion, marketPriors) {
         const pollMap = Object.fromEntries(pollsByRegion.map(p => [p[regionKey], p.polls]));
         const outcomes = Object.create(null);
-        //console.log(pollMap)
+
         for (const region in estimates) {
-            const polls   = pollMap[region] || [];
-            const sigma   = sigmaFromPolls(polls);
+            const polls  = pollMap[region] || [];
+            let nEff = 0;
+            for (const p of polls) nEff += p.weight;
+            const sigma = nEff <= 0 ? 5 : Math.max(7, 10 / Math.sqrt(nEff));
 
-            const pviAdjusted    = renormalizeEstimates(applyPviToEstimates(region, estimates[region], polls));
-            //console.log(pviAdjusted);
+            const pviAdjusted    = renormalizeEstimates(applyPviToEstimates(region, estimates[region], nEff));
             const marketAdjusted = applyMarketPriorToEstimates(region, pviAdjusted, marketPriors);
-            //console.log(marketAdjusted);
 
-            let finalEstimates = marketAdjusted;
+            let finalEstimates     = marketAdjusted;
             let rcvEliminationOrder = [];
 
-            if (rcvRegions.includes(region) && Object.keys(marketAdjusted).length > 2) {
+            if (rcvRegionsSet.has(region) && Object.keys(marketAdjusted).length > 2) {
                 let current = Object.assign(Object.create(null), marketAdjusted);
-                while (Object.keys(current).length > 2) {
+                let currentSize = Object.keys(marketAdjusted).length;
+                while (currentSize > 2) {
                     const sortedByVote = Object.entries(current).sort((a, b) => a[1].pct - b[1].pct);
                     const [elimName, elimData] = sortedByVote[0];
-                    const elimPct  = elimData.pct;
+                    const elimPct   = elimData.pct;
                     const elimParty = elimData.party;
-                    const remaining = Object.fromEntries(sortedByVote.slice(1));
+                    const remaining = sortedByVote.slice(1); 
 
-                    // split: 80% of votes go to same-party candidates, 20% spread to others
-                    const sameParty  = Object.entries(remaining).filter(([, d]) => d.party === elimParty);
-                    const otherParty = Object.entries(remaining).filter(([, d]) => d.party !== elimParty);
+                    let sameWeight = 0, otherWeight = 0;
+                    for (const [, d] of remaining) {
+                        if (d.party === elimParty) sameWeight  += d.pct;
+                        else                       otherWeight += d.pct;
+                    }
 
-                    const sameWeight  = sameParty.reduce((s, [, d])  => s + d.pct, 0);
-                    const otherWeight = otherParty.reduce((s, [, d]) => s + d.pct, 0);
-
-                    const partyShare = sameParty.length  ? 0.8 : 0;  // if no same-party, all goes to others
+                    const partyShare = sameWeight  > 0 ? 0.8 : 0;
                     const otherShare = 1 - partyShare;
 
                     const next = Object.create(null);
-                    for (const [name, data] of Object.entries(remaining)) {
+                    for (const [name, data] of remaining) {
                         let bonus = 0;
                         if (data.party === elimParty && sameWeight > 0)
                             bonus = (data.pct / sameWeight) * elimPct * partyShare;
@@ -296,19 +357,27 @@ async function runRacePipeline(url, config) {
 
                     rcvEliminationOrder.push(elimName);
                     current = renormalizeEstimates(next);
+                    currentSize--;
                 }
                 finalEstimates = current;
             }
 
-            const candidatePct   = {};
-            const candidateParty = {};
+            if (Object.keys(finalEstimates).length === 0) continue;
+
+            const candidatePct   = Object.create(null);
+            const candidateParty = Object.create(null);
             for (const c in finalEstimates) {
                 candidatePct[c]   = finalEstimates[c].pct;
                 candidateParty[c] = finalEstimates[c].party;
             }
 
-            const sorted = Object.entries(finalEstimates).sort((a, b) => b[1].pct - a[1].pct);
-            const margin = sorted.length >= 2 ? sorted[0][1].pct - sorted[1][1].pct : 0;
+            let top1 = -Infinity, top2 = -Infinity;
+            for (const c in finalEstimates) {
+                const pct = finalEstimates[c].pct;
+                if (pct > top1) { top2 = top1; top1 = pct; }
+                else if (pct > top2) top2 = pct;
+            }
+            const margin = top2 === -Infinity ? 0 : top1 - top2;
 
             const winProbs = monteCarloMulti(candidatePct, sigma);
             const winProbEntries = Object.entries(winProbs)
@@ -318,10 +387,8 @@ async function runRacePipeline(url, config) {
             const voteEntries = Object.entries(marketAdjusted).sort((a, b) => b[1].pct - a[1].pct);
 
             outcomes[region] = {
-                voteEstimates:          marketAdjusted,
                 _rcvFinalEstimates:      rcvEliminationOrder.length ? finalEstimates : null,
                 _rcvEliminationOrder:    rcvEliminationOrder,
-                winProbabilities:       Object.fromEntries(winProbEntries),
                 _sortedWinProbabilities: winProbEntries,
                 _sortedVoteEstimates:    voteEntries,
                 margin
@@ -330,25 +397,33 @@ async function runRacePipeline(url, config) {
         return outcomes;
     }
 
-    const [response, marketPrior] = await Promise.all([fetch(url), getPolymarketPriors()]);
-    //console.log(response);
+    if (ratingsUrl && !_ratingsPromiseCache[ratingsUrl]) {
+        _ratingsPromiseCache[ratingsUrl] = fetch(ratingsUrl)
+            .then(r => r.text())
+            .then(buildRatingsMap);
+    }
+
+    const [response, marketPrior, ratingsMap] = await Promise.all([
+        fetch(url),
+        getPolymarketPriors(),
+        ratingsUrl ? _ratingsPromiseCache[ratingsUrl] : Promise.resolve(new Map())
+    ]);
+
     const csvText = await response.text();
-    //console.log(csvText);
-    const parsed  = Papa.parse(csvText, { header: true, dynamicTyping: true });
-    //console.log(parsed);
+    const cutoffDate = new Date("2025-11-11");
+    const parsed = Papa.parse(csvText, { header: true, dynamicTyping: true });
     const rows = parsed.data.filter(r =>
-        r.stage === "general" &&
+        r && r.stage === "general" &&
         r.state &&
-        !notGenYet.includes(getRegionFromRow(r)) &&
-        new Date(r.created_at) >= new Date("2025-11-11") &&
+        !notGenYetSet.has(getRegionFromRow(r)) &&
+        new Date(r.created_at) >= cutoffDate &&
         (!extraRowFilter || extraRowFilter(r))
     );
 
-    const polls      = groupByPollId(rows);
+    const polls      = groupByPollId(rows, ratingsMap);
     const thresholded = applyCandidateThreshold(polls);
     const filtered   = filterPolls(thresholded);
     const byRegion   = groupPollsByRegion(filtered);
     const estimates  = computeEstimates(byRegion);
-    //console.log(estimates);
-    return {...defaults, ...computeOutcomes(estimates, byRegion, marketPrior)};
+    return { ...defaults, ...computeOutcomes(estimates, byRegion, marketPrior) };
 }

@@ -9,7 +9,7 @@ const housePrimaryWinnersByDistrict = {
     KY06: "ralph alvarado",
     MI10: "x hines",
     MT01: "x busse",
-    ME02: "x dunlap"
+    ME02: "x baldacci"
 };
 
 const houseDistrictPVI = {
@@ -55,8 +55,9 @@ function runHouseMap() {
         getRegionFromRow:     row => houseDistrictCode(row),
         regionKey:            "district",
         defaults:             houseDefaults,
-        currentParty: houseCurrentParty,
-        rcvRegions: ["AK00", "ME01", "ME02"],
+        currentParty:         houseCurrentParty,
+        rcvRegions:           ["AK00", "ME01", "ME02"],
+        ratingsUrl:           "./data-GiFps.csv",
         extraRowFilter:       row => row.seat_number != null,
     }).then(outcomes => {
         for (const district in outcomes) {
@@ -125,20 +126,11 @@ function runHouseMap() {
         const seatR = houseSeats.solidR + houseSeats.likelyR + houseSeats.leanR + houseSeats.tiltR;
         const seatI = houseSeats.solidI + houseSeats.likelyI + houseSeats.leanI + houseSeats.tiltI;
 
-        function netStr(party, color) {
-            const net = (houseGains[party] || 0) - (houseLosses[party] || 0);
-            if (net === 0) return "";
-            const arrow = net > 0
-                ? `<span style="color:#22c55e">▲ ${net}</span>`
-                : `<span style="color:#ef4444">▼ ${Math.abs(net)}</span>`;
-            return `<span style="color:${color}">${arrow}</span>`;
-        }
-
         document.getElementById("houseSummary").innerHTML = `
-            <span style="color:#577ccc"><b>D: ${seatD + houseSeats.DEM}</b>  ${netStr("DEM", "#577ccc")}</span>
+            <span style="color:#577ccc"><b>D: ${seatD + houseSeats.DEM}</b>  ${netStr(houseGains, houseLosses, "DEM", "#577ccc")}</span>
             &nbsp;|&nbsp;
-            <span style="color:#d22532"><b>R: ${seatR + houseSeats.REP}</b>  ${netStr("REP", "#d22532")}</span>
-            ${seatI ? `<span style="color:#8e20c7"><b>+ ${seatI + houseSeats.IND} I</b> ${netStr("IND", "#8e20c7")}</span>` : ""}
+            <span style="color:#d22532"><b>R: ${seatR + houseSeats.REP}</b>  ${netStr(houseGains, houseLosses, "REP", "#d22532")}</span>
+            ${seatI ? `<span style="color:#8e20c7"><b>+ ${seatI + houseSeats.IND} I</b> ${netStr(houseGains, houseLosses, "IND", "#8e20c7")}</span>` : ""}
         `;
 
         console.timeEnd("house");

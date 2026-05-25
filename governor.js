@@ -17,16 +17,16 @@ const primaryWinnersByState_gov = {
 };
 
 const cookPVI_gov = {
-    AL:  15, AK: 9,  AZ: 2,  AR: 15, CA: -12, CO: -6, CT: -8,  DE: -8,
-    FL:  5,  GA: 2,  HI: -13, ID: 18, IL: -6,  IN: 9,  IA: 7,   KS: 8,
-    KY:  15, LA: 11, ME: -4,  MD: -15, MA: -14, MI: 3,  MN: -3,
-    MS:  11, MO: 9,  MT: 10,  NE: 10, NV: 1,   NH: -2, NJ: -4,  NM: -4,
-    NY:  -8, NC: 1,  ND: 18,  OH: 3,  OK: 17,  OR: -8, PA: 2,   RI: -8,
-    SC:  8,  SD: 15, TN: 14,  TX: 5,  UT: 11,  VT: -17, VA: -3, WA: -10,
-    WV:  21, WI: 0,  WY: 23
+    AL:  15, AK: 6,  AZ: 0,  AR: 15, CA: -9, CO: -6, CT: -8,  DE: -8,
+    FL:  8,  GA: 2,  HI: -13, ID: 18, IL: -6,  IN: 9,  IA: 6,   KS: 8,
+    KY:  15, LA: 11, ME: -4,  MD: -15, MA: -10, MI: -3,  MN: -7,
+    MS:  11, MO: 9,  MT: 6,  NE: 8,  NV: 1,   NH: -2, NJ: 0,  NM: -7,
+    NY:  -8, NC: 1,  ND: 18,  OH: 3,  OK: 17,  OR: -8, PA: 1,   RI: -8,
+    SC:  8,  SD: 15, TN: 14,  TX: 6,  UT: 11,  VT: -9, VA: -6, WA: -10,
+    WV:  21, WI: -2,  WY: 23
 };
 
-const GOV_EXCLUDE_RE = /undecided|don't know|demings|dixon|lytle|pizzo|bell|other|refused|someone else|would not vote/i;
+const GOV_EXCLUDE_RE = /undecided|don't know|demings|dixon|lytle|duggan|stefanik|pizzo|bell|other|refused|someone else|would not vote/i;
 
 let govSeats = {
     DEM: 6, REP: 8, IND: 0, UNK: 0,
@@ -57,6 +57,7 @@ function runMap_gov() {
         getRegionFromRow:     row => row.state,
         regionKey:            "state",
         defaults:             govDefaults,
+        ratingsUrl:           "./data-GiFps.csv",
         currentParty: govCurrentParty,
         rcvRegions: ["AK"]
     }).then(outcomes => {
@@ -133,21 +134,11 @@ function runMap_gov() {
         const seatR = govSeats.solidR + govSeats.likelyR + govSeats.leanR + govSeats.tiltR;
         const seatI = govSeats.solidI + govSeats.likelyI + govSeats.leanI + govSeats.tiltI;
 
-        function netStr(party, color) {
-            const net = (govGains[party] || 0) - (govLosses[party] || 0);
-            if (net === 0) return "";
-            const arrow = net > 0
-                ? `<span style="color:#22c55e">▲ ${net}</span>`
-                : `<span style="color:#ef4444">▼ ${Math.abs(net)}</span>`;
-            return `<span style="color:${color}">${arrow}</span>`;
-        }
-
         document.getElementById("govSummary").innerHTML = `
-            <span style="color:#577ccc"><b>D: ${seatD + govSeats.DEM}</b>  ${netStr("DEM", "#577ccc")}</span>            
-            ${seatI ? `&nbsp;|&nbsp; <span style="color:#8e20c7"><b>+ ${seatI + govSeats.IND} I (caucus D)</b> ${netStr("IND", "#8e20c7")}</span>` : ""}
+            <span style="color:#577ccc"><b>D: ${seatD + govSeats.DEM}</b>  ${netStr(govGains, govLosses, "DEM", "#577ccc")}</span>            
+            ${seatI ? `&nbsp;|&nbsp; <span style="color:#8e20c7"><b>+ ${seatI + govSeats.IND} I (caucus D)</b> ${netStr(govGains, govLosses, "IND", "#8e20c7")}</span>` : ""}
             &nbsp;|&nbsp;
-            <span style="color:#d22532"><b>R: ${seatR + govSeats.REP}</b>  ${netStr("REP", "#d22532")}</span>
-        `;
+            <span style="color:#d22532"><b>R: ${seatR + govSeats.REP}</b>  ${netStr(govGains, govLosses, "REP", "#d22532")}</span>`;
 
         console.timeEnd("gov");
     });

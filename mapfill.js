@@ -20,35 +20,27 @@ function applyColor(type, state, newColor) {
         console.warn(`applyColor: no map entry for "${state}"`);
         return;
     }
-    if (target) {
-        //console.log(type, target);
-        target.mapdata.state_specific[state].color = colorMapping[newColor]; 
-    } 
+    //console.log(type, target);
+    target.mapdata.state_specific[state].color = colorMapping[newColor]; 
 }
 
 function changeDesc(type, state, string) {
     const target = mapLookup[type];
     if (!target || !target.mapdata.state_specific[state]) return;
-    if (target) {
-        target.mapdata.state_specific[state].description = `${string}`;
-    }
+    target.mapdata.state_specific[state].description = `${string}`;
 }
 
 function changeName(type, state, string) {
     const target = mapLookup[type];
     if (!target || !target.mapdata.state_specific[state]) return;
-    if (target) {
-        target.mapdata.state_specific[state].name += `${string}`;
-    }
+    target.mapdata.state_specific[state].name += `${string}`;
 }
 
 function changeNameColor(type, state, color) {
     const target = mapLookup[type];
     if (!target || !target.mapdata.state_specific[state]) return;
-    if (target) {
-        let name = target.mapdata.state_specific[state].name.trim();
-        target.mapdata.state_specific[state].name = `<span style="color: ${color};">${name}</span>`;
-    }
+    let name = target.mapdata.state_specific[state].name.trim();
+    target.mapdata.state_specific[state].name = `<span style="color: ${color};">${name}</span>`;
 }
 
 function togglePulse() {
@@ -67,8 +59,15 @@ function pulseMap(type, state) {
 function changeBorderColor(type, state, color) {
     const target = mapLookup[type];
     if (!target || !target.mapdata.state_specific[state]) return;
-    if (target) {
-        target.mapdata.state_specific[state].border_color = `${color}`;
-        target.mapdata.state_specific[state].border_size = 300;
-    }
+    target.mapdata.state_specific[state].border_color = `${color}`;
+    target.mapdata.state_specific[state].border_size = 300;
+}
+
+function netStr(gains, losses, party, color) {
+    const net = (gains[party] || 0) - (losses[party] || 0);
+    if (net === 0) return "";
+    const arrow = net > 0
+        ? `<span style="color:#22c55e">▲ ${net}</span>`
+        : `<span style="color:#ef4444">▼ ${Math.abs(net)}</span>`;
+    return `<span style="color:${color}">${arrow}</span>`;
 }

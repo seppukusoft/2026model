@@ -267,7 +267,7 @@ const govDefaults = {
         voteEstimates:           { "Helena Foulkes": { pct: 55, party: "DEM" }},
         winProbabilities:        { "Helena Foulkes": { pct: 0.90, party: "DEM" }},
         _sortedWinProbabilities: [["Helena Foulkes", { pct: 0.90, party: "DEM" }]],
-        _sortedVoteEstimates:    [["Helena Foulkes", { pct: 5, party: "DEM" }]]
+        _sortedVoteEstimates:    [["Helena Foulkes", { pct: 55, party: "DEM" }]]
     },
     "WI": {
         _isDefault: true,
