@@ -86,21 +86,6 @@ function monteCarloMulti(candidates, sigma, iterations = 25000) {
     return result;
 }
 
-//  * config = {
-//  *   excludeRe            RegExp   — candidates/words to exclude
-//  *   primaryWinners       object   — { [region]: "candidate name" }
-//  *   pviMap               object   — { [region]: number }
-//  *   pviOffset            number   — added to every pviMap value
-//  *   notGenYet            string[] — regions to skip (no general election polls yet)
-//  *   fixKnownIndependents function — (region, candidateName) => party string | null
-//  *   getRegionFromRow     function — (csvRow) => region string
-//  *   regionKey            string   — property name on poll objects ("state" or "district")
-//  *   extraRowFilter       function — optional extra filter (csvRow) => boolean
-//  *   minPolls             number   — min polls a candidate must appear in
-//  * }
-//  *
-//  * Returns: Promise<{ [region]: outcomeObject }>
-
 async function runRacePipeline(url, config) {
     const {
         excludeRe,
