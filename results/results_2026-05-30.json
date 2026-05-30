@@ -1,5 +1,5 @@
 {
-  "generated": "2026-05-30T21:34:27.030Z",
+  "generated": "2026-05-30T22:04:27.280Z",
   "senate": {
     "regions": {
       "WY": {
@@ -128,7 +128,7 @@
         "prevParty": "REP",
         "winner": "Mike Rounds",
         "winnerParty": "REP",
-        "winProbability": 0.976,
+        "winProbability": 0.97604,
         "rating": "solid"
       },
       "OK": {
@@ -433,7 +433,7 @@
       "TX": {
         "color": "tiltR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Ken Paxton: 57.91%<br>James Talarico: 42.09%<br><b>Vote Estimate:</b><br>Ken Paxton: 49.89%<br>James Talarico: 47.81%<br>Ted Brown: 2.30%<br>",
+        "description": "<b>Win Probability:</b><br>Ken Paxton: 58.02%<br>James Talarico: 41.98%<br><b>Vote Estimate:</b><br>Ken Paxton: 49.89%<br>James Talarico: 47.81%<br>Ted Brown: 2.30%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -441,13 +441,13 @@
         "prevParty": "REP",
         "winner": "Ken Paxton",
         "winnerParty": "REP",
-        "winProbability": 0.57912,
+        "winProbability": 0.58024,
         "rating": "tilt"
       },
       "FL": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Ashley Moody: 82.21%<br>Alexander Vindman: 17.79%<br><b>Vote Estimate:</b><br>Ashley Moody: 54.60%<br>Alexander Vindman: 45.40%<br>",
+        "description": "<b>Win Probability:</b><br>Ashley Moody: 82.41%<br>Alexander Vindman: 17.59%<br><b>Vote Estimate:</b><br>Ashley Moody: 54.60%<br>Alexander Vindman: 45.40%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -455,7 +455,7 @@
         "prevParty": "REP",
         "winner": "Ashley Moody",
         "winnerParty": "REP",
-        "winProbability": 0.82208,
+        "winProbability": 0.82408,
         "rating": "likely"
       },
       "ME": {
@@ -470,7 +470,7 @@
             "value": "#577ccc"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Graham Platner: 76.16%<br>Susan M. Collins: 23.84%<br><b>Vote Estimate (first round):</b><br>Graham Platner: 53.49%<br>Susan M. Collins: 46.51%<br>",
+        "description": "<b>Win Probability:</b><br>Graham Platner: 75.74%<br>Susan M. Collins: 24.26%<br><b>Vote Estimate (first round):</b><br>Graham Platner: 53.49%<br>Susan M. Collins: 46.51%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -478,7 +478,7 @@
         "prevParty": "REP",
         "winner": "Graham Platner",
         "winnerParty": "DEM",
-        "winProbability": 0.76164,
+        "winProbability": 0.75736,
         "rating": "lean"
       },
       "AK": {
@@ -493,7 +493,7 @@
             "value": "#577ccc"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Mary S. Peltola: 52.67%<br>Dan Sullivan: 47.33%<br><b>Vote Estimate (first round):</b><br>Mary S. Peltola: 50.37%<br>Dan Sullivan: 49.63%<br>",
+        "description": "<b>Win Probability:</b><br>Mary S. Peltola: 53.26%<br>Dan Sullivan: 46.74%<br><b>Vote Estimate (first round):</b><br>Mary S. Peltola: 50.37%<br>Dan Sullivan: 49.63%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -501,13 +501,13 @@
         "prevParty": "REP",
         "winner": "Mary S. Peltola",
         "winnerParty": "DEM",
-        "winProbability": 0.52672,
+        "winProbability": 0.53264,
         "rating": "tilt"
       },
       "MT": {
         "color": "solidR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Kurt Alme: 95.16%<br>Seth Bodnar: 3.53%<br>Reilly Neill: 1.32%<br><b>Vote Estimate:</b><br>Kurt Alme: 46.37%<br>Seth Bodnar: 28.80%<br>Reilly Neill: 24.83%<br>",
+        "description": "<b>Win Probability:</b><br>Kurt Alme: 95.24%<br>Seth Bodnar: 3.50%<br>Reilly Neill: 1.26%<br><b>Vote Estimate:</b><br>Kurt Alme: 46.37%<br>Seth Bodnar: 28.80%<br>Reilly Neill: 24.83%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -515,7 +515,7 @@
         "prevParty": "REP",
         "winner": "Kurt Alme",
         "winnerParty": "REP",
-        "winProbability": 0.95156,
+        "winProbability": 0.9524,
         "rating": "solid"
       },
       "NC": {
@@ -530,7 +530,7 @@
             "value": "#577ccc"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Roy A. Cooper: 70.96%<br>Michael Whatley: 29.04%<br><b>Vote Estimate:</b><br>Roy A. Cooper: 52.77%<br>Michael Whatley: 47.23%<br>",
+        "description": "<b>Win Probability:</b><br>Roy A. Cooper: 71.37%<br>Michael Whatley: 28.63%<br><b>Vote Estimate:</b><br>Roy A. Cooper: 52.77%<br>Michael Whatley: 47.23%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -538,7 +538,7 @@
         "prevParty": "REP",
         "winner": "Roy A. Cooper",
         "winnerParty": "DEM",
-        "winProbability": 0.70956,
+        "winProbability": 0.71368,
         "rating": "lean"
       },
       "MI": {
@@ -553,7 +553,7 @@
             "value": "#ff5865"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Mike Rogers: 68.52%<br>Abdul El-Sayed: 31.48%<br><b>Vote Estimate:</b><br>Mike Rogers: 52.42%<br>Abdul El-Sayed: 47.58%<br>",
+        "description": "<b>Win Probability:</b><br>Mike Rogers: 68.37%<br>Abdul El-Sayed: 31.63%<br><b>Vote Estimate:</b><br>Mike Rogers: 52.42%<br>Abdul El-Sayed: 47.58%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -561,7 +561,7 @@
         "prevParty": "DEM",
         "winner": "Mike Rogers",
         "winnerParty": "REP",
-        "winProbability": 0.68516,
+        "winProbability": 0.68372,
         "rating": "lean"
       },
       "NE": {
@@ -576,7 +576,7 @@
             "value": "#a14fd2"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Dan Osborn: 55.38%<br>Pete Ricketts: 44.62%<br><b>Vote Estimate:</b><br>Dan Osborn: 50.69%<br>Pete Ricketts: 49.31%<br>",
+        "description": "<b>Win Probability:</b><br>Dan Osborn: 55.14%<br>Pete Ricketts: 44.86%<br><b>Vote Estimate:</b><br>Dan Osborn: 50.69%<br>Pete Ricketts: 49.31%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -584,13 +584,13 @@
         "prevParty": "REP",
         "winner": "Dan Osborn",
         "winnerParty": "IND",
-        "winProbability": 0.5538,
+        "winProbability": 0.55144,
         "rating": "tilt"
       },
       "KS": {
         "color": "solidR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Roger Marshall: 97.64%<br>Patrick Schmidt: 2.36%<br><b>Vote Estimate:</b><br>Roger Marshall: 59.99%<br>Patrick Schmidt: 40.01%<br>",
+        "description": "<b>Win Probability:</b><br>Roger Marshall: 97.84%<br>Patrick Schmidt: 2.16%<br><b>Vote Estimate:</b><br>Roger Marshall: 59.99%<br>Patrick Schmidt: 40.01%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -598,7 +598,7 @@
         "prevParty": "REP",
         "winner": "Roger Marshall",
         "winnerParty": "REP",
-        "winProbability": 0.97644,
+        "winProbability": 0.97836,
         "rating": "solid"
       },
       "MA": {
@@ -612,13 +612,13 @@
         "prevParty": "DEM",
         "winner": "Edward J. Markey",
         "winnerParty": "DEM",
-        "winProbability": 0.9982,
+        "winProbability": 0.99824,
         "rating": "solid"
       },
       "NH": {
         "color": "tiltD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Chris Pappas: 61.32%<br>John E. Sununu: 38.68%<br><b>Vote Estimate:</b><br>Chris Pappas: 51.47%<br>John E. Sununu: 48.53%<br>",
+        "description": "<b>Win Probability:</b><br>Chris Pappas: 62.04%<br>John E. Sununu: 37.96%<br><b>Vote Estimate:</b><br>Chris Pappas: 51.47%<br>John E. Sununu: 48.53%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -626,13 +626,13 @@
         "prevParty": "DEM",
         "winner": "Chris Pappas",
         "winnerParty": "DEM",
-        "winProbability": 0.61316,
+        "winProbability": 0.6204,
         "rating": "tilt"
       },
       "IA": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Ashley Hinson: 84.54%<br>Josh Turek: 15.46%<br><b>Vote Estimate:</b><br>Ashley Hinson: 55.06%<br>Josh Turek: 44.94%<br>",
+        "description": "<b>Win Probability:</b><br>Ashley Hinson: 84.36%<br>Josh Turek: 15.64%<br><b>Vote Estimate:</b><br>Ashley Hinson: 55.06%<br>Josh Turek: 44.94%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -640,13 +640,13 @@
         "prevParty": "REP",
         "winner": "Ashley Hinson",
         "winnerParty": "REP",
-        "winProbability": 0.84544,
+        "winProbability": 0.8436,
         "rating": "likely"
       },
       "OH": {
         "color": "leanR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Jon Husted: 73.43%<br>Sherrod Brown: 26.57%<br><b>Vote Estimate:</b><br>Jon Husted: 53.12%<br>Sherrod Brown: 46.88%<br>",
+        "description": "<b>Win Probability:</b><br>Jon Husted: 73.79%<br>Sherrod Brown: 26.21%<br><b>Vote Estimate:</b><br>Jon Husted: 53.12%<br>Sherrod Brown: 46.88%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -654,13 +654,13 @@
         "prevParty": "REP",
         "winner": "Jon Husted",
         "winnerParty": "REP",
-        "winProbability": 0.73432,
+        "winProbability": 0.73792,
         "rating": "lean"
       },
       "GA": {
         "color": "tiltD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Jon Ossoff: 58.66%<br>Mike Collins: 41.34%<br><b>Vote Estimate:</b><br>Jon Ossoff: 51.06%<br>Mike Collins: 48.94%<br>",
+        "description": "<b>Win Probability:</b><br>Jon Ossoff: 57.83%<br>Mike Collins: 42.17%<br><b>Vote Estimate:</b><br>Jon Ossoff: 51.06%<br>Mike Collins: 48.94%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -668,13 +668,13 @@
         "prevParty": "DEM",
         "winner": "Jon Ossoff",
         "winnerParty": "DEM",
-        "winProbability": 0.58656,
+        "winProbability": 0.57828,
         "rating": "tilt"
       },
       "MN": {
         "color": "leanD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Peggy Flanagan: 74.26%<br>Michele Tafoya: 25.74%<br><b>Vote Estimate:</b><br>Peggy Flanagan: 54.54%<br>Michele Tafoya: 45.46%<br>",
+        "description": "<b>Win Probability:</b><br>Peggy Flanagan: 74.32%<br>Michele Tafoya: 25.68%<br><b>Vote Estimate:</b><br>Peggy Flanagan: 54.54%<br>Michele Tafoya: 45.46%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -682,13 +682,13 @@
         "prevParty": "DEM",
         "winner": "Peggy Flanagan",
         "winnerParty": "DEM",
-        "winProbability": 0.74264,
+        "winProbability": 0.7432,
         "rating": "lean"
       },
       "SC": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Lindsey Graham: 92.64%<br>Annie Andrews: 7.36%<br><b>Vote Estimate:</b><br>Lindsey Graham: 61.50%<br>Annie Andrews: 38.50%<br>",
+        "description": "<b>Win Probability:</b><br>Lindsey Graham: 92.37%<br>Annie Andrews: 7.63%<br><b>Vote Estimate:</b><br>Lindsey Graham: 61.50%<br>Annie Andrews: 38.50%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -696,7 +696,7 @@
         "prevParty": "REP",
         "winner": "Lindsey Graham",
         "winnerParty": "REP",
-        "winProbability": 0.9264,
+        "winProbability": 0.92372,
         "rating": "likely"
       },
       "HI": {
@@ -1364,7 +1364,7 @@
       "TX": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Greg Abbott: 86.56%<br>Gina Hinojosa: 13.44%<br><b>Vote Estimate:</b><br>Greg Abbott: 55.50%<br>Gina Hinojosa: 44.50%<br>",
+        "description": "<b>Win Probability:</b><br>Greg Abbott: 86.82%<br>Gina Hinojosa: 13.18%<br><b>Vote Estimate:</b><br>Greg Abbott: 55.50%<br>Gina Hinojosa: 44.50%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1372,13 +1372,13 @@
         "prevParty": "REP",
         "winner": "Greg Abbott",
         "winnerParty": "REP",
-        "winProbability": 0.86556,
+        "winProbability": 0.86824,
         "rating": "likely"
       },
       "FL": {
         "color": "solidR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Byron Donalds: 97.54%<br>David W. Jolly: 2.46%<br><b>Vote Estimate:</b><br>Byron Donalds: 59.58%<br>David W. Jolly: 40.42%<br>",
+        "description": "<b>Win Probability:</b><br>Byron Donalds: 97.35%<br>David W. Jolly: 2.65%<br><b>Vote Estimate:</b><br>Byron Donalds: 59.59%<br>David W. Jolly: 40.41%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1386,13 +1386,13 @@
         "prevParty": "REP",
         "winner": "Byron Donalds",
         "winnerParty": "REP",
-        "winProbability": 0.9754,
+        "winProbability": 0.97352,
         "rating": "solid"
       },
       "AZ": {
         "color": "likelyD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Katie Hobbs: 92.30%<br>Andy Biggs: 7.70%<br><b>Vote Estimate:</b><br>Katie Hobbs: 57.08%<br>Andy Biggs: 42.92%<br>",
+        "description": "<b>Win Probability:</b><br>Katie Hobbs: 92.29%<br>Andy Biggs: 7.71%<br><b>Vote Estimate:</b><br>Katie Hobbs: 57.08%<br>Andy Biggs: 42.92%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1400,13 +1400,13 @@
         "prevParty": "DEM",
         "winner": "Katie Hobbs",
         "winnerParty": "DEM",
-        "winProbability": 0.92296,
+        "winProbability": 0.92292,
         "rating": "likely"
       },
       "OR": {
         "color": "likelyD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Tina Kotek: 87.66%<br>Christine Drazan: 12.34%<br><b>Vote Estimate:</b><br>Tina Kotek: 55.72%<br>Christine Drazan: 44.28%<br>",
+        "description": "<b>Win Probability:</b><br>Tina Kotek: 87.30%<br>Christine Drazan: 12.70%<br><b>Vote Estimate:</b><br>Tina Kotek: 55.72%<br>Christine Drazan: 44.28%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1414,13 +1414,13 @@
         "prevParty": "DEM",
         "winner": "Tina Kotek",
         "winnerParty": "DEM",
-        "winProbability": 0.87656,
+        "winProbability": 0.873,
         "rating": "likely"
       },
       "MI": {
         "color": "leanD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Jocelyn Benson: 69.54%<br>John James: 30.46%<br><b>Vote Estimate:</b><br>Jocelyn Benson: 52.49%<br>John James: 47.51%<br>",
+        "description": "<b>Win Probability:</b><br>Jocelyn Benson: 69.25%<br>John James: 30.75%<br><b>Vote Estimate:</b><br>Jocelyn Benson: 52.49%<br>John James: 47.51%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1428,13 +1428,13 @@
         "prevParty": "DEM",
         "winner": "Jocelyn Benson",
         "winnerParty": "DEM",
-        "winProbability": 0.6954,
+        "winProbability": 0.69248,
         "rating": "lean"
       },
       "NY": {
         "color": "solidD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Kathy C. Hochul: 98.00%<br>Bruce Blakeman: 2.00%<br><b>Vote Estimate:</b><br>Kathy C. Hochul: 60.18%<br>Bruce Blakeman: 39.82%<br>",
+        "description": "<b>Win Probability:</b><br>Kathy C. Hochul: 97.94%<br>Bruce Blakeman: 2.06%<br><b>Vote Estimate:</b><br>Kathy C. Hochul: 60.18%<br>Bruce Blakeman: 39.82%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1442,7 +1442,7 @@
         "prevParty": "DEM",
         "winner": "Kathy C. Hochul",
         "winnerParty": "DEM",
-        "winProbability": 0.97996,
+        "winProbability": 0.9794,
         "rating": "solid"
       },
       "AK": {
@@ -1462,7 +1462,7 @@
       "MA": {
         "color": "solidD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Maura Healey: 99.58%<br>Mike Minogue: 0.42%<br><b>Vote Estimate:</b><br>Maura Healey: 63.13%<br>Mike Minogue: 36.87%<br>",
+        "description": "<b>Win Probability:</b><br>Maura Healey: 99.56%<br>Mike Minogue: 0.44%<br><b>Vote Estimate:</b><br>Maura Healey: 63.13%<br>Mike Minogue: 36.87%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1470,13 +1470,13 @@
         "prevParty": "DEM",
         "winner": "Maura Healey",
         "winnerParty": "DEM",
-        "winProbability": 0.99584,
+        "winProbability": 0.99564,
         "rating": "solid"
       },
       "NH": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Kelly Ayotte: 87.02%<br>Cinde Warmington: 12.98%<br><b>Vote Estimate:</b><br>Kelly Ayotte: 55.61%<br>Cinde Warmington: 44.39%<br>",
+        "description": "<b>Win Probability:</b><br>Kelly Ayotte: 86.94%<br>Cinde Warmington: 13.06%<br><b>Vote Estimate:</b><br>Kelly Ayotte: 55.61%<br>Cinde Warmington: 44.39%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1484,7 +1484,7 @@
         "prevParty": "REP",
         "winner": "Kelly Ayotte",
         "winnerParty": "REP",
-        "winProbability": 0.8702,
+        "winProbability": 0.8694,
         "rating": "likely"
       },
       "IA": {
@@ -1499,7 +1499,7 @@
             "value": "#577ccc"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Rob Sand: 57.16%<br>Randy Feenstra: 42.84%<br><b>Vote Estimate:</b><br>Rob Sand: 50.87%<br>Randy Feenstra: 49.13%<br>",
+        "description": "<b>Win Probability:</b><br>Rob Sand: 57.22%<br>Randy Feenstra: 42.78%<br><b>Vote Estimate:</b><br>Rob Sand: 50.87%<br>Randy Feenstra: 49.13%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -1507,13 +1507,13 @@
         "prevParty": "REP",
         "winner": "Rob Sand",
         "winnerParty": "DEM",
-        "winProbability": 0.5716,
+        "winProbability": 0.57224,
         "rating": "tilt"
       },
       "OH": {
         "color": "leanR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Vivek G. Ramaswamy: 71.33%<br>Amy Acton: 28.67%<br><b>Vote Estimate:</b><br>Vivek G. Ramaswamy: 52.80%<br>Amy Acton: 47.20%<br>",
+        "description": "<b>Win Probability:</b><br>Vivek G. Ramaswamy: 71.20%<br>Amy Acton: 28.80%<br><b>Vote Estimate:</b><br>Vivek G. Ramaswamy: 52.80%<br>Amy Acton: 47.20%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1521,13 +1521,13 @@
         "prevParty": "REP",
         "winner": "Vivek G. Ramaswamy",
         "winnerParty": "REP",
-        "winProbability": 0.71332,
+        "winProbability": 0.71196,
         "rating": "lean"
       },
       "PA": {
         "color": "solidD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Josh Shapiro: 96.86%<br>Stacy Garrity: 3.14%<br><b>Vote Estimate:</b><br>Josh Shapiro: 59.09%<br>Stacy Garrity: 40.91%<br>",
+        "description": "<b>Win Probability:</b><br>Josh Shapiro: 96.58%<br>Stacy Garrity: 3.42%<br><b>Vote Estimate:</b><br>Josh Shapiro: 59.09%<br>Stacy Garrity: 40.91%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1535,13 +1535,13 @@
         "prevParty": "DEM",
         "winner": "Josh Shapiro",
         "winnerParty": "DEM",
-        "winProbability": 0.96856,
+        "winProbability": 0.9658,
         "rating": "solid"
       },
       "NV": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Joe Lombardo: 81.10%<br>Aaron Ford: 18.90%<br><b>Vote Estimate:</b><br>Joe Lombardo: 54.42%<br>Aaron Ford: 45.58%<br>",
+        "description": "<b>Win Probability:</b><br>Joe Lombardo: 81.23%<br>Aaron Ford: 18.77%<br><b>Vote Estimate:</b><br>Joe Lombardo: 54.42%<br>Aaron Ford: 45.58%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1549,13 +1549,13 @@
         "prevParty": "REP",
         "winner": "Joe Lombardo",
         "winnerParty": "REP",
-        "winProbability": 0.81096,
+        "winProbability": 0.81228,
         "rating": "likely"
       },
       "MN": {
         "color": "solidD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Amy Klobuchar: 98.72%<br>Michael James Lindell: 1.28%<br><b>Vote Estimate:</b><br>Amy Klobuchar: 63.11%<br>Michael James Lindell: 36.89%<br>",
+        "description": "<b>Win Probability:</b><br>Amy Klobuchar: 98.80%<br>Michael James Lindell: 1.20%<br><b>Vote Estimate:</b><br>Amy Klobuchar: 63.11%<br>Michael James Lindell: 36.89%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1563,7 +1563,7 @@
         "prevParty": "DEM",
         "winner": "Amy Klobuchar",
         "winnerParty": "DEM",
-        "winProbability": 0.9872,
+        "winProbability": 0.98796,
         "rating": "solid"
       },
       "WA": {
@@ -1694,7 +1694,7 @@
       "AK00": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Nick Begich: 89.88%<br>Bill Hill: 6.31%<br>Matt Schultz: 3.81%<br><b>Vote Estimate:</b><br>Nick Begich: 43.80%<br>Bill Hill: 29.18%<br>Matt Schultz: 27.02%<br>",
+        "description": "<b>Win Probability:</b><br>Nick Begich: 89.98%<br>Bill Hill: 6.18%<br>Matt Schultz: 3.84%<br><b>Vote Estimate:</b><br>Nick Begich: 43.80%<br>Bill Hill: 29.18%<br>Matt Schultz: 27.02%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -1702,7 +1702,7 @@
         "prevParty": "REP",
         "winner": "Nick Begich",
         "winnerParty": "REP",
-        "winProbability": 0.89884,
+        "winProbability": 0.89984,
         "rating": "likely"
       },
       "AL01": {
@@ -3203,7 +3203,7 @@
       "CO03": {
         "color": "leanR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Jeff Hurd: 73.02%<br>Alex Kelloff: 26.98%<br><b>Vote Estimate:</b><br>Jeff Hurd: 53.17%<br>Alex Kelloff: 46.83%<br>",
+        "description": "<b>Win Probability:</b><br>Jeff Hurd: 72.69%<br>Alex Kelloff: 27.31%<br><b>Vote Estimate:</b><br>Jeff Hurd: 53.17%<br>Alex Kelloff: 46.83%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -3211,7 +3211,7 @@
         "prevParty": "REP",
         "winner": "Jeff Hurd",
         "winnerParty": "REP",
-        "winProbability": 0.7302,
+        "winProbability": 0.72688,
         "rating": "lean"
       },
       "CO04": {
@@ -3953,7 +3953,7 @@
       "FL27": {
         "color": "tiltR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>María Elvira Salazar: 50.02%<br>Maria Elvira Salazar: 49.98%<br><b>Vote Estimate:</b><br>María Elvira Salazar: 50.00%<br>Maria Elvira Salazar: 50.00%<br>",
+        "description": "<b>Win Probability:</b><br>María Elvira Salazar: 50.06%<br>Maria Elvira Salazar: 49.94%<br><b>Vote Estimate:</b><br>María Elvira Salazar: 50.00%<br>Maria Elvira Salazar: 50.00%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -3961,7 +3961,7 @@
         "prevParty": "REP",
         "winner": "María Elvira Salazar",
         "winnerParty": "REP",
-        "winProbability": 0.50016,
+        "winProbability": 0.50064,
         "rating": "tilt"
       },
       "FL28": {
@@ -6028,7 +6028,7 @@
       "MN01": {
         "color": "likelyR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Brad Finstad: 89.03%<br>Jake Johnson: 10.97%<br><b>Vote Estimate:</b><br>Brad Finstad: 56.19%<br>Jake Johnson: 43.81%<br>",
+        "description": "<b>Win Probability:</b><br>Brad Finstad: 89.30%<br>Jake Johnson: 10.70%<br><b>Vote Estimate:</b><br>Brad Finstad: 56.19%<br>Jake Johnson: 43.81%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -6036,7 +6036,7 @@
         "prevParty": "REP",
         "winner": "Brad Finstad",
         "winnerParty": "REP",
-        "winProbability": 0.89032,
+        "winProbability": 0.893,
         "rating": "likely"
       },
       "MN02": {
@@ -6456,7 +6456,7 @@
       "MT01": {
         "color": "tiltR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Ryan K. Zinke: 54.97%<br>Ryan Busse: 44.93%<br><b>Vote Estimate:</b><br>Ryan K. Zinke: 52.26%<br>Ryan Busse: 47.74%<br>",
+        "description": "<b>Win Probability:</b><br>Ryan K. Zinke: 54.94%<br>Ryan Busse: 44.98%<br><b>Vote Estimate:</b><br>Ryan K. Zinke: 52.26%<br>Ryan Busse: 47.74%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -6464,7 +6464,7 @@
         "prevParty": "REP",
         "winner": "Ryan K. Zinke",
         "winnerParty": "REP",
-        "winProbability": 0.54968,
+        "winProbability": 0.54936,
         "rating": "tilt"
       },
       "MT02": {
@@ -6861,7 +6861,7 @@
       "NH02": {
         "color": "likelyD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Maggie Goodlander: 85.87%<br>Lily Tang Williams: 14.13%<br><b>Vote Estimate:</b><br>Maggie Goodlander: 56.01%<br>Lily Tang Williams: 43.99%<br>",
+        "description": "<b>Win Probability:</b><br>Maggie Goodlander: 85.09%<br>Lily Tang Williams: 14.91%<br><b>Vote Estimate:</b><br>Maggie Goodlander: 56.01%<br>Lily Tang Williams: 43.99%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -6869,7 +6869,7 @@
         "prevParty": "DEM",
         "winner": "Maggie Goodlander",
         "winnerParty": "DEM",
-        "winProbability": 0.85868,
+        "winProbability": 0.85088,
         "rating": "likely"
       },
       "NJ01": {
@@ -10468,7 +10468,7 @@
       "PA10": {
         "color": "leanR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Scott Perry: 76.53%<br>Janelle Stelson: 23.47%<br><b>Vote Estimate:</b><br>Scott Perry: 53.59%<br>Janelle Stelson: 46.41%<br>",
+        "description": "<b>Win Probability:</b><br>Scott Perry: 76.88%<br>Janelle Stelson: 23.12%<br><b>Vote Estimate:</b><br>Scott Perry: 53.59%<br>Janelle Stelson: 46.41%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -10476,13 +10476,13 @@
         "prevParty": "REP",
         "winner": "Scott Perry",
         "winnerParty": "REP",
-        "winProbability": 0.76532,
+        "winProbability": 0.7688,
         "rating": "lean"
       },
       "NC01": {
         "color": "leanD",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Don Davis: 71.65%<br>Laurie Buckhout: 28.35%<br><b>Vote Estimate:</b><br>Don Davis: 52.83%<br>Laurie Buckhout: 47.17%<br>",
+        "description": "<b>Win Probability:</b><br>Don Davis: 72.02%<br>Laurie Buckhout: 27.98%<br><b>Vote Estimate:</b><br>Don Davis: 52.83%<br>Laurie Buckhout: 47.17%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -10490,7 +10490,7 @@
         "prevParty": "DEM",
         "winner": "Don Davis",
         "winnerParty": "DEM",
-        "winProbability": 0.71648,
+        "winProbability": 0.72016,
         "rating": "lean"
       },
       "ME02": {
@@ -10505,7 +10505,7 @@
             "value": "#ff5865"
           }
         ],
-        "description": "<b>Win Probability:</b><br>Paul R. LePage: 70.30%<br>Joe Baldacci: 29.70%<br><b>Vote Estimate (first round):</b><br>Paul R. LePage: 52.64%<br>Joe Baldacci: 47.36%<br>",
+        "description": "<b>Win Probability:</b><br>Paul R. LePage: 70.14%<br>Joe Baldacci: 29.86%<br><b>Vote Estimate (first round):</b><br>Paul R. LePage: 52.64%<br>Joe Baldacci: 47.36%<br>",
         "pulse": true,
         "noElection": false,
         "isDefault": false,
@@ -10513,13 +10513,13 @@
         "prevParty": "DEM",
         "winner": "Paul R. LePage",
         "winnerParty": "REP",
-        "winProbability": 0.70304,
+        "winProbability": 0.70136,
         "rating": "lean"
       },
       "IA03": {
         "color": "tiltR",
         "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Zach Nunn: 59.57%<br>Sarah Trone Garriott: 40.43%<br><b>Vote Estimate:</b><br>Zach Nunn: 51.68%<br>Sarah Trone Garriott: 48.32%<br>",
+        "description": "<b>Win Probability:</b><br>Zach Nunn: 59.28%<br>Sarah Trone Garriott: 40.72%<br><b>Vote Estimate:</b><br>Zach Nunn: 51.68%<br>Sarah Trone Garriott: 48.32%<br>",
         "pulse": false,
         "noElection": false,
         "isDefault": false,
@@ -10527,7 +10527,7 @@
         "prevParty": "REP",
         "winner": "Zach Nunn",
         "winnerParty": "REP",
-        "winProbability": 0.59568,
+        "winProbability": 0.59284,
         "rating": "tilt"
       }
     },
