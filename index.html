@@ -1,138 +1,244 @@
 <!DOCTYPE html>
 <html data-theme="dark">
 <head>
-    <style>
-        @media only screen and (max-width: 600px){
-            body {
-                margin: 0 auto !important;
-            }
-        }
-        @media only screen and (min-width: 600px){
-            body {
-                width: 85% !important;
-                margin: 0 auto !important;
-            }
-        }
-        @media only screen and (min-width: 992px){
-            body {
-                width: 60% !important;
-                margin: 0 auto !important;
-            }
-        }
-        #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
-            height: 45px;          
-            width: 70%;
-            position: relative;
-            margin: 0 auto;
-                    
-        }
-        #senateChart, #govChart, #houseChart {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-        }
-    </style>
-    <title>2026 Midterm Model</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 	
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script  type="text/javascript" src="senatemap.js"></script>
-    <script type="text/javascript" src="senatemapdata.js"></script>	
-    <script type='text/javascript'>	
-        var map1 = simplemaps_usmap.create();
-    </script>		
-    <script  type="text/javascript" src="housemap.js"></script>
-    <script type="text/javascript" src="housemapdata.js"></script>
-    <script type='text/javascript'>	
-        var map2 = simplemaps_congressmap.create();
-    </script>
-    <script type="text/javascript" src="govmapdata.js"></script>
-    <script type='text/javascript'>	
-        var map3 = simplemaps_usmap.create();
-    </script>
-    <script src="bar.js"></script>
-    <script src="mapfill.js"></script>
-    <script src="loader.js"></script>
-    
+<style>
+    @media only screen and (max-width: 1440px){
+    body { margin: 0 auto !important; }
+    .map-polls-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .map-polls-row .map-col,
+    .map-polls-row .polls-col {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    #map_grandparent {
+        text-align: left;
+    }
+    h2 {
+        text-align: center;
+    }
+    #govSummary, #senateSummary, #houseSummary {
+        text-align: center;
+    }
+    .polls-col table {
+        text-align: left;
+    }
+    }
+    @media only screen and (min-width: 1440px){
+        body { width: 85% !important; margin: 0 auto !important; }
+    }
+
+    #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
+        height: 45px;
+        width: 70%;
+        position: relative;
+        margin: 0 auto;
+    }
+    #senateChart, #govChart, #houseChart {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+
+    .map-polls-row {
+        display: flex;
+        align-items: stretch;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .map-polls-row .map-col {
+        flex: 1;
+        min-width: 280px;
+    }
+    .map-polls-row .polls-col {
+        width: 550px;
+        flex-shrink: 0;
+        min-width: 260px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .polls-col table {
+        font-size: 0.70em;
+        width: 100%;
+    }
+    .polls-col td, .polls-col th {
+        padding: 4px 6px;
+    }
+    .polls-col .table-scroll {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 200px;
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 6px;
+        font-size: 0.85em;
+    }
+    .pagination button {
+        padding: 2px 10px;
+        font-size: 0.9em;
+    }
+</style>
+<title>2026 Midterm Model</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script type="text/javascript" src="senatemap.js"></script>
+<script type="text/javascript" src="senatemapdata.js"></script>
+<script type="text/javascript">var map1 = simplemaps_usmap.create();</script>
+<script type="text/javascript" src="housemap.js"></script>
+<script type="text/javascript" src="housemapdata.js"></script>
+<script type="text/javascript">var map2 = simplemaps_congressmap.create();</script>
+<script type="text/javascript" src="govmapdata.js"></script>
+<script type="text/javascript">var map3 = simplemaps_usmap.create();</script>
+<script src="bar.js"></script>
+<script src="mapfill.js"></script>
+<script src="loader.js"></script>
 </head>
 <body>
 
-<div class="map" id="map_grandparent" style="text-align: center;">
-
     <br><br><br>
-    <div style="text-align:center; margin-bottom: 10px;">
-    <button id="pulseToggle" onclick="togglePulse()">Pulse Flipped Seats</button>
-</div>
-<br>
-    <h2>Gubernatorial Map</h2>
 
-    <div id="govSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
-    <div id="govChartWrapper">
-        <canvas id="govChart"></canvas>
+    <div style="text-align:center; margin-bottom:10px;">
+        <h1>2026 Midterm Election Model</h1>
+        <button id="pulseToggle" onclick="togglePulse()">Pulse Flipped Seats</button>
     </div>
+<div id="map_grandparent" style="text-align:center;">
 
-    <div id="map_parent3" style="width: 75%; display: inline-block;">	
-        <div id="map3"></div>
-    </div>
-
-    <br><br><br>
-    <h2>Senate Map</h2>
-
-    <div id="senateSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
-    <div id="senateChartWrapper">
-        <canvas id="senateChart"></canvas>
-    </div>
     
-    <div id="map_parent1" style="width: 75%; display: inline-block;">
-        <div id="map1"></div>	
+    <br>
+
+    <h2>Gubernatorial Map</h2>
+    <div id="govSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
+    <div id="govChartWrapper"><canvas id="govChart"></canvas></div>
+    <br>
+    <div class="map-polls-row">
+        <div class="map-col">
+            <div id="map_parent3" style="width:100%; display:inline-block;">
+                <div id="map3"></div>
+            </div>
+        </div>
+        <div class="polls-col">
+            <strong>Recent Polls</strong>
+            <div class="table-scroll">
+                <input
+                    type="search"
+                    id="govPollsSearch"
+                    placeholder="Search polls…"
+                    style="margin-bottom:6px; font-size:0.85em;"
+                >
+                <table id="govPollsTable">
+                    <thead><tr>
+                        <th>State</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="govPollsTable-prev">‹</button>
+                <span id="govPollsTable-page"></span>
+                <button id="govPollsTable-next">›</button>
+            </div>
+        </div>
     </div>
+    <!-- <button id="govPollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button> -->
 
     <br><br><br>
-    <h2>House Map</h2>
 
-    <div id="houseSummary" style="text-align:center; font-size: 1.1em; margin-bottom: 6px;"></div>
-    <div id="houseChartWrapper">
-        <canvas id="houseChart"></canvas>
+    <h2>Senate Map</h2>
+    <div id="senateSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
+    <div id="senateChartWrapper"><canvas id="senateChart"></canvas></div>
+    <br>
+    <div class="map-polls-row">
+        <div class="map-col">
+            <div id="map_parent1" style="width:100%; display:inline-block;">
+                <div id="map1"></div>
+            </div>
+        </div>
+        <div class="polls-col">
+            <strong>Recent Polls</strong>
+            <div class="table-scroll">
+                <input
+                    type="search"
+                    id="senatePollsSearch"
+                    placeholder="Search polls…"
+                    style="margin-bottom:6px; font-size:0.85em;"
+                >
+                <table id="senatePollsTable">
+                    <thead><tr>
+                        <th>State</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="senatePollsTable-prev">‹</button>
+                <span id="senatePollsTable-page"></span>
+                <button id="senatePollsTable-next">›</button>
+            </div>
+        </div>
     </div>
-<br>
-    <div id="map_parent2" style="width: 75%; display: inline-block;">	
-        <div id="map2"></div>
+    <!-- <button id="senatePollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button> -->
+
+    <br><br><br>
+
+    <h2>House Map</h2>
+    <div id="houseSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
+    <div id="houseChartWrapper"><canvas id="houseChart"></canvas></div>
+    <br>
+    <div class="map-polls-row">
+        <div class="map-col">
+            <div id="map_parent2" style="width:100%; display:inline-block;">
+                <div id="map2"></div>
+            </div>
+        </div>
+        <div class="polls-col">
+            <strong>Recent Polls</strong>
+            <div class="table-scroll">
+                <input
+                    type="search"
+                    id="housePollsSearch"
+                    placeholder="Search polls…"
+                    style="margin-bottom:6px; font-size:0.85em;"
+                >
+                <table id="housePollsTable">
+                    <thead><tr>
+                        <th>District</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
+                    </tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button id="housePollsTable-prev">‹</button>
+                <span id="housePollsTable-page"></span>
+                <button id="housePollsTable-next">›</button>
+            </div>
+        </div>
     </div>
+    <!-- <button id="housePollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button> -->
+
 </div>
-<br><br>
-<h2>Polls</h2>
-<div role="group" style="display:flex; gap:8px; margin-bottom:12px;">
-    <button class="polls-tab" data-chamber="senate" aria-current="true">Senate</button>
-    <button class="polls-tab" data-chamber="gov">Governor</button>
-    <button class="polls-tab" data-chamber="house">House</button>
-</div>
-<div style="overflow-x:auto;">
-    <table id="pollsTable">
-        <thead>
-            <tr>
-                <th>State</th>
-                <th>Pollster</th>
-                <th>Dates</th>
-                <th>Sample</th>
-                <th>Results</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+
 <br><br><br>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         function removeElement() {
             var element = document.querySelector('a[href="https://simplemaps.com"][title="For evaluation use only."]');
-            if (element) {
-                element.remove();
-            }
+            if (element) element.remove();
         }
-
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.addedNodes.length) {
@@ -141,10 +247,41 @@
                 }
             });
         });
-
         observer.observe(document.body, { childList: true, subtree: true });
         removeElement();
     });
+
+    function matchPollsHeight() {
+        document.querySelectorAll(".map-polls-row").forEach(row => {
+            const mapCol   = row.querySelector(".map-col");
+            const pollsCol = row.querySelector(".polls-col");
+            if (!mapCol || !pollsCol) return;
+            const h = mapCol.offsetHeight;
+            if (h > 0) pollsCol.style.height = h + "px";
+        });
+    }
+
+    setTimeout(matchPollsHeight, 500);
+    window.addEventListener("resize", matchPollsHeight);
+
+    function makeTableSearchable(searchInputId, tableId) {
+        const input = document.getElementById(searchInputId);
+        const table = document.getElementById(tableId);
+        const tbody = table.querySelector("tbody");
+
+        input.addEventListener("input", () => {
+            const query = input.value.toLowerCase().trim();
+
+            Array.from(tbody.rows).forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? "" : "none";
+            });
+        });
+    }
+
+    makeTableSearchable("senatePollsSearch", "senatePollsTable");
+    makeTableSearchable("govPollsSearch", "govPollsTable");
+    makeTableSearchable("housePollsSearch", "housePollsTable");
 </script>
 </body>
 </html>
