@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ["housePollsToggle",  "housePollsTable",  "housePollsTable-prev",  "housePollsTable-next",  "housePollsTable-page"],
     ].forEach(([btnId, tableId, prevId, nextId, pageId]) => {
         const btn      = document.getElementById(btnId);
-        const scroll   = document.querySelector(`#${tableId}`).closest(".table-scroll");
+        const scroll   = document.querySelector(`#${tableId}`).closest(".polls-col");
         const pagination = scroll.nextElementSibling;
         let hidden = false;
 
