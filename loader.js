@@ -31,21 +31,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         function renderPollsSection(tableId, pollsData, chamber) {
             const tbody     = document.querySelector(`#${tableId} tbody`);
-            const prevBtn   = document.querySelector(`#${tableId}-prev`);
-            const nextBtn   = document.querySelector(`#${tableId}-next`);
-            const pageInfo  = document.querySelector(`#${tableId}-page`);
             const searchInput = document.getElementById(`${tableId.replace("Table", "")}Search`);
-            const pageSize  = 10;
-            let page = 0;
 
             const sorted = pollsData
                 .filter(p => p.responses.length >= 2)
                 .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
 
-            function getFiltered() {
+            function draw() {
                 const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
-                if (!query) return sorted;
-                return sorted.filter(poll => {
+                const filtered = !query ? sorted : sorted.filter(poll => {
                     const ch = chamber === "house"
                         ? formatDistrict(poll.district ?? "")
                         : (poll.state ?? "");
@@ -53,16 +47,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     return [ch, poll.pollster, poll.start_date, poll.end_date, candidateText]
                         .join(" ").toLowerCase().includes(query);
                 });
-            }
-
-            function draw() {
-                const filtered   = getFiltered();
-                const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-                page = Math.min(page, totalPages - 1);
 
                 tbody.innerHTML = "";
-                const slice = filtered.slice(page * pageSize, (page + 1) * pageSize);
-                for (const poll of slice) {
+                for (const poll of filtered) {
                     const ch = chamber === "house"
                         ? formatDistrict(poll.district ?? "")
                         : (poll.state ?? "");
@@ -88,14 +75,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     tbody.appendChild(tr);
                 }
 
-                pageInfo.textContent = `${page + 1} / ${totalPages}`;
-                prevBtn.disabled = page === 0;
-                nextBtn.disabled = page >= totalPages - 1;
             }
 
-            prevBtn.addEventListener("click", () => { page--; draw(); });
-            nextBtn.addEventListener("click", () => { page++; draw(); });
-            if (searchInput) searchInput.addEventListener("input", () => { page = 0; draw(); });
+            if (searchInput) searchInput.addEventListener("input", draw);
             draw();
         }
 
@@ -139,37 +121,46 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("houseSummary").innerHTML = house.summaryHTML;
 
     function matchPollsHeight() {
-        document.querySelectorAll(".map-polls-row").forEach(row => {
-            const mapCol = row.querySelector(".map-col");
-            const pollsCol = row.querySelector(".polls-col");
+        document.querySelectorAll('.map-polls-row').forEach(row => {
+            const mapCol   = row.querySelector('.map-col');
+            const pollsCol = row.querySelector('.polls-col');
             if (!mapCol || !pollsCol) return;
             const h = mapCol.offsetHeight;
-            if (h > 0) pollsCol.style.height = h + "px";
+            if (h > 0) pollsCol.style.height = h + 'px';
         });
     }
 
     setTimeout(matchPollsHeight, 500);
-    window.addEventListener("resize", matchPollsHeight);
+    window.addEventListener('resize', matchPollsHeight);
+
     function setupPollToggles() {
-    [
-        ["govPollsToggle",    "govPollsTable",    "govPollsTable-prev",    "govPollsTable-next",    "govPollsTable-page"],
-        ["senatePollsToggle", "senatePollsTable", "senatePollsTable-prev", "senatePollsTable-next", "senatePollsTable-page"],
-        ["housePollsToggle",  "housePollsTable",  "housePollsTable-prev",  "housePollsTable-next",  "housePollsTable-page"],
-    ].forEach(([btnId, tableId, prevId, nextId, pageId]) => {
-        const btn      = document.getElementById(btnId);
-        const scroll   = document.querySelector(`#${tableId}`).closest(".polls-col");
-        const pagination = scroll.nextElementSibling;
-        let hidden = false;
+        [
+            ['govPollsToggle',    'govPollsTable'],
+            ['senatePollsToggle', 'senatePollsTable'],
+            ['housePollsToggle',  'housePollsTable'],
+        ].forEach(([btnId, tableId]) => {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            const pollsCol = document.querySelector(`#${tableId}`).closest('.polls-col');
+            const mapCol   = pollsCol.closest('.map-polls-row').querySelector('.map-col');
+            let hidden = false;
+            let savedHeight = document.querySelector('#map3_inner').style.height;
 
-        btn.addEventListener("click", () => {
-            hidden = !hidden;
-            scroll.style.display      = hidden ? "none" : "";
-            pagination.style.display  = hidden ? "none" : "";
-            btn.textContent           = hidden ? "Show Polls" : "Hide";
-            matchPollsHeight();
+            btn.addEventListener('click', () => {
+                hidden = !hidden;
+                if (hidden) {
+                    pollsCol.style.display = 'none';
+                    btn.textContent = 'Show Polls';
+                    window.dispatchEvent(new Event('resize'));
+                } else {
+                    pollsCol.style.display = '';
+                    btn.textContent = 'Hide Polls';
+                    if (savedHeight > 0) pollsCol.style.height = savedHeight;
+                    window.dispatchEvent(new Event('resize'));
+                }
+            });
         });
-    });
-}
+    }
 
-setupPollToggles();
+    setupPollToggles();
 });
