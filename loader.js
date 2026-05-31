@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const prevBtn  = document.querySelector(`#${tableId}-prev`);
             const nextBtn  = document.querySelector(`#${tableId}-next`);
             const pageInfo = document.querySelector(`#${tableId}-page`);
-            const pageSize = 15;
+            const pageSize = 10;
             let page = 0;
 
             const sorted = pollsData
