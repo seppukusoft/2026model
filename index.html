@@ -101,6 +101,27 @@
         <div id="map2"></div>
     </div>
 </div>
+<br><br>
+<h2>Polls</h2>
+<div role="group" style="display:flex; gap:8px; margin-bottom:12px;">
+    <button class="polls-tab" data-chamber="senate" aria-current="true">Senate</button>
+    <button class="polls-tab" data-chamber="gov">Governor</button>
+    <button class="polls-tab" data-chamber="house">House</button>
+</div>
+<div style="overflow-x:auto;">
+    <table id="pollsTable">
+        <thead>
+            <tr>
+                <th>State</th>
+                <th>Pollster</th>
+                <th>Dates</th>
+                <th>Sample</th>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 <br><br><br>
 
 <script>
