@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     let data;
+    let fetchedFile;
+
     try {
         const idxRes = await fetch("./results/latest.json");
         if (!idxRes.ok) throw new Error(`HTTP ${idxRes.status}`);
         const { file } = await idxRes.json();
+        fetchedFile = file; 
 
         const res = await fetch(`./results/${file}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -74,7 +77,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     `;
                     tbody.appendChild(tr);
                 }
-
             }
 
             if (searchInput) searchInput.addEventListener("input", draw);
@@ -90,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const { senate, gov, house } = data;
+    const { senate, gov, house, generated } = data; // Grab 'generated' here
 
     function applyRaceResults(type, raceData) {
         for (const [region, info] of Object.entries(raceData.regions)) {
@@ -129,6 +131,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (h > 0) pollsCol.style.height = h + 'px';
         });
     }
+
+    function timeAgo(date) {
+        if (!date) return "unknown time";
+        const seconds = Math.floor((new Date() - date) / 1000);
+        
+        // Prevent negative seconds if the user's local clock is slightly behind the server
+        if (seconds < 0) return "just now";
+
+        const intervals = {
+            year: 31536000,
+            month: 2592000,
+            week: 604800,
+            day: 86400,
+            hour: 3600,
+            minute: 60
+        };
+
+        for (const [unit, secondsInUnit] of Object.entries(intervals)) {
+            const interval = Math.floor(seconds / secondsInUnit);
+            if (interval >= 1) {
+                return interval + " " + unit + (interval === 1 ? "" : "s") + " ago";
+            }
+        }
+        return "just now";
+    }
+
+    // Convert the generated ISO string into a usable timestamp
+    const updatedAt = generated ? new Date(generated).getTime() : null;
+    document.getElementById("lastUpdated").textContent = "Last updated " + timeAgo(updatedAt);
 
     setTimeout(matchPollsHeight, 500);
     window.addEventListener('resize', matchPollsHeight);
