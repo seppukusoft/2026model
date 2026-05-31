@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const { senate, gov, house, generated } = data; // Grab 'generated' here
+    const { senate, gov, house, generated } = data; 
 
     function applyRaceResults(type, raceData) {
         for (const [region, info] of Object.entries(raceData.regions)) {
@@ -136,7 +136,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!date) return "unknown time";
         const seconds = Math.floor((new Date() - date) / 1000);
         
-        // Prevent negative seconds if the user's local clock is slightly behind the server
         if (seconds < 0) return "just now";
 
         const intervals = {
@@ -157,7 +156,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return "just now";
     }
 
-    // Convert the generated ISO string into a usable timestamp
     const updatedAt = generated ? new Date(generated).getTime() : null;
     document.getElementById("lastUpdated").textContent = "Last updated " + timeAgo(updatedAt);
 
