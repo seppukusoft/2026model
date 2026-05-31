@@ -3,6 +3,7 @@
 <head>
 <style>
     @media only screen and (max-width: 1440px){
+    .warning {display: block;}
     body { margin: 0 auto !important; }
     .map-polls-row {
         flex-direction: column;
@@ -30,6 +31,7 @@
     }
     @media only screen and (min-width: 1440px){
         body { width: 85% !important; margin: 0 auto !important; }
+        .warning {display: none;}
     }
 
     #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
@@ -116,11 +118,12 @@
         <br>
         <button id="pulseToggle" onclick="togglePulse()">Pulse Flipped Seats</button>
     </div>
+    <div class="warning" style="text-align:center; margin-bottom:10px; margin-top:10px;">
+        <br>
+        <h6>On mobile, tap a state to zoom, and press and hold to see model results.</h6>
+    </div>
 <div id="map_grandparent" style="text-align:center;">
-
-    
     <br>
-
     <h2>Gubernatorial Map</h2>
     <div id="govSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
     <div id="govChartWrapper"><canvas id="govChart"></canvas></div>
@@ -133,13 +136,13 @@
         </div>
         <div class="polls-col">
             <strong>Recent Polls</strong>
-            <div class="table-scroll">
                 <input
                     type="search"
                     id="govPollsSearch"
                     placeholder="Search polls…"
-                    style="margin-bottom:6px; font-size:0.85em;"
+                    style="margin-bottom:6px; margin-top:6px; font-size:0.85em;"
                 >
+            <div class="table-scroll">
                 <table id="govPollsTable">
                     <thead><tr>
                         <th>State</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
@@ -170,13 +173,13 @@
         </div>
         <div class="polls-col">
             <strong>Recent Polls</strong>
-            <div class="table-scroll">
                 <input
                     type="search"
                     id="senatePollsSearch"
                     placeholder="Search polls…"
-                    style="margin-bottom:6px; font-size:0.85em;"
+                    style="margin-bottom:6px; margin-top:6px; font-size:0.85em;"
                 >
+            <div class="table-scroll">
                 <table id="senatePollsTable">
                     <thead><tr>
                         <th>State</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
@@ -207,13 +210,13 @@
         </div>
         <div class="polls-col">
             <strong>Recent Polls</strong>
-            <div class="table-scroll">
                 <input
                     type="search"
                     id="housePollsSearch"
                     placeholder="Search polls…"
-                    style="margin-bottom:6px; font-size:0.85em;"
+                    style="margin-bottom:6px; margin-top:6px; font-size:0.85em;"
                 >
+            <div class="table-scroll">
                 <table id="housePollsTable">
                     <thead><tr>
                         <th>District</th><th>Pollster</th><th>Dates</th><th>N</th><th>Results</th>
