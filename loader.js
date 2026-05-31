@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function lastName(name) {
+            if (name == "Someone else") return name;
             return name.trim().split(/\s+/).pop();
         }
 
