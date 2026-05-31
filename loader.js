@@ -30,22 +30,38 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function renderPollsSection(tableId, pollsData, chamber) {
-            const tbody    = document.querySelector(`#${tableId} tbody`);
-            const prevBtn  = document.querySelector(`#${tableId}-prev`);
-            const nextBtn  = document.querySelector(`#${tableId}-next`);
-            const pageInfo = document.querySelector(`#${tableId}-page`);
-            const pageSize = 10;
+            const tbody     = document.querySelector(`#${tableId} tbody`);
+            const prevBtn   = document.querySelector(`#${tableId}-prev`);
+            const nextBtn   = document.querySelector(`#${tableId}-next`);
+            const pageInfo  = document.querySelector(`#${tableId}-page`);
+            const searchInput = document.getElementById(`${tableId.replace("Table", "")}Search`);
+            const pageSize  = 10;
             let page = 0;
 
             const sorted = pollsData
                 .filter(p => p.responses.length >= 2)
                 .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
 
-            const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
+            function getFiltered() {
+                const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+                if (!query) return sorted;
+                return sorted.filter(poll => {
+                    const ch = chamber === "house"
+                        ? formatDistrict(poll.district ?? "")
+                        : (poll.state ?? "");
+                    const candidateText = poll.responses.map(r => r.candidate).join(" ");
+                    return [ch, poll.pollster, poll.start_date, poll.end_date, candidateText]
+                        .join(" ").toLowerCase().includes(query);
+                });
+            }
 
             function draw() {
+                const filtered   = getFiltered();
+                const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+                page = Math.min(page, totalPages - 1);
+
                 tbody.innerHTML = "";
-                const slice = sorted.slice(page * pageSize, (page + 1) * pageSize);
+                const slice = filtered.slice(page * pageSize, (page + 1) * pageSize);
                 for (const poll of slice) {
                     const ch = chamber === "house"
                         ? formatDistrict(poll.district ?? "")
@@ -79,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             prevBtn.addEventListener("click", () => { page--; draw(); });
             nextBtn.addEventListener("click", () => { page++; draw(); });
+            if (searchInput) searchInput.addEventListener("input", () => { page = 0; draw(); });
             draw();
         }
 

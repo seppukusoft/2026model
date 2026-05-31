@@ -268,24 +268,8 @@
     setTimeout(matchPollsHeight, 500);
     window.addEventListener("resize", matchPollsHeight);
 
-    function makeTableSearchable(searchInputId, tableId) {
-        const input = document.getElementById(searchInputId);
-        const table = document.getElementById(tableId);
-        const tbody = table.querySelector("tbody");
 
-        input.addEventListener("input", () => {
-            const query = input.value.toLowerCase().trim();
 
-            Array.from(tbody.rows).forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(query) ? "" : "none";
-            });
-        });
-    }
-
-    makeTableSearchable("senatePollsSearch", "senatePollsTable");
-    makeTableSearchable("govPollsSearch", "govPollsTable");
-    makeTableSearchable("housePollsSearch", "housePollsTable");
 </script>
 </body>
 </html>
