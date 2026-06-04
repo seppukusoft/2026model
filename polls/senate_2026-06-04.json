@@ -9,7 +9,7 @@
     "sample_size": 1015,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 14.84468340545792,
+    "weight": 14.834376504999515,
     "responses": [
       {
         "candidate": "Jon Husted",
@@ -35,7 +35,7 @@
     "sample_size": 670,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 17.792643278949114,
+    "weight": 17.780289562931127,
     "responses": [
       {
         "candidate": "Susan M. Collins",
@@ -61,7 +61,7 @@
     "sample_size": 774,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 13.338004457624999,
+    "weight": 13.328743668391333,
     "responses": [
       {
         "candidate": "Todd Achilles",
@@ -87,7 +87,7 @@
     "sample_size": 774,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 13.338004457624999,
+    "weight": 13.328743668391333,
     "responses": [
       {
         "candidate": "David Roth",
@@ -113,7 +113,7 @@
     "sample_size": 774,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 13.338004457624999,
+    "weight": 13.328743668391333,
     "responses": [
       {
         "candidate": "David Roth",
@@ -145,7 +145,7 @@
     "sample_size": 1163,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 24.236426187711082,
+    "weight": 24.219598450442376,
     "responses": [
       {
         "candidate": "Someone else",
@@ -177,7 +177,7 @@
     "sample_size": 1670,
     "sponsorParty": "IND",
     "pollsterBias": 0.35,
-    "weight": 17.751246813062647,
+    "weight": 17.738921839271185,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -209,7 +209,7 @@
     "sample_size": 1000,
     "sponsorParty": "DEM",
     "pollsterBias": -0.23,
-    "weight": 10.75768607049007,
+    "weight": 10.750216837468198,
     "responses": [
       {
         "candidate": "Ashley Moody",
@@ -235,7 +235,7 @@
     "sample_size": 1250,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 18.87512781009515,
+    "weight": 18.862022507801758,
     "responses": [
       {
         "candidate": "Someone else",
@@ -267,7 +267,7 @@
     "sample_size": 643,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 12.08000869378609,
+    "weight": 12.071621351076057,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -299,7 +299,7 @@
     "sample_size": 1401,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 16.563964934994285,
+    "weight": 16.552464309947705,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -325,7 +325,7 @@
     "sample_size": 827,
     "sponsorParty": "DEM",
     "pollsterBias": 0,
-    "weight": 8.645744049505282,
+    "weight": 8.63974117151367,
     "responses": [
       {
         "candidate": "Susan M. Collins",
@@ -351,7 +351,7 @@
     "sample_size": 607,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 7.407027638916743,
+    "weight": 7.401884821486304,
     "responses": [
       {
         "candidate": "Reilly Neill",
@@ -377,7 +377,7 @@
     "sample_size": 607,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 7.407027638916743,
+    "weight": 7.401884821486304,
     "responses": [
       {
         "candidate": "Reilly Neill",
@@ -409,7 +409,7 @@
     "sample_size": 607,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 7.407027638916743,
+    "weight": 7.401884821486304,
     "responses": [
       {
         "candidate": "Seth Bodnar",
@@ -435,7 +435,7 @@
     "sample_size": 1593,
     "sponsorParty": "IND",
     "pollsterBias": 2.68,
-    "weight": 10.317221834137577,
+    "weight": 10.31005842246033,
     "responses": [
       {
         "candidate": "Ashley Moody",
@@ -461,7 +461,7 @@
     "sample_size": 1223,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 7.047661803936183,
+    "weight": 7.042768499936789,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -493,7 +493,7 @@
     "sample_size": 957,
     "sponsorParty": "DEM",
     "pollsterBias": 2.68,
-    "weight": 6.124899791946077,
+    "weight": 6.120647176329494,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -519,7 +519,7 @@
     "sample_size": 604,
     "sponsorParty": "REP",
     "pollsterBias": 0.36,
-    "weight": 5.891280396670987,
+    "weight": 5.887189986726732,
     "responses": [
       {
         "candidate": "Alexander Vindman",
@@ -545,7 +545,7 @@
     "sample_size": 830,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 3.891822999854203,
+    "weight": 3.889120845071537,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -571,7 +571,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.26,
-    "weight": 5.6153273611762025,
+    "weight": 5.6114285498258925,
     "responses": [
       {
         "candidate": "Roy A. Cooper",
@@ -603,7 +603,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 5.837193856555501,
+    "weight": 5.833140999758717,
     "responses": [
       {
         "candidate": "Someone else",
@@ -635,7 +635,7 @@
     "sample_size": 607,
     "sponsorParty": "IND",
     "pollsterBias": 0.94,
-    "weight": 3.8238744508836837,
+    "weight": 3.8212194738623357,
     "responses": [
       {
         "candidate": "Mike Rogers",
@@ -661,7 +661,7 @@
     "sample_size": 1165,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 8.12600720820777,
+    "weight": 8.12036519179478,
     "responses": [
       {
         "candidate": "Dan Osborn",
@@ -687,7 +687,7 @@
     "sample_size": 500,
     "sponsorParty": "DEM",
     "pollsterBias": 0.1,
-    "weight": 4.458214027710981,
+    "weight": 4.455118618603839,
     "responses": [
       {
         "candidate": "Roger Marshall",
@@ -713,7 +713,7 @@
     "sample_size": 830,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 3.891822999854203,
+    "weight": 3.889120845071537,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -739,7 +739,7 @@
     "sample_size": 1200,
     "sponsorParty": "IND",
     "pollsterBias": 1.08,
-    "weight": 5.164670803144494,
+    "weight": 5.161084889830313,
     "responses": [
       {
         "candidate": "Someone else",
@@ -771,7 +771,7 @@
     "sample_size": 1018,
     "sponsorParty": "IND",
     "pollsterBias": 0.35,
-    "weight": 3.905154064409068,
+    "weight": 3.902442653655653,
     "responses": [
       {
         "candidate": "James Talarico",
@@ -797,7 +797,7 @@
     "sample_size": 434,
     "sponsorParty": "IND",
     "pollsterBias": 1.37,
-    "weight": 2.038370545114789,
+    "weight": 2.036955271933677,
     "responses": [
       {
         "candidate": "Someone else",
@@ -829,7 +829,7 @@
     "sample_size": 1946,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 7.676710028034215,
+    "weight": 7.671379965819627,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -855,7 +855,7 @@
     "sample_size": 1946,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 7.676710028034215,
+    "weight": 7.671379965819627,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -881,7 +881,7 @@
     "sample_size": 603,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 4.082410337829948,
+    "weight": 4.0795758552186925,
     "responses": [
       {
         "candidate": "Someone else",
@@ -913,7 +913,7 @@
     "sample_size": 1130,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 5.777948991091112,
+    "weight": 5.773937268949363,
     "responses": [
       {
         "candidate": "Someone else",
@@ -945,7 +945,7 @@
     "sample_size": 378,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.7995322907619706,
+    "weight": 2.797588530840465,
     "responses": [
       {
         "candidate": "Graham Platner",
@@ -971,7 +971,7 @@
     "sample_size": 377,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.795826753346005,
+    "weight": 2.793885566238231,
     "responses": [
       {
         "candidate": "Josh Turek",
@@ -997,7 +997,7 @@
     "sample_size": 413,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.9262714291908227,
+    "weight": 2.9242396722640396,
     "responses": [
       {
         "candidate": "Sherrod Brown",
@@ -1023,7 +1023,7 @@
     "sample_size": 406,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.901366538588772,
+    "weight": 2.8993520735247627,
     "responses": [
       {
         "candidate": "Alexander Vindman",
@@ -1049,7 +1049,7 @@
     "sample_size": 407,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.904937452603118,
+    "weight": 2.9029205081965532,
     "responses": [
       {
         "candidate": "Jon Ossoff",
@@ -1075,7 +1075,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 1.08,
-    "weight": 3.860051734329451,
+    "weight": 3.8573716388431833,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1107,7 +1107,7 @@
     "sample_size": 1013,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.24459143331390598,
+    "weight": 0.2444216095805674,
     "responses": [
       {
         "candidate": "Patrick Schmidt",
@@ -1133,7 +1133,7 @@
     "sample_size": 800,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 2.2282976476481946,
+    "weight": 2.226750505050491,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1165,7 +1165,7 @@
     "sample_size": 703,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 2.0888433449458574,
+    "weight": 2.087393027694791,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1197,7 +1197,7 @@
     "sample_size": 1834,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 2.872814356658237,
+    "weight": 2.870819715829544,
     "responses": [
       {
         "candidate": "Ashley Moody",
@@ -1223,7 +1223,7 @@
     "sample_size": 1200,
     "sponsorParty": "DEM",
     "pollsterBias": 0.82,
-    "weight": 1.2304700087051907,
+    "weight": 1.2296156737523747,
     "responses": [
       {
         "candidate": "Ashley Hinson",
@@ -1249,7 +1249,7 @@
     "sample_size": 574,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 2.1557260512912384,
+    "weight": 2.15422929631039,
     "responses": [
       {
         "candidate": "Ashley Moody",
@@ -1275,7 +1275,7 @@
     "sample_size": 1167,
     "sponsorParty": "IND",
     "pollsterBias": 0.1,
-    "weight": 2.3277173262124107,
+    "weight": 2.326101154946154,
     "responses": [
       {
         "candidate": "Graham Platner",
@@ -1301,7 +1301,7 @@
     "sample_size": 604,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 0.00024194920409006541,
+    "weight": 0.00024178121489862016,
     "responses": [
       {
         "candidate": "Michele Tafoya",
@@ -1327,7 +1327,7 @@
     "sample_size": 987,
     "sponsorParty": "IND",
     "pollsterBias": -1.05,
-    "weight": 2.106838208909303,
+    "weight": 2.105375397537173,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1359,7 +1359,7 @@
     "sample_size": 1125,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 5.155154747054825,
+    "weight": 5.151575440890166,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1391,7 +1391,7 @@
     "sample_size": 872,
     "sponsorParty": "IND",
     "pollsterBias": 1.08,
-    "weight": 1.4655017254185185,
+    "weight": 1.464484204196075,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1423,7 +1423,7 @@
     "sample_size": 1340,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 2.505039631519863,
+    "weight": 2.5033003425487736,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -1449,7 +1449,7 @@
     "sample_size": 1340,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 2.505039631519863,
+    "weight": 2.5033003425487736,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -1475,7 +1475,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.26,
-    "weight": 1.0965474416150311,
+    "weight": 1.0957860912365862,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1507,7 +1507,7 @@
     "sample_size": 1075,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 2.7569556498149264,
+    "weight": 2.7550414515343205,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1539,7 +1539,7 @@
     "sample_size": 1100,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 2.7888290283468167,
+    "weight": 2.7868926998711214,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1571,7 +1571,7 @@
     "sample_size": 639,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 1.2905886652361658,
+    "weight": 1.289692588941239,
     "responses": [
       {
         "candidate": "James E. Risch",
@@ -1597,7 +1597,7 @@
     "sample_size": 900,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 1.1884233686830057,
+    "weight": 1.1875982273829935,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -1629,7 +1629,7 @@
     "sample_size": 700,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 0.6148585614096783,
+    "weight": 0.6144316553036098,
     "responses": [
       {
         "candidate": "Lindsey Graham",
@@ -1655,7 +1655,7 @@
     "sample_size": 556,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 1.0892946360359324,
+    "weight": 1.0885383213960818,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -1681,7 +1681,7 @@
     "sample_size": 784,
     "sponsorParty": "IND",
     "pollsterBias": -1.05,
-    "weight": 1.0305141319260165,
+    "weight": 1.0297986295277075,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1713,7 +1713,7 @@
     "sample_size": 1343,
     "sponsorParty": "IND",
     "pollsterBias": 1.11,
-    "weight": 0.5892957729496228,
+    "weight": 0.588886615495304,
     "responses": [
       {
         "candidate": "Jon Husted",
@@ -1739,7 +1739,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": -1.23,
-    "weight": 1.4088717810997862,
+    "weight": 1.4078935789509206,
     "responses": [
       {
         "candidate": "Jon Husted",
@@ -1765,7 +1765,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": -1.23,
-    "weight": 1.4088717810997862,
+    "weight": 1.4078935789509206,
     "responses": [
       {
         "candidate": "Graham Platner",
@@ -1791,7 +1791,7 @@
     "sample_size": 800,
     "sponsorParty": "IND",
     "pollsterBias": -1.05,
-    "weight": 0.7711743381749695,
+    "weight": 0.7706388995318849,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1823,7 +1823,7 @@
     "sample_size": 576,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 0.8213549265389487,
+    "weight": 0.8207846467129917,
     "responses": [
       {
         "candidate": "Ken Paxton",
@@ -1849,7 +1849,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 1.3204422452004616,
+    "weight": 1.3195254410888066,
     "responses": [
       {
         "candidate": "Mike Collins",
@@ -1875,7 +1875,7 @@
     "sample_size": 810,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.6570568675307007,
+    "weight": 0.6566006624676373,
     "responses": [
       {
         "candidate": "Susan M. Collins",
@@ -1901,7 +1901,7 @@
     "sample_size": 772,
     "sponsorParty": "IND",
     "pollsterBias": 1.58,
-    "weight": 1.1221632248923419,
+    "weight": 1.1213840890670008,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1933,7 +1933,7 @@
     "sample_size": 685,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 0.5432724343605313,
+    "weight": 0.5428952316442587,
     "responses": [
       {
         "candidate": "Julian Beaudion",
@@ -1959,7 +1959,7 @@
     "sample_size": 500,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.09645390309176291,
+    "weight": 0.09638693360842412,
     "responses": [
       {
         "candidate": "Seth Bodnar",
@@ -1985,7 +1985,7 @@
     "sample_size": 1105,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.6767382531815274,
+    "weight": 0.6762683830184917,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2017,7 +2017,7 @@
     "sample_size": 616,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.5052774808695342,
+    "weight": 0.5049266586554828,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2049,7 +2049,7 @@
     "sample_size": 607,
     "sponsorParty": "IND",
     "pollsterBias": 0.41,
-    "weight": 0.3637137136606855,
+    "weight": 0.36346118142812367,
     "responses": [
       {
         "candidate": "Seth Bodnar",
@@ -2075,7 +2075,7 @@
     "sample_size": 1069,
     "sponsorParty": "IND",
     "pollsterBias": 2.68,
-    "weight": 0.17497267358722543,
+    "weight": 0.17485118726917157,
     "responses": [
       {
         "candidate": "Roy A. Cooper",
@@ -2101,7 +2101,7 @@
     "sample_size": 1108,
     "sponsorParty": "IND",
     "pollsterBias": 2.68,
-    "weight": 0.13340263857485712,
+    "weight": 0.13331001499514686,
     "responses": [
       {
         "candidate": "Ashley Hinson",
@@ -2127,7 +2127,7 @@
     "sample_size": 524,
     "sponsorParty": "DEM",
     "pollsterBias": 2.68,
-    "weight": 0.000006866929754781999,
+    "weight": 0.0000068621619359269825,
     "responses": [
       {
         "candidate": "Dan Osborn",
@@ -2153,7 +2153,7 @@
     "sample_size": 800,
     "sponsorParty": "REP",
     "pollsterBias": 2.04,
-    "weight": 0.3919232426514527,
+    "weight": 0.39165112409297553,
     "responses": [
       {
         "candidate": "Edward J. Markey",
@@ -2179,7 +2179,7 @@
     "sample_size": 600,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 0.25577980048918364,
+    "weight": 0.2556022084940629,
     "responses": [
       {
         "candidate": "Dan Osborn",
@@ -2205,7 +2205,7 @@
     "sample_size": 563,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.18852424035576015,
+    "weight": 0.18839334496875407,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2237,7 +2237,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.8879015742137778,
+    "weight": 0.8872850899889334,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2269,7 +2269,7 @@
     "sample_size": 1502,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.33432142395317327,
+    "weight": 0.3340892992561568,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -2301,7 +2301,7 @@
     "sample_size": 1502,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.33432142395317327,
+    "weight": 0.3340892992561568,
     "responses": [
       {
         "candidate": "Ted Brown",
@@ -2327,7 +2327,7 @@
     "sample_size": 800,
     "sponsorParty": "REP",
     "pollsterBias": 0.03,
-    "weight": 0.19797840443208606,
+    "weight": 0.19784094486816942,
     "responses": [
       {
         "candidate": "Graham Platner",
@@ -2353,7 +2353,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.5567933859862246,
+    "weight": 0.5564067954575815,
     "responses": [
       {
         "candidate": "Mike Rogers",
@@ -2379,7 +2379,7 @@
     "sample_size": 2038,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.36140999612798325,
+    "weight": 0.36115906340324805,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2411,7 +2411,7 @@
     "sample_size": 611,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 0.1765816381696377,
+    "weight": 0.1764590347218116,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -2437,7 +2437,7 @@
     "sample_size": 1105,
     "sponsorParty": "DEM",
     "pollsterBias": 2.68,
-    "weight": 0.11659226720220044,
+    "weight": 0.11651131533145664,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -2463,7 +2463,7 @@
     "sample_size": 1512,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 0.38767235238529424,
+    "weight": 0.38740318528772977,
     "responses": [
       {
         "candidate": "Michael Whatley",
@@ -2489,7 +2489,7 @@
     "sample_size": 1165,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.38963930044319595,
+    "weight": 0.3893687676622225,
     "responses": [
       {
         "candidate": "Ken Paxton",
@@ -2515,7 +2515,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.1263015274358389,
+    "weight": 0.12621383427085398,
     "responses": [
       {
         "candidate": "Mike Rogers",
@@ -2541,7 +2541,7 @@
     "sample_size": 1681,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 0.272077273924254,
+    "weight": 0.27188836633338553,
     "responses": [
       {
         "candidate": "Dan Sullivan",
@@ -2567,7 +2567,7 @@
     "sample_size": 900,
     "sponsorParty": "DEM",
     "pollsterBias": 0,
-    "weight": 0.05498813834935247,
+    "weight": 0.05494995920784573,
     "responses": [
       {
         "candidate": "Susan M. Collins",
@@ -2593,7 +2593,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.03800502070737086,
+    "weight": 0.03797863321532057,
     "responses": [
       {
         "candidate": "Chris Pappas",
@@ -2619,7 +2619,7 @@
     "sample_size": 814,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 0.024140276719675,
+    "weight": 0.02412351574051551,
     "responses": [
       {
         "candidate": "Julian Beaudion",
@@ -2645,7 +2645,7 @@
     "sample_size": 604,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 0.00024194920409006541,
+    "weight": 0.00024178121489862016,
     "responses": [
       {
         "candidate": "Michele Tafoya",
@@ -2671,7 +2671,7 @@
     "sample_size": 704,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 0.029310837860119385,
+    "weight": 0.029290486877890612,
     "responses": [
       {
         "candidate": "Annie Andrews",
@@ -2697,7 +2697,7 @@
     "sample_size": 850,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.10364118252776316,
+    "weight": 0.10356922280167627,
     "responses": [
       {
         "candidate": "Jon Husted",
@@ -2723,7 +2723,7 @@
     "sample_size": 820,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.03888358896352614,
+    "weight": 0.03885659146752264,
     "responses": [
       {
         "candidate": "Susan M. Collins",
@@ -2749,7 +2749,7 @@
     "sample_size": 616,
     "sponsorParty": "IND",
     "pollsterBias": 0.94,
-    "weight": 0.014727431766281947,
+    "weight": 0.014717206275506767,
     "responses": [
       {
         "candidate": "Abdul El-Sayed",
@@ -2775,7 +2775,7 @@
     "sample_size": 500,
     "sponsorParty": "IND",
     "pollsterBias": 0.71,
-    "weight": 0.03252897343271855,
+    "weight": 0.03250638804763305,
     "responses": [
       {
         "candidate": "John Deaton",
@@ -2801,7 +2801,7 @@
     "sample_size": 2212,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.03504897241131529,
+    "weight": 0.0350246373507454,
     "responses": [
       {
         "candidate": "John E. Sununu",
@@ -2827,7 +2827,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 0.24,
-    "weight": 0.025901004305083217,
+    "weight": 0.025883020824677902,
     "responses": [
       {
         "candidate": "James Talarico",
@@ -2853,7 +2853,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.26,
-    "weight": 0.013021326326610098,
+    "weight": 0.013012285412053752,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2885,7 +2885,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.26,
-    "weight": 0.013021326326610098,
+    "weight": 0.013012285412053752,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2911,7 +2911,7 @@
     "sample_size": 783,
     "sponsorParty": "IND",
     "pollsterBias": 0.1,
-    "weight": 0.01162448802778259,
+    "weight": 0.011616416960336436,
     "responses": [
       {
         "candidate": "Graham Platner",
