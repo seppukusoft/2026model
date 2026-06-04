@@ -10,7 +10,7 @@
     "sample_size": 452,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 8.586098118579926,
+    "weight": 8.585703717006432,
     "responses": [
       {
         "candidate": "Matt Schultz",
@@ -37,7 +37,7 @@
     "sample_size": 452,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 8.586098118579926,
+    "weight": 8.585703717006432,
     "responses": [
       {
         "candidate": "Bill Hill",
@@ -64,7 +64,7 @@
     "sample_size": 418,
     "sponsorParty": "DEM",
     "pollsterBias": 0,
-    "weight": 6.116830216233666,
+    "weight": 6.11654924023866,
     "responses": [
       {
         "candidate": "Paul R. LePage",
@@ -91,7 +91,7 @@
     "sample_size": 400,
     "sponsorParty": "DEM",
     "pollsterBias": 0.69,
-    "weight": 2.45287801646547,
+    "weight": 2.452765343754778,
     "responses": [
       {
         "candidate": "Scott Perry",
@@ -108,6 +108,33 @@
     ]
   },
   {
+    "poll_id": "f55d29d1-a799-4b26-8406-120005160eee",
+    "question_id": "5de721be-511b-4adc-8e23-4fdedf6e55d0",
+    "district": "MT01",
+    "state": "MT",
+    "pollster": "Upswing Research",
+    "start_date": "4/30/26",
+    "end_date": "5/5/26",
+    "sample_size": 401,
+    "sponsorParty": "DEM",
+    "pollsterBias": 0,
+    "weight": 3.884152261593095,
+    "responses": [
+      {
+        "candidate": "Aaron Flint",
+        "party": "REP",
+        "pct": 48,
+        "_candidateLC": "aaron flint"
+      },
+      {
+        "candidate": "Sam Forstag",
+        "party": "DEM",
+        "pct": 43,
+        "_candidateLC": "sam forstag"
+      }
+    ]
+  },
+  {
     "poll_id": "f50b80ab-4b2b-4f4e-85a2-893560d1be1e",
     "question_id": "3bb93c3b-b216-4834-a2cd-359c3f18ebd5",
     "district": "NC01",
@@ -118,7 +145,7 @@
     "sample_size": 842,
     "sponsorParty": "REP",
     "pollsterBias": -2.69,
-    "weight": 5.554713742724509,
+    "weight": 5.554458587494486,
     "responses": [
       {
         "candidate": "Don Davis",
@@ -145,7 +172,7 @@
     "sample_size": 918,
     "sponsorParty": "REP",
     "pollsterBias": -2.69,
-    "weight": 5.609840261014848,
+    "weight": 5.609582573553623,
     "responses": [
       {
         "candidate": "Joe Baldacci",
@@ -172,7 +199,7 @@
     "sample_size": 400,
     "sponsorParty": "REP",
     "pollsterBias": 0.24,
-    "weight": 0.80534829696521,
+    "weight": 0.8053113033703141,
     "responses": [
       {
         "candidate": "Sarah Trone Garriott",
@@ -199,7 +226,7 @@
     "sample_size": 400,
     "sponsorParty": "REP",
     "pollsterBias": 0.24,
-    "weight": 0.7534089571942719,
+    "weight": 0.7533743494278452,
     "responses": [
       {
         "candidate": "Jeff Hurd",
@@ -226,7 +253,7 @@
     "sample_size": 400,
     "sponsorParty": "REP",
     "pollsterBias": 0.24,
-    "weight": 0.80534829696521,
+    "weight": 0.8053113033703141,
     "responses": [
       {
         "candidate": "Jake Johnson",
@@ -253,7 +280,7 @@
     "sample_size": 739,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 1.0646210717785318,
+    "weight": 1.0645721685141987,
     "responses": [
       {
         "candidate": "Maggie Goodlander",
@@ -280,7 +307,7 @@
     "sample_size": 638,
     "sponsorParty": "DEM",
     "pollsterBias": 2.68,
-    "weight": 0.007997989999118906,
+    "weight": 0.007997622612234096,
     "responses": [
       {
         "candidate": "Zach Nunn",
@@ -307,7 +334,7 @@
     "sample_size": 500,
     "sponsorParty": "DEM",
     "pollsterBias": 0.1,
-    "weight": 0.26978949188121276,
+    "weight": 0.2697770991274099,
     "responses": [
       {
         "candidate": "Laurie Buckhout",
@@ -334,7 +361,7 @@
     "sample_size": 520,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.4619871801349042,
+    "weight": 0.461965958799175,
     "responses": [
       {
         "candidate": "Someone else",
@@ -367,7 +394,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 0.41426455684753205,
+    "weight": 0.4142455276458145,
     "responses": [
       {
         "candidate": "Nick Begich",
@@ -394,7 +421,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 0.41426455684753205,
+    "weight": 0.4142455276458145,
     "responses": [
       {
         "candidate": "Bill Hill",
@@ -421,7 +448,7 @@
     "sample_size": 708,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 0.3333730106484265,
+    "weight": 0.3333576971919364,
     "responses": [
       {
         "candidate": "Jake Johnson",
@@ -438,6 +465,33 @@
     ]
   },
   {
+    "poll_id": "0245de88-747f-4893-9c92-fd35eb70f977",
+    "question_id": "73e8c905-d20f-4d20-85d2-8150cf0e2551",
+    "district": "MT01",
+    "state": "MT",
+    "pollster": "Peak Insights",
+    "start_date": "1/12/26",
+    "end_date": "1/15/26",
+    "sample_size": 400,
+    "sponsorParty": "REP",
+    "pollsterBias": 0,
+    "weight": 0.09916101312029796,
+    "responses": [
+      {
+        "candidate": "Sam Forstag",
+        "party": "DEM",
+        "pct": 38,
+        "_candidateLC": "sam forstag"
+      },
+      {
+        "candidate": "Ryan K. Zinke",
+        "party": "REP",
+        "pct": 48,
+        "_candidateLC": "ryan k. zinke"
+      }
+    ]
+  },
+  {
     "poll_id": "edf8bf05-3a02-4b59-b8ba-154c23aca139",
     "question_id": "1bbe0896-65fb-43fb-afe9-20daeaef70d6",
     "district": "CO03",
@@ -448,7 +502,7 @@
     "sample_size": 400,
     "sponsorParty": "DEM",
     "pollsterBias": 0,
-    "weight": 0.08972871676138897,
+    "weight": 0.08972459508160034,
     "responses": [
       {
         "candidate": "Jeff Hurd",
@@ -475,7 +529,7 @@
     "sample_size": 1094,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.26350896612461133,
+    "weight": 0.26349686186614224,
     "responses": [
       {
         "candidate": "Someone else",
@@ -508,7 +562,7 @@
     "sample_size": 881,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.0013385506170485225,
+    "weight": 0.0013384891308574414,
     "responses": [
       {
         "candidate": "Lily Tang Williams",
@@ -535,7 +589,7 @@
     "sample_size": 1102,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.024618534184685563,
+    "weight": 0.024617403334736554,
     "responses": [
       {
         "candidate": "Lily Tang Williams",
@@ -562,7 +616,7 @@
     "sample_size": 508,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.003515552840994348,
+    "weight": 0.003515391354419995,
     "responses": [
       {
         "candidate": "Someone else",
@@ -595,7 +649,7 @@
     "sample_size": 387,
     "sponsorParty": "DEM",
     "pollsterBias": 0,
-    "weight": 0.02658297393073483,
+    "weight": 0.026581752844439085,
     "responses": [
       {
         "candidate": "Joe Baldacci",
@@ -622,7 +676,7 @@
     "sample_size": 549,
     "sponsorParty": "IND",
     "pollsterBias": 0.88,
-    "weight": 0.023307049203780017,
+    "weight": 0.023305978596764747,
     "responses": [
       {
         "candidate": "Scott Perry",
