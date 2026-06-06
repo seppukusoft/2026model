@@ -9,7 +9,7 @@
     "sample_size": 1015,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 13.75007400753317,
+    "weight": 13.740528219774632,
     "responses": [
       {
         "candidate": "Vivek G. Ramaswamy",
@@ -35,7 +35,7 @@
     "sample_size": 684,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 5.33730367220422,
+    "weight": 5.33359832719809,
     "responses": [
       {
         "candidate": "Someone else",
@@ -67,7 +67,7 @@
     "sample_size": 1163,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 22.44929343771764,
+    "weight": 22.433708344112457,
     "responses": [
       {
         "candidate": "Someone else",
@@ -99,7 +99,7 @@
     "sample_size": 1456,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 25.118488763573822,
+    "weight": 25.101050620155767,
     "responses": [
       {
         "candidate": "Someone else",
@@ -131,7 +131,7 @@
     "sample_size": 1670,
     "sponsorParty": "IND",
     "pollsterBias": 0.35,
-    "weight": 16.44231478293824,
+    "weight": 16.43089994640056,
     "responses": [
       {
         "candidate": "Greg Abbott",
@@ -157,7 +157,7 @@
     "sample_size": 643,
     "sponsorParty": "DEM",
     "pollsterBias": 0.88,
-    "weight": 11.189259414595043,
+    "weight": 11.181491434910832,
     "responses": [
       {
         "candidate": "Greg Abbott",
@@ -183,7 +183,7 @@
     "sample_size": 1593,
     "sponsorParty": "IND",
     "pollsterBias": 2.68,
-    "weight": 9.556455998204074,
+    "weight": 9.54982156840881,
     "responses": [
       {
         "candidate": "Byron Donalds",
@@ -209,7 +209,7 @@
     "sample_size": 1223,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 6.527985052787184,
+    "weight": 6.523453094648582,
     "responses": [
       {
         "candidate": "Gina Hinojosa",
@@ -235,7 +235,7 @@
     "sample_size": 996,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 6.090768244167856,
+    "weight": 6.086539817403505,
     "responses": [
       {
         "candidate": "Someone else",
@@ -267,7 +267,7 @@
     "sample_size": 603,
     "sponsorParty": "REP",
     "pollsterBias": -0.55,
-    "weight": 5.231510518381613,
+    "weight": 5.227878618725097,
     "responses": [
       {
         "candidate": "Tina Kotek",
@@ -293,7 +293,7 @@
     "sample_size": 604,
     "sponsorParty": "REP",
     "pollsterBias": 0.36,
-    "weight": 5.45687228489981,
+    "weight": 5.4530839311332375,
     "responses": [
       {
         "candidate": "David W. Jolly",
@@ -319,7 +319,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 5.40677394941588,
+    "weight": 5.4030203756859345,
     "responses": [
       {
         "candidate": "Someone else",
@@ -351,7 +351,7 @@
     "sample_size": 606,
     "sponsorParty": "IND",
     "pollsterBias": 0.94,
-    "weight": 3.5389928656103877,
+    "weight": 3.5365359715779925,
     "responses": [
       {
         "candidate": "John James",
@@ -377,7 +377,7 @@
     "sample_size": 806,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 4.338849111923734,
+    "weight": 4.335836929391768,
     "responses": [
       {
         "candidate": "Someone else",
@@ -409,7 +409,7 @@
     "sample_size": 1159,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 8.523864516299387,
+    "weight": 8.517946948036808,
     "responses": [
       {
         "candidate": "Someone else",
@@ -441,7 +441,7 @@
     "sample_size": 1501,
     "sponsorParty": "REP",
     "pollsterBias": -0.07,
-    "weight": 9.700300009798578,
+    "weight": 9.69356571840226,
     "responses": [
       {
         "candidate": "Someone else",
@@ -473,7 +473,7 @@
     "sample_size": 1200,
     "sponsorParty": "IND",
     "pollsterBias": 1.08,
-    "weight": 4.7838410445097646,
+    "weight": 4.78051993283746,
     "responses": [
       {
         "candidate": "Gina Hinojosa",
@@ -499,7 +499,7 @@
     "sample_size": 1018,
     "sponsorParty": "IND",
     "pollsterBias": 0.35,
-    "weight": 3.6171978835669383,
+    "weight": 3.6146866968447253,
     "responses": [
       {
         "candidate": "Gina Hinojosa",
@@ -525,7 +525,7 @@
     "sample_size": 848,
     "sponsorParty": "IND",
     "pollsterBias": 1.37,
-    "weight": 2.639187784112568,
+    "weight": 2.637355566596629,
     "responses": [
       {
         "candidate": "Someone else",
@@ -551,7 +551,7 @@
     "sample_size": 848,
     "sponsorParty": "IND",
     "pollsterBias": 1.37,
-    "weight": 2.639187784112568,
+    "weight": 2.637355566596629,
     "responses": [
       {
         "candidate": "Someone else",
@@ -583,7 +583,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 3.6043156408169814,
+    "weight": 3.601813397403371,
     "responses": [
       {
         "candidate": "Bernadette Wilson",
@@ -609,7 +609,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 1.77,
-    "weight": 3.6043156408169814,
+    "weight": 3.601813397403371,
     "responses": [
       {
         "candidate": "Dave Bronson",
@@ -647,7 +647,7 @@
     "sample_size": 599,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 3.768820956476105,
+    "weight": 3.766204507653303,
     "responses": [
       {
         "candidate": "Someone else",
@@ -679,7 +679,7 @@
     "sample_size": 1117,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 5.321023343816236,
+    "weight": 5.31732930118996,
     "responses": [
       {
         "candidate": "Someone else",
@@ -711,7 +711,7 @@
     "sample_size": 413,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.710495577339831,
+    "weight": 2.7086138554314574,
     "responses": [
       {
         "candidate": "Amy Acton",
@@ -737,7 +737,7 @@
     "sample_size": 406,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 2.687427110362502,
+    "weight": 2.6855614033999062,
     "responses": [
       {
         "candidate": "David W. Jolly",
@@ -763,7 +763,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": -0.04,
-    "weight": 2.0643272465098446,
+    "weight": 2.0628941175136974,
     "responses": [
       {
         "candidate": "John James",
@@ -789,7 +789,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 1.08,
-    "weight": 3.5754212852004876,
+    "weight": 3.572939101270629,
     "responses": [
       {
         "candidate": "Someone else",
@@ -821,7 +821,7 @@
     "sample_size": 800,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 1.5482703981590484,
+    "weight": 1.5471955340815493,
     "responses": [
       {
         "candidate": "John James",
@@ -847,7 +847,7 @@
     "sample_size": 1834,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 2.660980294091766,
+    "weight": 2.6591329474445295,
     "responses": [
       {
         "candidate": "Byron Donalds",
@@ -873,7 +873,7 @@
     "sample_size": 1125,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 4.775026678320947,
+    "weight": 4.77171168589344,
     "responses": [
       {
         "candidate": "Someone else",
@@ -899,7 +899,7 @@
     "sample_size": 1125,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 4.775026678320947,
+    "weight": 4.77171168589344,
     "responses": [
       {
         "candidate": "Someone else",
@@ -931,7 +931,7 @@
     "sample_size": 700,
     "sponsorParty": "IND",
     "pollsterBias": 0.43,
-    "weight": 2.3189631621454763,
+    "weight": 2.3173532558894383,
     "responses": [
       {
         "candidate": "Stacy Garrity",
@@ -957,7 +957,7 @@
     "sample_size": 500,
     "sponsorParty": "IND",
     "pollsterBias": -0.19,
-    "weight": 1.8701994334879923,
+    "weight": 1.8689010748865442,
     "responses": [
       {
         "candidate": "Kathy C. Hochul",
@@ -983,7 +983,7 @@
     "sample_size": 804,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 1.3494542183880816,
+    "weight": 1.3485173795353198,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1015,7 +1015,7 @@
     "sample_size": 800,
     "sponsorParty": "DEM",
     "pollsterBias": 0.85,
-    "weight": 0.6799079653085137,
+    "weight": 0.6794359491485553,
     "responses": [
       {
         "candidate": "Joe Lombardo",
@@ -1041,7 +1041,7 @@
     "sample_size": 845,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.8969416885619966,
+    "weight": 0.8963189999142038,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1073,7 +1073,7 @@
     "sample_size": 800,
     "sponsorParty": "REP",
     "pollsterBias": -1.7,
-    "weight": 0.5507484400174375,
+    "weight": 0.550366090968707,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
@@ -1099,7 +1099,7 @@
     "sample_size": 1491,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 1.4075281546801406,
+    "weight": 1.406550998846551,
     "responses": [
       {
         "candidate": "Cinde Warmington",
@@ -1125,7 +1125,7 @@
     "sample_size": 809,
     "sponsorParty": "IND",
     "pollsterBias": -1.05,
-    "weight": 0.9696260555277697,
+    "weight": 0.9689529068213595,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1157,7 +1157,7 @@
     "sample_size": 1343,
     "sponsorParty": "IND",
     "pollsterBias": 1.11,
-    "weight": 0.5458425935446097,
+    "weight": 0.5454636503080355,
     "responses": [
       {
         "candidate": "Vivek G. Ramaswamy",
@@ -1183,7 +1183,7 @@
     "sample_size": 124,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.1706241734865139,
+    "weight": 0.17050572014977644,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1215,7 +1215,7 @@
     "sample_size": 183,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.2072789800308478,
+    "weight": 0.20713507963081376,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1247,7 +1247,7 @@
     "sample_size": 200,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.216692917020898,
+    "weight": 0.2165424811328055,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1279,7 +1279,7 @@
     "sample_size": 834,
     "sponsorParty": "IND",
     "pollsterBias": 0.56,
-    "weight": 0.8719069789660057,
+    "weight": 0.8713016702991694,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1311,7 +1311,7 @@
     "sample_size": 1023,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.5985858292986913,
+    "weight": 0.5981702698421658,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1343,7 +1343,7 @@
     "sample_size": 805,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.5309902597212258,
+    "weight": 0.5306216275001647,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1375,7 +1375,7 @@
     "sample_size": 773,
     "sponsorParty": "IND",
     "pollsterBias": 1.58,
-    "weight": 1.0400907278718727,
+    "weight": 1.0393686600973686,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1401,7 +1401,7 @@
     "sample_size": 776,
     "sponsorParty": "IND",
     "pollsterBias": 1.58,
-    "weight": 1.0421070607393637,
+    "weight": 1.0413835931552593,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1433,7 +1433,7 @@
     "sample_size": 1117,
     "sponsorParty": "IND",
     "pollsterBias": 0.77,
-    "weight": 0.5038177861287997,
+    "weight": 0.5034680180000806,
     "responses": [
       {
         "candidate": "Gina Hinojosa",
@@ -1459,7 +1459,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 1.31,
-    "weight": 0.30630166706700623,
+    "weight": 0.3060890216148939,
     "responses": [
       {
         "candidate": "David W. Jolly",
@@ -1485,7 +1485,7 @@
     "sample_size": 1129,
     "sponsorParty": "IND",
     "pollsterBias": 1.31,
-    "weight": 0.4602685802855168,
+    "weight": 0.4599490455559638,
     "responses": [
       {
         "candidate": "David W. Jolly",
@@ -1511,7 +1511,7 @@
     "sample_size": 1442,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.5627763850915903,
+    "weight": 0.562385685817924,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
@@ -1537,7 +1537,7 @@
     "sample_size": 836,
     "sponsorParty": "IND",
     "pollsterBias": 0.59,
-    "weight": 0.7254882308601807,
+    "weight": 0.7249845712675622,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1569,7 +1569,7 @@
     "sample_size": 1065,
     "sponsorParty": "IND",
     "pollsterBias": 1.84,
-    "weight": 0.21676296737414585,
+    "weight": 0.21661248285462023,
     "responses": [
       {
         "candidate": "Christine Drazan",
@@ -1595,7 +1595,7 @@
     "sample_size": 612,
     "sponsorParty": "IND",
     "pollsterBias": 2.05,
-    "weight": 0.4664975787771973,
+    "weight": 0.4661737196565524,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1627,7 +1627,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.2626740131786157,
+    "weight": 0.2624916555870776,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1659,7 +1659,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.28774496457667426,
+    "weight": 0.2875452018438388,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1691,7 +1691,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.2626740131786157,
+    "weight": 0.2624916555870776,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1723,7 +1723,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.28774496457667426,
+    "weight": 0.2875452018438388,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1755,7 +1755,7 @@
     "sample_size": null,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.2626740131786157,
+    "weight": 0.2624916555870776,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1781,7 +1781,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.28774496457667426,
+    "weight": 0.2875452018438388,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1807,7 +1807,7 @@
     "sample_size": 600,
     "sponsorParty": "DEM",
     "pollsterBias": -0.6,
-    "weight": 0.4225551828861029,
+    "weight": 0.42226183013106366,
     "responses": [
       {
         "candidate": "Click Bishop",
@@ -1845,7 +1845,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.22018190230228973,
+    "weight": 0.22002904423719877,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
@@ -1871,7 +1871,7 @@
     "sample_size": 800,
     "sponsorParty": "DEM",
     "pollsterBias": 0.03,
-    "weight": 0.3947398925187626,
+    "weight": 0.3944658501222089,
     "responses": [
       {
         "candidate": "John James",
@@ -1897,7 +1897,7 @@
     "sample_size": 1000,
     "sponsorParty": "DEM",
     "pollsterBias": 0.82,
-    "weight": 0.26526424400823295,
+    "weight": 0.26508008818682827,
     "responses": [
       {
         "candidate": "Greg Abbott",
@@ -1923,7 +1923,7 @@
     "sample_size": 1000,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.8224299584830417,
+    "weight": 0.8218589985139798,
     "responses": [
       {
         "candidate": "Someone else",
@@ -1955,7 +1955,7 @@
     "sample_size": 1502,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.30966940796931075,
+    "weight": 0.3094544245123367,
     "responses": [
       {
         "candidate": "Gina Hinojosa",
@@ -1981,7 +1981,7 @@
     "sample_size": 802,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.20158480802854753,
+    "weight": 0.20144486072413814,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2013,7 +2013,7 @@
     "sample_size": 575,
     "sponsorParty": "IND",
     "pollsterBias": 0.09,
-    "weight": 0.33794778437123446,
+    "weight": 0.3377131690650688,
     "responses": [
       {
         "candidate": "Michael James Lindell",
@@ -2039,7 +2039,7 @@
     "sample_size": 1165,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.3609082841987447,
+    "weight": 0.36065772890141545,
     "responses": [
       {
         "candidate": "Greg Abbott",
@@ -2065,7 +2065,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.11698837234000915,
+    "weight": 0.11690715487369137,
     "responses": [
       {
         "candidate": "John James",
@@ -2091,7 +2091,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.84,
-    "weight": 0.11698837234000915,
+    "weight": 0.11690715487369137,
     "responses": [
       {
         "candidate": "Jocelyn Benson",
@@ -2117,7 +2117,7 @@
     "sample_size": 844,
     "sponsorParty": "IND",
     "pollsterBias": 0.39,
-    "weight": 0.11401926872400145,
+    "weight": 0.11394011251444026,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
@@ -2143,7 +2143,7 @@
     "sample_size": 844,
     "sponsorParty": "IND",
     "pollsterBias": 0.39,
-    "weight": 0.11401926872400145,
+    "weight": 0.11394011251444026,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
@@ -2169,7 +2169,7 @@
     "sample_size": 603,
     "sponsorParty": "IND",
     "pollsterBias": -0.16,
-    "weight": 0.03292781603464121,
+    "weight": 0.03290495637999164,
     "responses": [
       {
         "candidate": "Vivek G. Ramaswamy",
@@ -2195,7 +2195,7 @@
     "sample_size": 2725,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.09163082439833964,
+    "weight": 0.0915672110387776,
     "responses": [
       {
         "candidate": "Katie Hobbs",
@@ -2227,7 +2227,7 @@
     "sample_size": 801,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.04205253539169055,
+    "weight": 0.04202334103409383,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2259,7 +2259,7 @@
     "sample_size": 801,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.04205253539169055,
+    "weight": 0.04202334103409383,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2285,7 +2285,7 @@
     "sample_size": 850,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.09599894393578261,
+    "weight": 0.09593229807312391,
     "responses": [
       {
         "candidate": "Vivek G. Ramaswamy",
@@ -2311,7 +2311,7 @@
     "sample_size": 616,
     "sponsorParty": "IND",
     "pollsterBias": 0.94,
-    "weight": 0.013641468207588563,
+    "weight": 0.013631997817818075,
     "responses": [
       {
         "candidate": "Jocelyn Benson",
@@ -2337,7 +2337,7 @@
     "sample_size": 800,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.04781589966499813,
+    "weight": 0.04778270417605493,
     "responses": [
       {
         "candidate": "Joe Lombardo",
@@ -2363,7 +2363,7 @@
     "sample_size": 802,
     "sponsorParty": "IND",
     "pollsterBias": 0,
-    "weight": 0.021671883871510984,
+    "weight": 0.021656838483126047,
     "responses": [
       {
         "candidate": "Someone else",
@@ -2389,7 +2389,7 @@
     "sample_size": 600,
     "sponsorParty": "IND",
     "pollsterBias": 0.22,
-    "weight": 0.017722620136556684,
+    "weight": 0.01771031646675418,
     "responses": [
       {
         "candidate": "Jocelyn Benson",
@@ -2415,7 +2415,7 @@
     "sample_size": 850,
     "sponsorParty": "IND",
     "pollsterBias": 0.61,
-    "weight": 0.037750693915931326,
+    "weight": 0.037724486048856476,
     "responses": [
       {
         "candidate": "Katie Hobbs",
@@ -2441,7 +2441,7 @@
     "sample_size": 500,
     "sponsorParty": "IND",
     "pollsterBias": 0.39,
-    "weight": 0.01460062921572,
+    "weight": 0.014590492942449186,
     "responses": [
       {
         "candidate": "Bruce Blakeman",
