@@ -868,6 +868,41 @@
         "winProbability": 0.95,
         "rating": "solid"
       },
+      "IA": {
+        "color": "tiltD",
+        "nameOps": [
+          {
+            "op": "append",
+            "value": "<br>"
+          },
+          {
+            "op": "append",
+            "value": " (FLIP REP → DEM)"
+          },
+          {
+            "op": "color",
+            "value": "#577ccc"
+          },
+          {
+            "op": "append",
+            "value": "* (default values)"
+          },
+          {
+            "op": "color",
+            "value": "#FF0000"
+          }
+        ],
+        "description": "<b>Win Probability:</b><br>Rob Sand: 53.00%<br>Zach Lahn: 47.00%<br><b>Vote Estimate:</b><br>Rob Sand: 50.50%<br>Zach Lahn: 49.50%<br>",
+        "pulse": true,
+        "noElection": false,
+        "isDefault": true,
+        "isFlip": true,
+        "prevParty": "REP",
+        "winner": "Rob Sand",
+        "winnerParty": "DEM",
+        "winProbability": 0.53,
+        "rating": "tilt"
+      },
       "ID": {
         "color": "solidR",
         "nameOps": [
