@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
     let data;
     let fetchedFile;
+    let dates = [];
 
     try {
         const idxRes = await fetch("./results/latest.json");
         if (!idxRes.ok) throw new Error(`HTTP ${idxRes.status}`);
-        const { file } = await idxRes.json();
+        const { file, dates: _dates = [] } = await idxRes.json();
+        dates = _dates;
         fetchedFile = file; 
 
         const res = await fetch(`./results/${file}`);
@@ -94,7 +96,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const { senate, gov, house, generated } = data; 
 
+    const activePulses = { senate: [], gov: [], house: [] };
+
     function applyRaceResults(type, raceData) {
+        const targetMap = mapLookup[type];
+
+        if (activePulses[type]) {
+            activePulses[type].forEach(clearInterval);
+            activePulses[type] = [];
+        }
+
+        for (const state in targetMap.mapdata.state_specific) {
+            let st = targetMap.mapdata.state_specific[state];
+            
+            if (st.orig_name === undefined) {
+                st.orig_name = st.name;
+            }
+            
+            st.name = st.orig_name;
+            st.description = "default"; 
+        }
+
         for (const [region, info] of Object.entries(raceData.regions)) {
             applyColor(type, region, info.color);
 
@@ -104,10 +126,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             if (info.description) changeDesc(type, region, info.description);
-            if (info.pulse)       pulseMap(type, region);
+            
+            if (info.pulse) {
+                const pulseId = pulseMap(type, region);
+                if (pulseId) activePulses[type].push(pulseId);
+            }
         }
 
-        mapLookup[type].refresh();
+        targetMap.refresh();
     }
 
     applyRaceResults("senate", senate);
@@ -121,6 +147,48 @@ document.addEventListener("DOMContentLoaded", async () => {
     applyRaceResults("house", house);
     renderSeatChart("houseChart", house.seats, 218, 435);
     document.getElementById("houseSummary").innerHTML = house.summaryHTML;
+
+    const dataCache = {};
+    async function refreshChamber(type, key, chartId, summaryId, threshold, total, date) {
+        if (!dataCache[date]) {
+            const r = await fetch(`./results/results_${date}.json`);
+            if (!r.ok) return;
+            dataCache[date] = await r.json();
+        }
+        const raceData = dataCache[date][key];
+        applyRaceResults(type, raceData);
+        renderSeatChart(chartId, raceData.seats, threshold, total);
+        document.getElementById(summaryId).innerHTML = raceData.summaryHTML;
+    }
+
+    function setupSliders() {
+        if (dates.length < 2) return;
+        [
+            ["senate", "senate", "senateChart", "senateSummary", 50,  100],
+            ["gov",    "gov",    "govChart",    "govSummary",    25,  50],
+            ["house",  "house",  "houseChart",  "houseSummary",  218, 435],
+        ].forEach(([type, key, chartId, summaryId, threshold, total]) => {
+            const row    = document.getElementById(`${key}SliderRow`);
+            const slider = document.getElementById(`${key}DateSlider`);
+            if (!row || !slider) return;
+            slider.min   = 0;
+            slider.max   = dates.length - 1;
+            slider.value = dates.length - 1;
+            document.getElementById(`${key}SliderMin`).textContent = dates[0];
+            document.getElementById(`${key}SliderMax`).textContent = dates[dates.length - 1];
+            document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = dates[dates.length - 1] + " ";
+            row.style.display = "";
+            let debounce;
+            slider.addEventListener("input", () => {
+                const date = dates[parseInt(slider.value)];
+                document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
+                document.getElementById(`${key}LatestBadge`).style.display = date === dates[dates.length - 1] ? "inline" : "none";
+                clearTimeout(debounce);
+                debounce = setTimeout(() => refreshChamber(type, key, chartId, summaryId, threshold, total, date), 120);
+            });
+        });
+    }
+    setupSliders();
 
     function matchPollsHeight() {
         document.querySelectorAll('.map-polls-row').forEach(row => {

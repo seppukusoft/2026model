@@ -50,8 +50,9 @@ function togglePulse() {
 
 function pulseMap(type, state) {
     const target = mapLookup[type];
-    if (!target || !target.mapdata.state_specific[state]) return;
-    setInterval(() => {
+    if (!target || !target.mapdata.state_specific[state]) return null;
+    
+    return setInterval(() => {
         if (pulseEnabled) target.pulse_state(state);
     }, 4000);
 }

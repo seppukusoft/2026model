@@ -52,6 +52,8 @@ const majorityArrows = {
 Chart.register(majorityArrows);
 
 function renderSeatChart(canvas, seats, majority, x) {
+    let existingChart = Chart.getChart(canvas);
+    if (existingChart) existingChart.destroy();
     const ctx = document.getElementById(canvas);
 
     new Chart(ctx, {

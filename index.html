@@ -91,6 +91,44 @@
         padding: 2px 10px;
         font-size: 0.9em;
     }
+
+    .date-slider-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 70%;
+        margin: 10px auto 4px;
+        font-size: 0.82em;
+    }
+    .date-slider-row input[type=range] {
+        flex: 1;
+        accent-color: var(--pico-primary);
+        cursor: pointer;
+    }
+    .date-slider-row .slider-date-label {
+        min-width: 88px;
+        text-align: center;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        opacity: 0.9;
+    }
+    .date-slider-row .slider-end-label {
+        opacity: 0.55;
+        white-space: nowrap;
+        font-size: 0.9em;
+    }
+    .slider-latest-badge {
+        font-size: 0.72em;
+        padding: 1px 6px;
+        border-radius: 999px;
+        background: var(--pico-primary);
+        color: #fff;
+        margin-left: 4px;
+        vertical-align: middle;
+        opacity: 0.85;
+        display: none;
+    }
 </style>
 <title>2026 Midterm Model</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/14.8.1/math.js"></script>
@@ -130,6 +168,14 @@
     <h2>Gubernatorial Map</h2>
     <div id="govSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
     <div id="govChartWrapper"><canvas id="govChart"></canvas></div>
+    <div class="date-slider-row" id="govSliderRow" style="display:none;">
+        <span class="slider-end-label" id="govSliderMin"></span>
+        <input type="range" id="govDateSlider" min="0" step="1" value="0">
+        <span class="slider-end-label" id="govSliderMax"></span>
+        <span class="slider-date-label" id="govSliderLabel">
+            —<span class="slider-latest-badge" id="govLatestBadge">LATEST</span>
+        </span>
+    </div>
     <br>
     <div class="map-polls-row">
         <div class="map-col">
@@ -162,6 +208,14 @@
     <h2>Senate Map</h2>
     <div id="senateSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
     <div id="senateChartWrapper"><canvas id="senateChart"></canvas></div>
+    <div class="date-slider-row" id="senateSliderRow" style="display:none;">
+        <span class="slider-end-label" id="senateSliderMin"></span>
+        <input type="range" id="senateDateSlider" min="0" step="1" value="0">
+        <span class="slider-end-label" id="senateSliderMax"></span>
+        <span class="slider-date-label" id="senateSliderLabel">
+            —<span class="slider-latest-badge" id="senateLatestBadge">LATEST</span>
+        </span>
+    </div>
     <br>
     <div class="map-polls-row">
         <div class="map-col">
@@ -194,6 +248,14 @@
     <h2>House Map</h2>
     <div id="houseSummary" style="text-align:center; font-size:1.1em; margin-bottom:6px;"></div>
     <div id="houseChartWrapper"><canvas id="houseChart"></canvas></div>
+    <div class="date-slider-row" id="houseSliderRow" style="display:none;">
+        <span class="slider-end-label" id="houseSliderMin"></span>
+        <input type="range" id="houseDateSlider" min="0" step="1" value="0">
+        <span class="slider-end-label" id="houseSliderMax"></span>
+        <span class="slider-date-label" id="houseSliderLabel">
+            —<span class="slider-latest-badge" id="houseLatestBadge">LATEST</span>
+        </span>
+    </div>
     <br>
     <div class="map-polls-row">
         <div class="map-col">
