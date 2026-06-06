@@ -846,18 +846,27 @@
         "rating": "solid"
       },
       "CA": {
-        "color": "tiltD",
-        "nameOps": [],
-        "description": "<b>Win Probability:</b><br>Xavier Becerra: 49.34%<br>Tom Steyer: 27.61%<br>Steve Hilton: 11.72%<br>Katie Porter: 11.32%<br><b>Vote Estimate:</b><br>Xavier Becerra: 29.59%<br>Tom Steyer: 26.25%<br>Steve Hilton: 22.13%<br>Katie Porter: 22.04%<br>",
+        "color": "solidD",
+        "nameOps": [
+          {
+            "op": "append",
+            "value": "* (default values)"
+          },
+          {
+            "op": "color",
+            "value": "#FF0000"
+          }
+        ],
+        "description": "<b>Win Probability:</b><br>Democrat: 95.00%<br><b>Vote Estimate:</b><br>Democrat: 57.00%<br>",
         "pulse": false,
         "noElection": false,
-        "isDefault": false,
+        "isDefault": true,
         "isFlip": false,
         "prevParty": "DEM",
-        "winner": "Xavier Becerra",
+        "winner": "Democrat",
         "winnerParty": "DEM",
-        "winProbability": 0.49344,
-        "rating": "tilt"
+        "winProbability": 0.95,
+        "rating": "solid"
       },
       "ID": {
         "color": "solidR",
