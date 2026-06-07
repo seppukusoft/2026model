@@ -10,16 +10,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         dates = _dates;
         fetchedFile = file; 
 
-        const res = await fetch(`./results/${file}`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        data = await res.json();
-
         const date = file.replace("results_", "").replace(".json", "");
-        const [senatePolls, govPolls, housePolls] = await Promise.all([
+        const [resultsRes, senatePolls, govPolls, housePolls] = await Promise.all([
+            fetch(`./results/${file}`).then(r => r.json()),
             fetch(`./polls/senate_${date}.json`).then(r => r.json()),
             fetch(`./polls/gov_${date}.json`).then(r => r.json()),
             fetch(`./polls/house_${date}.json`).then(r => r.json()),
         ]);
+        data = resultsRes;
 
         const atLargeStates = new Set(["AK", "VT", "WY", "ND", "SD", "DE"]);
         function formatDistrict(d) {
@@ -151,10 +149,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const dataCache = {};
     async function refreshChamber(type, key, chartId, summaryId, threshold, total, date) {
         if (!dataCache[date]) {
+        const cacheKey = `results_${date}`;
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+            dataCache[date] = JSON.parse(cached);
+        } else {
             const r = await fetch(`./results/results_${date}.json`);
             if (!r.ok) return;
             dataCache[date] = await r.json();
+            sessionStorage.setItem(cacheKey, JSON.stringify(dataCache[date]));
         }
+    }
         const raceData = dataCache[date][key];
         applyRaceResults(type, raceData);
         renderSeatChart(chartId, raceData.seats, threshold, total);
@@ -184,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
                 document.getElementById(`${key}LatestBadge`).style.display = date === dates[dates.length - 1] ? "inline" : "none";
                 clearTimeout(debounce);
-                debounce = setTimeout(() => refreshChamber(type, key, chartId, summaryId, threshold, total, date), 120);
+                debounce = setTimeout(() => refreshChamber(type, key, chartId, summaryId, threshold, total, date), 0);
             });
         });
     }
