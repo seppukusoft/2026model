@@ -79,7 +79,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
 
-            if (searchInput) searchInput.addEventListener("input", draw);
+            if (searchInput) {
+                if (searchInput._draw) searchInput.removeEventListener("input", searchInput._draw);
+                searchInput._draw = draw;
+                searchInput.addEventListener("input", draw);
+            }
             draw();
         }
 
@@ -166,6 +170,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById(summaryId).innerHTML = raceData.summaryHTML;
     }
 
+    const pollsCache = {};
+    async function fetchAndRenderPolls(key, date) {
+        const cacheKey = `${key}_${date}`;
+        if (!pollsCache[cacheKey]) {
+            const r = await fetch(`./polls/${key}_${date}.json`);
+            if (!r.ok) return;
+            pollsCache[cacheKey] = await r.json();
+        }
+        renderPollsSection(`${key}PollsTable`, pollsCache[cacheKey], key);
+    }
+
     function setupSliders() {
         if (dates.length < 2) return;
         [
@@ -189,7 +204,45 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
                 document.getElementById(`${key}LatestBadge`).style.display = date === dates[dates.length - 1] ? "inline" : "none";
                 clearTimeout(debounce);
-                debounce = setTimeout(() => refreshChamber(type, key, chartId, summaryId, threshold, total, date), 0);
+                debounce = setTimeout(async () => {
+                    await refreshChamber(type, key, chartId, summaryId, threshold, total, date);
+                    await fetchAndRenderPolls(key, date);
+                }, 0);
+            });
+
+            let autoplayTimeout = null;
+            let autoplayIdx = 0;
+            const btn = document.createElement("button");
+            btn.textContent = "▶";
+            btn.title = "Autoplay timeline";
+            btn.style.cssText = "padding:1px 10px; font-size:0.9em; flex-shrink:0;";
+            row.appendChild(btn);
+
+            function stopPlay() {
+                clearTimeout(autoplayTimeout);
+                autoplayTimeout = null;
+                btn.textContent = "▶";
+            }
+            async function runStep() {
+                if (autoplayTimeout === null) return;
+                const date = dates[autoplayIdx];
+                slider.value = autoplayIdx;
+                document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
+                document.getElementById(`${key}LatestBadge`).style.display = autoplayIdx === dates.length - 1 ? "inline" : "none";
+                await refreshChamber(type, key, chartId, summaryId, threshold, total, date);
+                await fetchAndRenderPolls(key, date);
+                autoplayIdx++;
+                if (autoplayIdx < dates.length && autoplayTimeout !== null) {
+                    autoplayTimeout = setTimeout(runStep, 500);
+                } else {
+                    stopPlay();
+                }
+            }
+            btn.addEventListener("click", () => {
+                if (autoplayTimeout !== null) { stopPlay(); return; }
+                autoplayIdx = 0;
+                btn.textContent = "⏹";
+                autoplayTimeout = setTimeout(runStep, 0);
             });
         });
     }
