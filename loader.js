@@ -151,6 +151,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("houseSummary").innerHTML = house.summaryHTML;
 
     const dataCache = {};
+    // Pre-populate cache with the already-fetched latest date
+    dataCache[fetchedFile.replace("results_", "").replace(".json", "")] = data;
     async function refreshChamber(type, key, chartId, summaryId, threshold, total, date) {
         if (!dataCache[date]) {
         const cacheKey = `results_${date}`;
@@ -247,6 +249,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
     setupSliders();
+
+    initLineCharts(
+        { senate, gov, house },
+        dates,
+        async date => {
+            if (!dataCache[date]) {
+                const cacheKey = `results_${date}`;
+                const cached = sessionStorage.getItem(cacheKey);
+                if (cached) {
+                    dataCache[date] = JSON.parse(cached);
+                } else {
+                    const r = await fetch(`./results/results_${date}.json`);
+                    if (!r.ok) return null;
+                    dataCache[date] = await r.json();
+                    sessionStorage.setItem(cacheKey, JSON.stringify(dataCache[date]));
+                }
+            }
+            return dataCache[date];
+        }
+    );
 
     function matchPollsHeight() {
         document.querySelectorAll('.map-polls-row').forEach(row => {

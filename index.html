@@ -34,13 +34,21 @@
         .warning {display: none;}
     }
 
-    #senateChartWrapper, #govChartWrapper, #houseChartWrapper {
+    #senateChartWrapper, #govChartWrapper, #houseChartWrapper, #govLineChartWrapper, #senateLineChartWrapper, #houseLineChartWrapper {
         height: 45px;
         width: 70%;
         position: relative;
         margin: 0 auto;
     }
-    #senateChart, #govChart, #houseChart {
+
+    #houseLineControls, #senateLineControls, #govLineControls  {
+        height: 55px;
+        width: 70%;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    #senateChart, #govChart, #houseChart, #govLineChart, #senateLineChart, #houseLineChart {
         width: 100% !important;
         height: 100% !important;
         display: block;
@@ -148,6 +156,7 @@
 <script type="text/javascript">var map3 = simplemaps_usmap.create();</script>
 <script src="bar.js"></script>
 <script src="mapfill.js"></script>
+<script src="linechart.js"></script>
 <script src="loader.js"></script>
 </head>
 <body>
@@ -204,6 +213,19 @@
         </div>
     </div>
     <button id="govPollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button>
+    <br> <h3>Trend Lines</h3>
+    <div id="govLineControls" style="display:none; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <select id="govRegionSelect" style="font-size:0.85em; text-align:center; padding:2px 4px;">
+            <option value="sel">— Select state —</option>
+        </select>
+        <select id="govMetricSelect" style="font-size:0.85em; text-align:center; padding:2px 4px;">
+            <option value="prob">Win Probability</option>
+            <option value="vote">Vote Estimate</option>
+        </select>
+    </div>
+    <div id="govLineChartWrapper" style="height:500px; position:relative; margin-top:4px; display:none;">
+        <canvas id="govLineChart" style="width:100%!important; height:100%!important; display:block;"></canvas>
+    </div>
 
     <br><br><br>
 
@@ -244,6 +266,19 @@
         </div>
     </div>
     <button id="senatePollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button>
+     <br> <h3>Trend Lines</h3>
+    <div id="senateLineControls" style="display:none; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <select id="senateRegionSelect" style="font-size:0.85em; text-align:center; padding:2px 4px;">
+            <option value="sel">— Select state —</option>
+        </select>
+        <select id="senateMetricSelect" style="font-size:0.85em; text-align:center; padding:2px 4px;">
+            <option value="prob">Win Probability</option>
+            <option value="vote">Vote Estimate</option>
+        </select>
+    </div>
+    <div id="senateLineChartWrapper" style="height:500px; position:relative; margin-top:4px; display:none;">
+        <canvas id="senateLineChart" style="width:100%!important; height:100%!important; display:block;"></canvas>
+    </div>
 
     <br><br><br>
 
@@ -284,6 +319,19 @@
         </div>
     </div>
     <button id="housePollsToggle" style="float:right; padding:2px 8px; font-size:0.8em;">Hide Polls</button>
+     <br> <h3>Trend Lines</h3>
+    <div id="houseLineControls" style="display:none; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <select id="houseRegionSelect" style="font-size:0.85em; text-align:center; padding:2px 4px;">
+            <option value="sel">— Select district —</option>
+        </select>
+        <select id="houseMetricSelect" style="font-size:0.85em; text-align:center;  padding:2px 4px;">
+            <option value="prob">Win Probability</option>
+            <option value="vote">Vote Estimate</option>
+        </select>
+    </div>
+    <div id="houseLineChartWrapper" style="height: 500px; position:relative; margin-top:4px; display:none;">
+        <canvas id="houseLineChart" style="width:100%!important; height:100%!important; display:block;"></canvas>
+    </div>
 
 </div>
 
