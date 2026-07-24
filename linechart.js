@@ -22,18 +22,11 @@
         const end = desc.indexOf('<b>', start);
         const chunk = end === -1 ? desc.slice(start) : desc.slice(start, end);
         return chunk.split('<br>').flatMap(part => {
+            const colorMatch = part.match(/color:\s*(#[0-9a-fA-F]{3,6})/);
+            const color = colorMatch ? colorMatch[1] : '#888';
             const m = part.replace(/<[^>]+>/g, '').trim().match(/^(.+?):\s*([\d.]+)%$/);
-            return m ? [{ candidate: m[1].trim(), value: parseFloat(m[2]) }] : [];
+            return m ? [{ candidate: m[1].trim(), value: parseFloat(m[2]), color }] : [];
         });
-    }
-
-    function candidateColor(name, winnerName, winnerParty, total) {
-        if (name === winnerName) return partyColors[winnerParty] || '#aaa';
-        if (total === 2) {
-            if (winnerParty === 'REP') return partyColors.DEM;
-            if (winnerParty === 'DEM') return partyColors.REP;
-        }
-        return '#888';
     }
 
     async function renderLineChart(type, chamberKey, regionKey, metric, dates, fetchDate) {
@@ -43,30 +36,31 @@
         const wrapper = document.getElementById(`${type}LineChartWrapper`);
         wrapper.style.display = '';
 
+        // Fetch all dates in parallel (fetchDate handles caching)
         const allData = new Array(dates.length);
         await Promise.all(dates.map(async (date, i) => {
             const r = await fetchDate(date);
             if (r) allData[i] = r;
         }));
 
-        if (activeRender[type] !== token) return;
+        if (activeRender[type] !== token) return; // superseded by a newer selection
 
+        // Collect per-candidate values across dates
         const byCandidate = {};
-        let winnerName = '', winnerParty = '';
+        const candidateColors = {};
         for (let i = 0; i < dates.length; i++) {
             const region = allData[i]?.[chamberKey]?.regions?.[regionKey];
             if (!region) continue;
-            winnerName  = region.winner;
-            winnerParty = region.winnerParty;
             for (const c of parseCandidates(region.description, metric)) {
                 if (!byCandidate[c.candidate]) byCandidate[c.candidate] = new Array(dates.length).fill(null);
                 byCandidate[c.candidate][i] = c.value;
+                if (!candidateColors[c.candidate]) candidateColors[c.candidate] = c.color;
             }
         }
 
         const names = Object.keys(byCandidate);
         const datasets = names.map(name => {
-            const color = candidateColor(name, winnerName, winnerParty, names.length);
+            const color = candidateColors[name] || '#888';
             return {
                 label: name,
                 data: byCandidate[name],
@@ -116,9 +110,9 @@
         if (dates.length < 2) return;
 
         const configs = [
-            { type: 'senate', key: 'senate', data: chambers.senate, fmt: k => k,       placeholder: 'Select State'    },
-            { type: 'gov',    key: 'gov',    data: chambers.gov,    fmt: k => k,       placeholder: 'Select State'    },
-            { type: 'house',  key: 'house',  data: chambers.house,  fmt: fmtDistrict,  placeholder: 'Select District' },
+            { type: 'senate', key: 'senate', data: chambers.senate, fmt: k => k,       placeholder: '— Select state —'    },
+            { type: 'gov',    key: 'gov',    data: chambers.gov,    fmt: k => k,       placeholder: '— Select state —'    },
+            { type: 'house',  key: 'house',  data: chambers.house,  fmt: fmtDistrict,  placeholder: '— Select district —' },
         ];
 
         for (const { type, key, data, fmt, placeholder } of configs) {
@@ -141,13 +135,7 @@
                 });
 
             const handler = () => {
-                if (regionSel.value === 'sel') { 
-                    wrapper.style.display = 'none';
-                    regionSel.options[0].textContent = placeholder;
-                    return; 
-                }
-                regionSel.options[0].textContent = "Hide Chart";
-                if (!regionSel.value || !metricSel.value) { return; }
+                if (!regionSel.value) { wrapper.style.display = 'none'; return; }
                 renderLineChart(type, key, regionSel.value, metricSel.value, dates, fetchDate);
             };
             regionSel.addEventListener('change', handler);
