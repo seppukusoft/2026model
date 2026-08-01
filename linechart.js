@@ -22,11 +22,24 @@
         const end = desc.indexOf('<b>', start);
         const chunk = end === -1 ? desc.slice(start) : desc.slice(start, end);
         return chunk.split('<br>').flatMap(part => {
-            const colorMatch = part.match(/color:\s*(#[0-9a-fA-F]{3,6})/);
-            const color = colorMatch ? colorMatch[1] : '#888';
             const m = part.replace(/<[^>]+>/g, '').trim().match(/^(.+?):\s*([\d.]+)%$/);
-            return m ? [{ candidate: m[1].trim(), value: parseFloat(m[2]), color }] : [];
+            return m ? [{ candidate: m[1].trim(), value: parseFloat(m[2]) }] : [];
         });
+    }
+
+    const oppositeParty = { REP: 'DEM', DEM: 'REP' };
+
+    function toRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    function candidateColor(name, winnerName, winnerParty, total) {
+        if (name === winnerName) return partyColors[winnerParty] || '#aaaaaa';
+        if (total === 2) return partyColors[oppositeParty[winnerParty]] || '#888888';
+        return '#888888';
     }
 
     async function renderLineChart(type, chamberKey, regionKey, metric, dates, fetchDate) {
@@ -45,30 +58,32 @@
 
         if (activeRender[type] !== token) return; // superseded by a newer selection
 
-        // Collect per-candidate values across dates
+        // Collect per-candidate values across dates; track winner from latest available date
         const byCandidate = {};
-        const candidateColors = {};
+        let winnerName = '', winnerParty = '';
         for (let i = 0; i < dates.length; i++) {
             const region = allData[i]?.[chamberKey]?.regions?.[regionKey];
             if (!region) continue;
+            winnerName  = region.winner      || winnerName;
+            winnerParty = region.winnerParty || winnerParty;
             for (const c of parseCandidates(region.description, metric)) {
                 if (!byCandidate[c.candidate]) byCandidate[c.candidate] = new Array(dates.length).fill(null);
                 byCandidate[c.candidate][i] = c.value;
-                if (!candidateColors[c.candidate]) candidateColors[c.candidate] = c.color;
             }
         }
 
         const names = Object.keys(byCandidate);
         const datasets = names.map(name => {
-            const color = candidateColors[name] || '#888';
+            const color = candidateColor(name, winnerName, winnerParty, names.length);
             return {
                 label: name,
                 data: byCandidate[name],
                 borderColor: color,
-                backgroundColor: color + '33',
+                backgroundColor: toRgba(color, 0.15),
                 pointRadius: dates.length > 20 ? 2 : 3,
                 tension: 0.3,
                 spanGaps: true,
+                fill: false,
             };
         });
 
