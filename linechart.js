@@ -4,9 +4,8 @@
     const partyColors = { DEM: '#90acfc', REP: '#ff8b98', IND: '#b57edc', LIB: '#fff1a0' };
     const atLargeStates = new Set(["AK","VT","WY","ND","SD","DE"]);
 
-    // Per-chamber state that survives re-initialisation (model switches)
-    const lineState = {};   // type -> { key, dates, fetchDate }
-    const handlers  = {};   // type -> change handler (wired only once)
+    const lineState = {};   
+    const handlers  = {};   
 
     function fmtDistrict(d) {
         const state = d.slice(0, 2), num = d.slice(2);
@@ -53,16 +52,14 @@
         const wrapper = document.getElementById(`${type}LineChartWrapper`);
         wrapper.style.display = '';
 
-        // Fetch all dates in parallel (fetchDate handles caching)
         const allData = new Array(dates.length);
         await Promise.all(dates.map(async (date, i) => {
             const r = await fetchDate(date);
             if (r) allData[i] = r;
         }));
 
-        if (activeRender[type] !== token) return; // superseded by a newer selection (or a model switch)
+        if (activeRender[type] !== token) return; 
 
-        // Collect per-candidate values across dates; track winner from latest available date
         const byCandidate = {};
         let winnerName = '', winnerParty = '';
         for (let i = 0; i < dates.length; i++) {
@@ -125,9 +122,6 @@
         });
     }
 
-    // Safe to call more than once (e.g. when the user switches models):
-    // it rebuilds the region lists, cancels any in-flight render, and
-    // re-renders the open chart if the selected region exists in the new data.
     window.initLineCharts = function (chambers, dates, fetchDate) {
         const configs = [
             { type: 'senate', key: 'senate', data: chambers.senate, fmt: k => k,       placeholder: '— Select state —'    },
@@ -141,7 +135,6 @@
             const controls  = document.getElementById(`${type}LineControls`);
             const wrapper   = document.getElementById(`${type}LineChartWrapper`);
 
-            // Drop whatever was on screen for the previous model
             activeRender[type] = Symbol();
             if (lineChartInstances[type]) {
                 lineChartInstances[type].destroy();
@@ -151,7 +144,6 @@
             const prevRegion = regionSel.value;
             lineState[type] = { key, dates, fetchDate };
 
-            // Listeners are attached once; they read the current state at event time
             if (!handlers[type]) {
                 handlers[type] = () => {
                     if (!regionSel.value) { wrapper.style.display = 'none'; return; }
@@ -168,7 +160,6 @@
                 continue;
             }
 
-            // Rebuild the region list, keeping only the placeholder option
             regionSel.options[0].value = '';
             regionSel.options[0].textContent = placeholder;
             while (regionSel.options.length > 1) regionSel.remove(1);

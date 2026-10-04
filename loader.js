@@ -1,17 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-    // ------------------------------------------------------------------
-    // Models. "v1" (the original model) is the default; "v2" is read from
-    // results_v2/ and polls_v2/.
-    // ------------------------------------------------------------------
     const MODELS = {
-        v1: { name: "Original model", resultsDir: "./results",    pollsDir: "./polls"    },
+        v1: { name: "Original Model", resultsDir: "./results",    pollsDir: "./polls"    },
         v2: { name: "Model v2",       resultsDir: "./results_v2", pollsDir: "./polls_v2" },
     };
     const DEFAULT_MODEL = "v1";
 
     let currentModel = DEFAULT_MODEL;
-    let modelEpoch   = 0;      // bumped whenever a model switch is committed, so stale async work can bail out
+    let modelEpoch   = 0;      
 
     const CHAMBERS = [
         { type: "senate", key: "senate", chartId: "senateChart", summaryId: "senateSummary", threshold: 50,  total: 100, seq: 0 },
@@ -19,15 +15,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         { type: "house",  key: "house",  chartId: "houseChart",  summaryId: "houseSummary",  threshold: 218, total: 435, seq: 0 },
     ];
 
-    // Caches are kept per model so v1 and v2 never overwrite each other
     const stores = {};
     function store(model) {
         return (stores[model] ??= { dates: [], data: {}, polls: {} });
     }
 
-    // ------------------------------------------------------------------
-    // Fetch helpers
-    // ------------------------------------------------------------------
     const dateFromFile = file => file.replace("results_", "").replace(".json", "");
 
     async function fetchJSON(url) {
@@ -68,8 +60,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return s.polls[k];
     }
 
-    // Downloads everything needed to show a model's latest date. Touches no UI,
-    // so a failure leaves the page exactly as it was.
     async function loadModel(model) {
         const cfg = MODELS[model];
         const { file, dates = [] } = await fetchJSON(`${cfg.resultsDir}/latest.json`);
@@ -86,9 +76,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         return { results, polls: { senate: senatePolls, gov: govPolls, house: housePolls } };
     }
 
-    // ------------------------------------------------------------------
-    // Polls table
-    // ------------------------------------------------------------------
     const atLargeStates = new Set(["AK", "VT", "WY", "ND", "SD", "DE"]);
     function formatDistrict(d) {
         const state = d.slice(0, 2);
@@ -156,10 +143,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         draw();
     }
-
-    // ------------------------------------------------------------------
-    // Map / bar chart / summary rendering
-    // ------------------------------------------------------------------
     const activePulses = { senate: [], gov: [], house: [] };
 
     function applyRaceResults(type, raceData) {
@@ -206,7 +189,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById(chamber.summaryId).innerHTML = raceData.summaryHTML;
     }
 
-    // Shows one date of the current model for one chamber (slider / autoplay)
     async function showDate(chamber, date) {
         const model = currentModel;
         const epoch = modelEpoch;
@@ -226,10 +208,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // ------------------------------------------------------------------
-    // Date sliders (listeners are attached once; configureSliders() re-points
-    // them at whichever model is current)
-    // ------------------------------------------------------------------
     const autoplayStops = [];
 
     function setSliderLabel(key, i) {
@@ -312,9 +290,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // ------------------------------------------------------------------
-    // "Last updated" line
-    // ------------------------------------------------------------------
     function timeAgo(date) {
         if (!date) return "unknown time";
         const seconds = Math.floor((new Date() - date) / 1000);
@@ -345,9 +320,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             "Last updated " + timeAgo(updatedAt) + " · " + MODELS[model].name;
     }
 
-    // ------------------------------------------------------------------
-    // Switching models
-    // ------------------------------------------------------------------
     const toggleBtn = document.getElementById("modelToggle");
     const statusEl  = document.getElementById("modelStatus");
 
@@ -360,11 +332,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         toggleBtn.disabled = false;
     }
 
-    // Commits an already-downloaded model to the page: maps, bar charts,
-    // summaries, polls tables, sliders, line charts.
     function applyModel(model, { results, polls }) {
         currentModel = model;
-        modelEpoch++;                       // cancels slider/autoplay work still in flight for the old model
+        modelEpoch++;                   
 
         CHAMBERS.forEach(chamber => {
             renderChamber(chamber, results[chamber.key]);
@@ -398,10 +368,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateToggleButton();
         }
     }
-
-    // ------------------------------------------------------------------
-    // Page load: default model first
-    // ------------------------------------------------------------------
+    
     setupSliders();
 
     try {
