@@ -1,163 +1,164 @@
 <!DOCTYPE html>
 <html data-theme="dark">
 <head>
-<style>
-    @media only screen and (max-width: 1440px){
-    .warning {display: block;}
-    body { margin: 0 auto !important; }
-    .map-polls-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .map-polls-row .map-col,
-    .map-polls-row .polls-col {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        text-align: center;
-    }
-    #map_grandparent {
-        text-align: left;
-    }
-    h2 {
-        text-align: center;
-    }
-    #govSummary, #senateSummary, #houseSummary {
-        text-align: center;
-    }
-    .polls-col table {
-        text-align: left;
-    }
-    }
-    @media only screen and (min-width: 1440px){
-        body { width: 85% !important; margin: 0 auto !important; }
-        .warning {display: none;}
-    }
+    <style>
+        @media only screen and (max-width: 1440px){
+        .warning {display: block;}
+        body { margin: 0 auto !important; }
+        .map-polls-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .map-polls-row .map-col,
+        .map-polls-row .polls-col {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #map_grandparent {
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+        }
+        #govSummary, #senateSummary, #houseSummary {
+            text-align: center;
+        }
+        .polls-col table {
+            text-align: left;
+        }
+        }
+        @media only screen and (min-width: 1440px){
+            body { width: 85% !important; margin: 0 auto !important; }
+            .warning {display: none;}
+        }
 
-    #senateChartWrapper, #govChartWrapper, #houseChartWrapper, #govLineChartWrapper, #senateLineChartWrapper, #houseLineChartWrapper {
-        height: 45px;
-        width: 70%;
-        position: relative;
-        margin: 0 auto;
-    }
+        #senateChartWrapper, #govChartWrapper, #houseChartWrapper, #govLineChartWrapper, #senateLineChartWrapper, #houseLineChartWrapper {
+            height: 45px;
+            width: 70%;
+            position: relative;
+            margin: 0 auto;
+        }
 
-    #houseLineControls, #senateLineControls, #govLineControls  {
-        height: 55px;
-        width: 70%;
-        position: relative;
-        margin: 0 auto;
-    }
+        #houseLineControls, #senateLineControls, #govLineControls  {
+            height: 55px;
+            width: 70%;
+            position: relative;
+            margin: 0 auto;
+        }
 
-    #senateChart, #govChart, #houseChart, #govLineChart, #senateLineChart, #houseLineChart {
-        width: 100% !important;
-        height: 100% !important;
-        display: block;
-    }
+        #senateChart, #govChart, #houseChart, #govLineChart, #senateLineChart, #houseLineChart {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
 
-    .map-polls-row {
-        display: flex;
-        align-items: stretch;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-    .map-polls-row .map-col {
-        flex: 1;
-        min-width: 280px;
-    }
-    .map-polls-row .polls-col {
-        width: 550px;
-        flex-shrink: 0;
-        min-width: 260px;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        height: 450px;
-    }
+        .map-polls-row {
+            display: flex;
+            align-items: stretch;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .map-polls-row .map-col {
+            flex: 1;
+            min-width: 280px;
+        }
+        .map-polls-row .polls-col {
+            width: 550px;
+            flex-shrink: 0;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 450px;
+        }
 
-    .polls-col table {
-        font-size: 0.70em;
-        width: 100%;
-    }
-    .polls-col td, .polls-col th {
-        padding: 4px 6px;
-    }
-    .polls-col .table-scroll {
-        flex: 1;
-        overflow-y: auto;
-        min-height: 0;
-    }
+        .polls-col table {
+            font-size: 0.70em;
+            width: 100%;
+        }
+        .polls-col td, .polls-col th {
+            padding: 4px 6px;
+        }
+        .polls-col .table-scroll {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
 
-    .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-        margin-top: 6px;
-        font-size: 0.85em;
-    }
-    .pagination button {
-        padding: 2px 10px;
-        font-size: 0.9em;
-    }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 6px;
+            font-size: 0.85em;
+        }
+        .pagination button {
+            padding: 2px 10px;
+            font-size: 0.9em;
+        }
 
-    .date-slider-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 70%;
-        margin: 10px auto 4px;
-        font-size: 0.82em;
-    }
-    .date-slider-row input[type=range] {
-        flex: 1;
-        accent-color: var(--pico-primary);
-        cursor: pointer;
-    }
-    .date-slider-row .slider-date-label {
-        min-width: 88px;
-        text-align: center;
-        font-weight: 600;
-        font-variant-numeric: tabular-nums;
-        opacity: 0.9;
-    }
-    .date-slider-row .slider-end-label {
-        opacity: 0.55;
-        white-space: nowrap;
-        font-size: 0.9em;
-    }
-    .slider-latest-badge {
-        font-size: 0.72em;
-        padding: 1px 6px;
-        border-radius: 999px;
-        background: var(--pico-primary);
-        color: #fff;
-        margin-left: 4px;
-        vertical-align: middle;
-        opacity: 0.85;
-        display: none;
-    }
-</style>
-<title>2026 Midterm Model</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3" as="script">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" as="script">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-<script type="text/javascript" src="senatemap.js"></script>
-<script type="text/javascript" src="senatemapdata.js"></script>
-<script type="text/javascript">var map1 = simplemaps_usmap.create();</script>
-<script type="text/javascript" src="housemap.js"></script>
-<script type="text/javascript" src="housemapdata.js"></script>
-<script type="text/javascript">var map2 = simplemaps_congressmap.create();</script>
-<script type="text/javascript" src="govmapdata.js"></script>
-<script type="text/javascript">var map3 = simplemaps_usmap.create();</script>
-<script src="bar.js"></script>
-<script src="mapfill.js"></script>
-<script src="linechart.js"></script>
-<script src="loader.js"></script>
+        .date-slider-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 70%;
+            margin: 10px auto 4px;
+            font-size: 0.82em;
+        }
+        .date-slider-row input[type=range] {
+            flex: 1;
+            accent-color: var(--pico-primary);
+            cursor: pointer;
+        }
+        .date-slider-row .slider-date-label {
+            min-width: 88px;
+            text-align: center;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            opacity: 0.9;
+        }
+        .date-slider-row .slider-end-label {
+            opacity: 0.55;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+        .slider-latest-badge {
+            font-size: 0.72em;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: var(--pico-primary);
+            color: #fff;
+            margin-left: 4px;
+            vertical-align: middle;
+            opacity: 0.85;
+            display: none;
+        }
+    </style>
+    <title>2026 Midterm Model</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2" as="script">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script type="text/javascript" src="senatemap.js"></script>
+    <script type="text/javascript" src="senatemapdata.js"></script>
+    <script type="text/javascript">var map1 = simplemaps_usmap.create();</script>
+    <script type="text/javascript" src="housemap.js"></script>
+    <script type="text/javascript" src="housemapdata.js"></script>
+    <script type="text/javascript">var map2 = simplemaps_congressmap.create();</script>
+    <script type="text/javascript" src="govmapdata.js"></script>
+    <script type="text/javascript">var map3 = simplemaps_usmap.create();</script>
+    <script src="bar.js"></script>
+    <script src="mapfill.js"></script>
+    <script src="linechart.js"></script>
+    <script src="loader.js"></script>
 </head>
 <body>
 
