@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <td>${ch}</td>
                     <td>${poll.pollster}</td>
                     <td style="white-space:nowrap">${poll.start_date} – ${poll.end_date}</td>
-                    <td>${poll.sample_size ?? "—"}</td>
+                    <td style="white-space:nowrap">${poll.sample_size ?? "—"}${poll.population ? " " + String(poll.population).toUpperCase() : ""}</td>
                     <td>${results}</td>
                 `;
                 tbody.appendChild(tr);
@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             updateToggleButton();
         }
     }
-    
+
     setupSliders();
 
     try {
