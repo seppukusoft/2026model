@@ -4,6 +4,10 @@
     const partyColors = { DEM: '#90acfc', REP: '#ff8b98', IND: '#b57edc', LIB: '#fff1a0' };
     const atLargeStates = new Set(["AK","VT","WY","ND","SD","DE"]);
 
+    // Per-chamber state that survives re-initialisation (model switches)
+    const lineState = {};   // type -> { key, dates, fetchDate }
+    const handlers  = {};   // type -> change handler (wired only once)
+
     function fmtDistrict(d) {
         const state = d.slice(0, 2), num = d.slice(2);
         return (atLargeStates.has(state) && num === "01") ? `${state}-AL` : `${state}-${num}`;
@@ -56,7 +60,7 @@
             if (r) allData[i] = r;
         }));
 
-        if (activeRender[type] !== token) return; // superseded by a newer selection
+        if (activeRender[type] !== token) return; // superseded by a newer selection (or a model switch)
 
         // Collect per-candidate values across dates; track winner from latest available date
         const byCandidate = {};
@@ -121,9 +125,10 @@
         });
     }
 
+    // Safe to call more than once (e.g. when the user switches models):
+    // it rebuilds the region lists, cancels any in-flight render, and
+    // re-renders the open chart if the selected region exists in the new data.
     window.initLineCharts = function (chambers, dates, fetchDate) {
-        if (dates.length < 2) return;
-
         const configs = [
             { type: 'senate', key: 'senate', data: chambers.senate, fmt: k => k,       placeholder: '— Select state —'    },
             { type: 'gov',    key: 'gov',    data: chambers.gov,    fmt: k => k,       placeholder: '— Select state —'    },
@@ -136,8 +141,37 @@
             const controls  = document.getElementById(`${type}LineControls`);
             const wrapper   = document.getElementById(`${type}LineChartWrapper`);
 
-            controls.style.display = 'flex';
+            // Drop whatever was on screen for the previous model
+            activeRender[type] = Symbol();
+            if (lineChartInstances[type]) {
+                lineChartInstances[type].destroy();
+                delete lineChartInstances[type];
+            }
+
+            const prevRegion = regionSel.value;
+            lineState[type] = { key, dates, fetchDate };
+
+            // Listeners are attached once; they read the current state at event time
+            if (!handlers[type]) {
+                handlers[type] = () => {
+                    if (!regionSel.value) { wrapper.style.display = 'none'; return; }
+                    const st = lineState[type];
+                    renderLineChart(type, st.key, regionSel.value, metricSel.value, st.dates, st.fetchDate);
+                };
+                regionSel.addEventListener('change', handlers[type]);
+                metricSel.addEventListener('change', handlers[type]);
+            }
+
+            if (dates.length < 2) {
+                controls.style.display = 'none';
+                wrapper.style.display  = 'none';
+                continue;
+            }
+
+            // Rebuild the region list, keeping only the placeholder option
+            regionSel.options[0].value = '';
             regionSel.options[0].textContent = placeholder;
+            while (regionSel.options.length > 1) regionSel.remove(1);
 
             Object.entries(data.regions)
                 .filter(([, v]) => !v.noElection)
@@ -149,12 +183,15 @@
                     regionSel.appendChild(opt);
                 });
 
-            const handler = () => {
-                if (!regionSel.value) { wrapper.style.display = 'none'; return; }
-                renderLineChart(type, key, regionSel.value, metricSel.value, dates, fetchDate);
-            };
-            regionSel.addEventListener('change', handler);
-            metricSel.addEventListener('change', handler);
+            controls.style.display = 'flex';
+
+            if (prevRegion && Array.from(regionSel.options).some(o => o.value === prevRegion)) {
+                regionSel.value = prevRegion;
+                handlers[type]();
+            } else {
+                regionSel.value = '';
+                wrapper.style.display = 'none';
+            }
         }
     };
 })();

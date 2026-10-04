@@ -1,103 +1,165 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    let data;
-    let fetchedFile;
-    let dates = [];
 
-    try {
-        const idxRes = await fetch("./results/latest.json");
-        if (!idxRes.ok) throw new Error(`HTTP ${idxRes.status}`);
-        const { file, dates: _dates = [] } = await idxRes.json();
-        dates = _dates;
-        fetchedFile = file; 
+    // ------------------------------------------------------------------
+    // Models. "v1" (the original model) is the default; "v2" is read from
+    // results_v2/ and polls_v2/.
+    // ------------------------------------------------------------------
+    const MODELS = {
+        v1: { name: "Original model", resultsDir: "./results",    pollsDir: "./polls"    },
+        v2: { name: "Model v2",       resultsDir: "./results_v2", pollsDir: "./polls_v2" },
+    };
+    const DEFAULT_MODEL = "v1";
 
-        const date = file.replace("results_", "").replace(".json", "");
-        const [resultsRes, senatePolls, govPolls, housePolls] = await Promise.all([
-            fetch(`./results/${file}`).then(r => r.json()),
-            fetch(`./polls/senate_${date}.json`).then(r => r.json()),
-            fetch(`./polls/gov_${date}.json`).then(r => r.json()),
-            fetch(`./polls/house_${date}.json`).then(r => r.json()),
-        ]);
-        data = resultsRes;
+    let currentModel = DEFAULT_MODEL;
+    let modelEpoch   = 0;      // bumped whenever a model switch is committed, so stale async work can bail out
 
-        const atLargeStates = new Set(["AK", "VT", "WY", "ND", "SD", "DE"]);
-        function formatDistrict(d) {
-            const state = d.slice(0, 2);
-            const num   = d.slice(2);
-            if (atLargeStates.has(state) && num === "01") return `${state}-AL`;
-            return `${state}-${num}`;
-        }
+    const CHAMBERS = [
+        { type: "senate", key: "senate", chartId: "senateChart", summaryId: "senateSummary", threshold: 50,  total: 100, seq: 0 },
+        { type: "gov",    key: "gov",    chartId: "govChart",    summaryId: "govSummary",    threshold: 25,  total: 50,  seq: 0 },
+        { type: "house",  key: "house",  chartId: "houseChart",  summaryId: "houseSummary",  threshold: 218, total: 435, seq: 0 },
+    ];
 
-        function lastName(name) {
-            if (name == "Someone else") return name;
-            return name.trim().split(/\s+/).pop();
-        }
-
-        function renderPollsSection(tableId, pollsData, chamber) {
-            const tbody     = document.querySelector(`#${tableId} tbody`);
-            const searchInput = document.getElementById(`${tableId.replace("Table", "")}Search`);
-
-            const sorted = pollsData
-                .filter(p => p.responses.length >= 2)
-                .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
-
-            function draw() {
-                const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
-                const filtered = !query ? sorted : sorted.filter(poll => {
-                    const ch = chamber === "house"
-                        ? formatDistrict(poll.district ?? "")
-                        : (poll.state ?? "");
-                    const candidateText = poll.responses.map(r => r.candidate).join(" ");
-                    return [ch, poll.pollster, poll.start_date, poll.end_date, candidateText]
-                        .join(" ").toLowerCase().includes(query);
-                });
-
-                tbody.innerHTML = "";
-                for (const poll of filtered) {
-                    const ch = chamber === "house"
-                        ? formatDistrict(poll.district ?? "")
-                        : (poll.state ?? "");
-
-                    const results = poll.responses
-                        .sort((a, b) => b.pct - a.pct)
-                        .map(r => {
-                            const color = r.party === "DEM" ? "#90acfc"
-                                        : r.party === "REP" ? "#ff8b98"
-                                        : r.party === "LIB" ? "#fff1a0"
-                                        : "#b57edc";
-                            return `<span style="color:${color}">${lastName(r.candidate)} ${r.pct.toFixed(1)}%</span>`;
-                        }).join("<br>");
-
-                    const tr = document.createElement("tr");
-                    tr.innerHTML = `
-                        <td>${ch}</td>
-                        <td>${poll.pollster}</td>
-                        <td style="white-space:nowrap">${poll.start_date} – ${poll.end_date}</td>
-                        <td>${poll.sample_size ?? "—"}</td>
-                        <td>${results}</td>
-                    `;
-                    tbody.appendChild(tr);
-                }
-            }
-
-            if (searchInput) {
-                if (searchInput._draw) searchInput.removeEventListener("input", searchInput._draw);
-                searchInput._draw = draw;
-                searchInput.addEventListener("input", draw);
-            }
-            draw();
-        }
-
-        renderPollsSection("senatePollsTable", senatePolls, "senate");
-        renderPollsSection("govPollsTable",    govPolls,    "gov");
-        renderPollsSection("housePollsTable",  housePolls,  "house");
-
-    } catch (err) {
-        console.error("loader.js: failed to fetch results.json", err);
-        return;
+    // Caches are kept per model so v1 and v2 never overwrite each other
+    const stores = {};
+    function store(model) {
+        return (stores[model] ??= { dates: [], data: {}, polls: {} });
     }
 
-    const { senate, gov, house, generated } = data; 
+    // ------------------------------------------------------------------
+    // Fetch helpers
+    // ------------------------------------------------------------------
+    const dateFromFile = file => file.replace("results_", "").replace(".json", "");
 
+    async function fetchJSON(url) {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+        return r.json();
+    }
+
+    // fresh: skip the caches and re-download (used for the latest date on load)
+    async function fetchResults(model, date, { fresh = false } = {}) {
+        const s = store(model);
+        const cacheKey = `${model}:results_${date}`;
+        if (!fresh) {
+            if (s.data[date]) return s.data[date];
+            try {
+                const cached = sessionStorage.getItem(cacheKey);
+                if (cached) return (s.data[date] = JSON.parse(cached));
+            } catch { /* storage unavailable or corrupt entry: fall through to the network */ }
+        }
+        const r = await fetch(`${MODELS[model].resultsDir}/results_${date}.json`);
+        if (!r.ok) return null;
+        s.data[date] = await r.json();
+        if (!fresh) {
+            try { sessionStorage.setItem(cacheKey, JSON.stringify(s.data[date])); }
+            catch { /* quota exceeded: keep the in-memory copy only */ }
+        }
+        return s.data[date];
+    }
+
+    async function fetchPolls(model, key, date, { fresh = false } = {}) {
+        const s = store(model);
+        const k = `${key}_${date}`;
+        if (fresh || !s.polls[k]) {
+            const r = await fetch(`${MODELS[model].pollsDir}/${key}_${date}.json`);
+            if (!r.ok) return null;
+            s.polls[k] = await r.json();
+        }
+        return s.polls[k];
+    }
+
+    // Downloads everything needed to show a model's latest date. Touches no UI,
+    // so a failure leaves the page exactly as it was.
+    async function loadModel(model) {
+        const cfg = MODELS[model];
+        const { file, dates = [] } = await fetchJSON(`${cfg.resultsDir}/latest.json`);
+        const latestDate = dateFromFile(file);
+
+        const [results, senatePolls, govPolls, housePolls] = await Promise.all([
+            fetchResults(model, latestDate, { fresh: true }),
+            ...CHAMBERS.map(c => fetchPolls(model, c.key, latestDate, { fresh: true })),
+        ]);
+        if (!results?.senate || !results?.gov || !results?.house) {
+            throw new Error(`Incomplete results in ${cfg.resultsDir}/${file}`);
+        }
+        store(model).dates = dates;
+        return { results, polls: { senate: senatePolls, gov: govPolls, house: housePolls } };
+    }
+
+    // ------------------------------------------------------------------
+    // Polls table
+    // ------------------------------------------------------------------
+    const atLargeStates = new Set(["AK", "VT", "WY", "ND", "SD", "DE"]);
+    function formatDistrict(d) {
+        const state = d.slice(0, 2);
+        const num   = d.slice(2);
+        if (atLargeStates.has(state) && num === "01") return `${state}-AL`;
+        return `${state}-${num}`;
+    }
+
+    function lastName(name) {
+        if (name == "Someone else") return name;
+        return name.trim().split(/\s+/).pop();
+    }
+
+    function renderPollsSection(tableId, pollsData, chamber) {
+        const tbody     = document.querySelector(`#${tableId} tbody`);
+        const searchInput = document.getElementById(`${tableId.replace("Table", "")}Search`);
+
+        const sorted = pollsData
+            .filter(p => p.responses.length >= 2)
+            .sort((a, b) => new Date(b.end_date) - new Date(a.end_date));
+
+        function draw() {
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+            const filtered = !query ? sorted : sorted.filter(poll => {
+                const ch = chamber === "house"
+                    ? formatDistrict(poll.district ?? "")
+                    : (poll.state ?? "");
+                const candidateText = poll.responses.map(r => r.candidate).join(" ");
+                return [ch, poll.pollster, poll.start_date, poll.end_date, candidateText]
+                    .join(" ").toLowerCase().includes(query);
+            });
+
+            tbody.innerHTML = "";
+            for (const poll of filtered) {
+                const ch = chamber === "house"
+                    ? formatDistrict(poll.district ?? "")
+                    : (poll.state ?? "");
+
+                const results = poll.responses
+                    .sort((a, b) => b.pct - a.pct)
+                    .map(r => {
+                        const color = r.party === "DEM" ? "#90acfc"
+                                    : r.party === "REP" ? "#ff8b98"
+                                    : r.party === "LIB" ? "#fff1a0"
+                                    : "#b57edc";
+                        return `<span style="color:${color}">${lastName(r.candidate)} ${r.pct.toFixed(1)}%</span>`;
+                    }).join("<br>");
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${ch}</td>
+                    <td>${poll.pollster}</td>
+                    <td style="white-space:nowrap">${poll.start_date} – ${poll.end_date}</td>
+                    <td>${poll.sample_size ?? "—"}</td>
+                    <td>${results}</td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        if (searchInput) {
+            if (searchInput._draw) searchInput.removeEventListener("input", searchInput._draw);
+            searchInput._draw = draw;
+            searchInput.addEventListener("input", draw);
+        }
+        draw();
+    }
+
+    // ------------------------------------------------------------------
+    // Map / bar chart / summary rendering
+    // ------------------------------------------------------------------
     const activePulses = { senate: [], gov: [], house: [] };
 
     function applyRaceResults(type, raceData) {
@@ -110,13 +172,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         for (const state in targetMap.mapdata.state_specific) {
             let st = targetMap.mapdata.state_specific[state];
-            
+
             if (st.orig_name === undefined) {
                 st.orig_name = st.name;
             }
-            
+
             st.name = st.orig_name;
-            st.description = "default"; 
+            st.description = "default";
         }
 
         for (const [region, info] of Object.entries(raceData.regions)) {
@@ -128,7 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             if (info.description) changeDesc(type, region, info.description);
-            
+
             if (info.pulse) {
                 const pulseId = pulseMap(type, region);
                 if (pulseId) activePulses[type].push(pulseId);
@@ -138,78 +200,78 @@ document.addEventListener("DOMContentLoaded", async () => {
         targetMap.refresh();
     }
 
-    applyRaceResults("senate", senate);
-    renderSeatChart("senateChart", senate.seats, 50, 100);
-    document.getElementById("senateSummary").innerHTML = senate.summaryHTML;
+    function renderChamber(chamber, raceData) {
+        applyRaceResults(chamber.type, raceData);
+        renderSeatChart(chamber.chartId, raceData.seats, chamber.threshold, chamber.total);
+        document.getElementById(chamber.summaryId).innerHTML = raceData.summaryHTML;
+    }
 
-    applyRaceResults("gov", gov);
-    renderSeatChart("govChart", gov.seats, 25, 50);
-    document.getElementById("govSummary").innerHTML = gov.summaryHTML;
+    // Shows one date of the current model for one chamber (slider / autoplay)
+    async function showDate(chamber, date) {
+        const model = currentModel;
+        const epoch = modelEpoch;
+        const seq   = ++chamber.seq;
+        const stale = () => epoch !== modelEpoch || seq !== chamber.seq;
 
-    applyRaceResults("house", house);
-    renderSeatChart("houseChart", house.seats, 218, 435);
-    document.getElementById("houseSummary").innerHTML = house.summaryHTML;
+        try {
+            const raceData = (await fetchResults(model, date))?.[chamber.key];
+            if (stale()) return;
+            if (raceData) renderChamber(chamber, raceData);
 
-    const dataCache = {};
-    // Pre-populate cache with the already-fetched latest date
-    dataCache[fetchedFile.replace("results_", "").replace(".json", "")] = data;
-    async function refreshChamber(type, key, chartId, summaryId, threshold, total, date) {
-        if (!dataCache[date]) {
-        const cacheKey = `results_${date}`;
-        const cached = sessionStorage.getItem(cacheKey);
-        if (cached) {
-            dataCache[date] = JSON.parse(cached);
-        } else {
-            const r = await fetch(`./results/results_${date}.json`);
-            if (!r.ok) return;
-            dataCache[date] = await r.json();
-            sessionStorage.setItem(cacheKey, JSON.stringify(dataCache[date]));
+            const polls = await fetchPolls(model, chamber.key, date);
+            if (stale()) return;
+            if (polls) renderPollsSection(`${chamber.key}PollsTable`, polls, chamber.key);
+        } catch (err) {
+            console.error(`loader.js: failed to show ${model} ${chamber.key} for ${date}`, err);
         }
     }
-        const raceData = dataCache[date][key];
-        applyRaceResults(type, raceData);
-        renderSeatChart(chartId, raceData.seats, threshold, total);
-        document.getElementById(summaryId).innerHTML = raceData.summaryHTML;
+
+    // ------------------------------------------------------------------
+    // Date sliders (listeners are attached once; configureSliders() re-points
+    // them at whichever model is current)
+    // ------------------------------------------------------------------
+    const autoplayStops = [];
+
+    function setSliderLabel(key, i) {
+        const dates = store(currentModel).dates;
+        document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = dates[i] + " ";
+        document.getElementById(`${key}LatestBadge`).style.display = i === dates.length - 1 ? "inline" : "none";
     }
 
-    const pollsCache = {};
-    async function fetchAndRenderPolls(key, date) {
-        const cacheKey = `${key}_${date}`;
-        if (!pollsCache[cacheKey]) {
-            const r = await fetch(`./polls/${key}_${date}.json`);
-            if (!r.ok) return;
-            pollsCache[cacheKey] = await r.json();
-        }
-        renderPollsSection(`${key}PollsTable`, pollsCache[cacheKey], key);
-    }
+    function configureSliders() {
+        const { dates } = store(currentModel);
+        autoplayStops.forEach(stop => stop());
 
-    function setupSliders() {
-        if (dates.length < 2) return;
-        [
-            ["senate", "senate", "senateChart", "senateSummary", 50,  100],
-            ["gov",    "gov",    "govChart",    "govSummary",    25,  50],
-            ["house",  "house",  "houseChart",  "houseSummary",  218, 435],
-        ].forEach(([type, key, chartId, summaryId, threshold, total]) => {
+        CHAMBERS.forEach(({ key }) => {
             const row    = document.getElementById(`${key}SliderRow`);
             const slider = document.getElementById(`${key}DateSlider`);
             if (!row || !slider) return;
+
+            if (dates.length < 2) { row.style.display = "none"; return; }
+
             slider.min   = 0;
             slider.max   = dates.length - 1;
             slider.value = dates.length - 1;
             document.getElementById(`${key}SliderMin`).textContent = dates[0];
             document.getElementById(`${key}SliderMax`).textContent = dates[dates.length - 1];
-            document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = dates[dates.length - 1] + " ";
+            setSliderLabel(key, dates.length - 1);
             row.style.display = "";
+        });
+    }
+
+    function setupSliders() {
+        CHAMBERS.forEach(chamber => {
+            const { key } = chamber;
+            const row    = document.getElementById(`${key}SliderRow`);
+            const slider = document.getElementById(`${key}DateSlider`);
+            if (!row || !slider) return;
+
             let debounce;
             slider.addEventListener("input", () => {
-                const date = dates[parseInt(slider.value)];
-                document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
-                document.getElementById(`${key}LatestBadge`).style.display = date === dates[dates.length - 1] ? "inline" : "none";
+                const i = parseInt(slider.value);
+                setSliderLabel(key, i);
                 clearTimeout(debounce);
-                debounce = setTimeout(async () => {
-                    await refreshChamber(type, key, chartId, summaryId, threshold, total, date);
-                    await fetchAndRenderPolls(key, date);
-                }, 0);
+                debounce = setTimeout(() => showDate(chamber, store(currentModel).dates[i]), 0);
             });
 
             let autoplayTimeout = null;
@@ -225,14 +287,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 autoplayTimeout = null;
                 btn.textContent = "▶";
             }
+            autoplayStops.push(stopPlay);
+
             async function runStep() {
                 if (autoplayTimeout === null) return;
+                const dates = store(currentModel).dates;
                 const date = dates[autoplayIdx];
                 slider.value = autoplayIdx;
-                document.getElementById(`${key}SliderLabel`).childNodes[0].textContent = date + " ";
-                document.getElementById(`${key}LatestBadge`).style.display = autoplayIdx === dates.length - 1 ? "inline" : "none";
-                await refreshChamber(type, key, chartId, summaryId, threshold, total, date);
-                await fetchAndRenderPolls(key, date);
+                setSliderLabel(key, autoplayIdx);
+                await showDate(chamber, date);
                 autoplayIdx++;
                 if (autoplayIdx < dates.length && autoplayTimeout !== null) {
                     autoplayTimeout = setTimeout(runStep, 500);
@@ -248,42 +311,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
     }
-    setupSliders();
 
-    initLineCharts(
-        { senate, gov, house },
-        dates,
-        async date => {
-            if (!dataCache[date]) {
-                const cacheKey = `results_${date}`;
-                const cached = sessionStorage.getItem(cacheKey);
-                if (cached) {
-                    dataCache[date] = JSON.parse(cached);
-                } else {
-                    const r = await fetch(`./results/results_${date}.json`);
-                    if (!r.ok) return null;
-                    dataCache[date] = await r.json();
-                    sessionStorage.setItem(cacheKey, JSON.stringify(dataCache[date]));
-                }
-            }
-            return dataCache[date];
-        }
-    );
-
-    function matchPollsHeight() {
-        document.querySelectorAll('.map-polls-row').forEach(row => {
-            const mapCol   = row.querySelector('.map-col');
-            const pollsCol = row.querySelector('.polls-col');
-            if (!mapCol || !pollsCol) return;
-            const h = mapCol.offsetHeight;
-            if (h > 0) pollsCol.style.height = h + 'px';
-        });
-    }
-
+    // ------------------------------------------------------------------
+    // "Last updated" line
+    // ------------------------------------------------------------------
     function timeAgo(date) {
         if (!date) return "unknown time";
         const seconds = Math.floor((new Date() - date) / 1000);
-        
+
         if (seconds < 0) return "just now";
 
         const intervals = {
@@ -304,8 +339,92 @@ document.addEventListener("DOMContentLoaded", async () => {
         return "just now";
     }
 
-    const updatedAt = generated ? new Date(generated).getTime() : null;
-    document.getElementById("lastUpdated").textContent = "Last updated " + timeAgo(updatedAt);
+    function updateLastUpdated(generated, model) {
+        const updatedAt = generated ? new Date(generated).getTime() : null;
+        document.getElementById("lastUpdated").textContent =
+            "Last updated " + timeAgo(updatedAt) + " · " + MODELS[model].name;
+    }
+
+    // ------------------------------------------------------------------
+    // Switching models
+    // ------------------------------------------------------------------
+    const toggleBtn = document.getElementById("modelToggle");
+    const statusEl  = document.getElementById("modelStatus");
+
+    function setStatus(msg) { if (statusEl) statusEl.textContent = msg; }
+
+    function updateToggleButton() {
+        if (!toggleBtn) return;
+        const other = currentModel === DEFAULT_MODEL ? "v2" : DEFAULT_MODEL;
+        toggleBtn.textContent = "Switch to " + MODELS[other].name;
+        toggleBtn.disabled = false;
+    }
+
+    // Commits an already-downloaded model to the page: maps, bar charts,
+    // summaries, polls tables, sliders, line charts.
+    function applyModel(model, { results, polls }) {
+        currentModel = model;
+        modelEpoch++;                       // cancels slider/autoplay work still in flight for the old model
+
+        CHAMBERS.forEach(chamber => {
+            renderChamber(chamber, results[chamber.key]);
+            renderPollsSection(`${chamber.key}PollsTable`, polls[chamber.key] ?? [], chamber.key);
+        });
+
+        configureSliders();
+        initLineCharts(
+            { senate: results.senate, gov: results.gov, house: results.house },
+            store(model).dates,
+            date => fetchResults(model, date)
+        );
+
+        updateLastUpdated(results.generated, model);
+        updateToggleButton();
+        setStatus("");
+    }
+
+    let switching = false;
+    async function switchModel(target) {
+        if (switching || target === currentModel) return;
+        switching = true;
+        if (toggleBtn) { toggleBtn.disabled = true; toggleBtn.textContent = "Loading…"; }
+        try {
+            applyModel(target, await loadModel(target));
+        } catch (err) {
+            console.error(`loader.js: could not load ${target}`, err);
+            setStatus(`Couldn't load ${MODELS[target].name}. Still showing ${MODELS[currentModel].name}.`);
+        } finally {
+            switching = false;
+            updateToggleButton();
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Page load: default model first
+    // ------------------------------------------------------------------
+    setupSliders();
+
+    try {
+        applyModel(DEFAULT_MODEL, await loadModel(DEFAULT_MODEL));
+    } catch (err) {
+        console.error("loader.js: failed to load results", err);
+        setStatus("Couldn't load the model results.");
+        return;
+    }
+
+    if (toggleBtn) toggleBtn.addEventListener("click", () => {
+        switchModel(currentModel === DEFAULT_MODEL ? "v2" : DEFAULT_MODEL);
+    });
+
+    function matchPollsHeight() {
+        document.querySelectorAll('.map-polls-row').forEach(row => {
+            const mapCol   = row.querySelector('.map-col');
+            const pollsCol = row.querySelector('.polls-col');
+            if (!mapCol || !pollsCol) return;
+            const h = mapCol.offsetHeight;
+            if (h > 0) pollsCol.style.height = h + 'px';
+        });
+    }
 
     setTimeout(matchPollsHeight, 500);
     window.addEventListener('resize', matchPollsHeight);
