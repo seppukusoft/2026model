@@ -60,8 +60,9 @@ function pulseMap(type, state) {
 function changeBorderColor(type, state, color) {
     const target = mapLookup[type];
     if (!target || !target.mapdata.state_specific[state]) return;
-    target.mapdata.state_specific[state].border_color = `${color}`;
-    target.mapdata.state_specific[state].border_size = 300;
+    const st = target.mapdata.state_specific[state];
+    st.border_color = `${color}`;
+    st.level = 2;        
 }
 
 function netStr(gains, losses, party, color) {

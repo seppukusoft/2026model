@@ -162,6 +162,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             st.name = st.orig_name;
             st.description = "default";
+            delete st.border_color;
+            delete st.border_size;
+            delete st.level;
         }
 
         for (const [region, info] of Object.entries(raceData.regions)) {
@@ -177,6 +180,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (info.pulse) {
                 const pulseId = pulseMap(type, region);
                 if (pulseId) activePulses[type].push(pulseId);
+            }
+
+            if (info.isFlip) {
+                const outgoing = colorMapping["solid" + info.prevParty?.[0]];
+                if (outgoing) changeBorderColor(type, region, outgoing);
             }
         }
 
