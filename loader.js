@@ -153,6 +153,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             activePulses[type] = [];
         }
 
+        resetLabelColors(type);
+
         for (const state in targetMap.mapdata.state_specific) {
             let st = targetMap.mapdata.state_specific[state];
 
@@ -184,10 +186,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (info.isFlip) {
                 const outgoing = colorMapping["solid" + info.prevParty?.[0]];
-                if (outgoing) changeBorderColor(type, region, outgoing);
+                if (outgoing) {
+                    changeBorderColor(type, region, outgoing);
+                    changeLabelColor(type, region, outgoing);
+                }
             }
         }
-
+S
         targetMap.refresh();
     }
 

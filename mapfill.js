@@ -43,6 +43,33 @@ function changeNameColor(type, state, color) {
     target.mapdata.state_specific[state].name = `<span style="color: ${color};">${name}</span>`;
 }
 
+function changeLabelColor(type, state, color) {
+    const target = mapLookup[type];
+    if (!target || !target.mapdata.labels) return;
+    for (const lbl of Object.values(target.mapdata.labels)) {
+        if (lbl.parent_id !== state) continue;
+        if (lbl.parent_type && lbl.parent_type !== "state") continue;
+        if (!("orig_color" in lbl)) {            // remember the original once
+            lbl.orig_color = lbl.color ?? null;
+            lbl.orig_hover_color = lbl.hover_color ?? null;
+        }
+        lbl.color = color;
+        lbl.hover_color = color;               
+    }
+}
+
+function resetLabelColors(type) {
+    const target = mapLookup[type];
+    if (!target || !target.mapdata.labels) return;
+    for (const lbl of Object.values(target.mapdata.labels)) {
+        if (!("orig_color" in lbl)) continue;
+        if (lbl.orig_color === null) delete lbl.color;
+        else lbl.color = lbl.orig_color;
+        if (lbl.orig_hover_color === null) delete lbl.hover_color;
+        else lbl.hover_color = lbl.orig_hover_color;
+    }
+}
+
 function togglePulse() {
     pulseEnabled = !pulseEnabled;
     document.getElementById("pulseToggle").textContent = pulseEnabled ? "Pause Pulses" : "Pulse Flipped Seats";
