@@ -192,7 +192,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
         }
-S
         targetMap.refresh();
     }
 
