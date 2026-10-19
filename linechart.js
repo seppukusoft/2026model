@@ -39,11 +39,14 @@
         return `rgba(${r},${g},${b},${alpha})`;
     }
 
-    function candidateColor(name, winnerName, winnerParty, total) {
-        if (name === winnerName) return partyColors[winnerParty] || '#aaaaaa';
-        if (total === 2) return partyColors[oppositeParty[winnerParty]] || '#888888';
-        return '#888888';
-    }
+    function candidateColor(name, winnerName, winnerParty, total, parties) {
+    const party = parties[name];
+    if (party) return partyColors[party] || '#888888';
+
+    if (name === winnerName) return partyColors[winnerParty] || '#aaaaaa';
+    if (total === 2) return partyColors[oppositeParty[winnerParty]] || '#888888';
+    return '#888888';
+}
 
     async function renderLineChart(type, chamberKey, regionKey, metric, dates, fetchDate) {
         const token = Symbol();
@@ -61,12 +64,14 @@
         if (activeRender[type] !== token) return; 
 
         const byCandidate = {};
+        const parties = {};
         let winnerName = '', winnerParty = '';
         for (let i = 0; i < dates.length; i++) {
             const region = allData[i]?.[chamberKey]?.regions?.[regionKey];
             if (!region) continue;
             winnerName  = region.winner      || winnerName;
             winnerParty = region.winnerParty || winnerParty;
+            Object.assign(parties, region.candidateParties);
             for (const c of parseCandidates(region.description, metric)) {
                 if (!byCandidate[c.candidate]) byCandidate[c.candidate] = new Array(dates.length).fill(null);
                 byCandidate[c.candidate][i] = c.value;
@@ -75,7 +80,7 @@
 
         const names = Object.keys(byCandidate);
         const datasets = names.map(name => {
-            const color = candidateColor(name, winnerName, winnerParty, names.length);
+            const color = candidateColor(name, winnerName, winnerParty, names.length, parties);
             return {
                 label: name,
                 data: byCandidate[name],
