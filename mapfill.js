@@ -62,6 +62,7 @@ function changeBorderColor(type, state, color) {
     if (!target || !target.mapdata.state_specific[state]) return;
     const st = target.mapdata.state_specific[state];
     st.border_color = `${color}`;
+    st.border_size = 300;
     st.level = 2;        
 }
 
