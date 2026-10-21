@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const i = parseInt(slider.value);
                 setSliderLabel(key, i);
                 clearTimeout(debounce);
-                debounce = setTimeout(() => showDate(chamber, store(currentModel).dates[i]), 0);
+                debounce = setTimeout(() => showDate(chamber, store(currentModel).dates[i]), 150);
             });
 
             let autoplayTimeout = null;
@@ -286,6 +286,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 slider.value = autoplayIdx;
                 setSliderLabel(key, autoplayIdx);
                 await showDate(chamber, date);
+                await new Promise(r => requestAnimationFrame(r));   
                 autoplayIdx++;
                 if (autoplayIdx < dates.length && autoplayTimeout !== null) {
                     autoplayTimeout = setTimeout(runStep, 500);
