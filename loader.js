@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         v1: { name: "Original Model", resultsDir: "./results",    pollsDir: "./polls"    },
         v2: { name: "Model v2",       resultsDir: "./results_v2", pollsDir: "./polls_v2" },
     };
-    const DEFAULT_MODEL = "v2";
+    const DEFAULT_MODEL = "v1";
 
     let currentModel = DEFAULT_MODEL;
     let modelEpoch   = 0;      
