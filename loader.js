@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         v1: { name: "Original Model", resultsDir: "./results",    pollsDir: "./polls"    },
         v2: { name: "Model v2",       resultsDir: "./results_v2", pollsDir: "./polls_v2" },
     };
-    const DEFAULT_MODEL = "v1";
+    const DEFAULT_MODEL = "v2";
 
     let currentModel = DEFAULT_MODEL;
     let modelEpoch   = 0;      
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function updateToggleButton() {
         if (!toggleBtn) return;
-        const other = currentModel === DEFAULT_MODEL ? "v2" : DEFAULT_MODEL;
+        const other = currentModel === "v2" ? "v1" : "v2";
         toggleBtn.textContent = "Switch to " + MODELS[other].name;
         toggleBtn.disabled = false;
     }
@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (toggleBtn) toggleBtn.addEventListener("click", () => {
-        switchModel(currentModel === DEFAULT_MODEL ? "v2" : DEFAULT_MODEL);
+        switchModel(currentModel === "v2" ? "v1" : "v2");
     });
 
     function matchPollsHeight() {
