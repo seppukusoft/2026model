@@ -51,9 +51,34 @@ const majorityArrows = {
 
 Chart.register(majorityArrows);
 
+// Seat keys in dataset order â€” must match the datasets array below
+const _seatKeys = [
+    'DEM','solidD','likelyD','leanD','tiltD',
+    'IND','solidI','likelyI','leanI','tiltI',
+    'UNK',
+    'tiltL','leanL','likelyL','solidL',
+    'tiltR','leanR','likelyR','solidR','REP',
+];
+
 function renderSeatChart(canvas, seats, majority, x) {
-    let existingChart = Chart.getChart(canvas);
-    if (existingChart) existingChart.destroy();
+    const existingChart = Chart.getChart(canvas);
+
+    // Fast path: if the chart already exists for this canvas, just update its
+    // data arrays and re-render with no animation.  This avoids the expensive
+    // destroy â†’ create cycle that triggers Chart.js entry animations.
+    if (existingChart) {
+        for (let i = 0; i < _seatKeys.length; i++) {
+            existingChart.data.datasets[i].data[0] = seats[_seatKeys[i]];
+        }
+        // Update majority line + arrows in case the threshold shifted
+        existingChart.options.plugins.annotation.annotations.majorityLine.xMin = majority;
+        existingChart.options.plugins.annotation.annotations.majorityLine.xMax = majority;
+        existingChart.options.plugins.majorityArrows.value = majority;
+        existingChart.options.scales.x.max = x;
+        existingChart.update('none');   // 'none' = skip all animations
+        return;
+    }
+
     const ctx = document.getElementById(canvas);
 
     new Chart(ctx, {
@@ -86,6 +111,7 @@ function renderSeatChart(canvas, seats, majority, x) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: false,
             indexAxis: 'y',
             layout: { padding: { left: 20, right: 20, top: 10, bottom: 10 } },
             plugins: {
