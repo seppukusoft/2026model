@@ -201,11 +201,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById(chamber.summaryId).innerHTML = raceData.summaryHTML;
     }
 
-    async function showDate(chamber, date) {
+    async function showDate(chamber, date, { signal } = {}) {
         const model = currentModel;
         const epoch = modelEpoch;
         const seq   = ++chamber.seq;
-        const stale = () => epoch !== modelEpoch || seq !== chamber.seq;
+        const stale = () => epoch !== modelEpoch || seq !== chamber.seq
+                           || (signal && signal.aborted);
 
         try {
             const raceData = (await fetchResults(model, date))?.[chamber.key];
@@ -216,6 +217,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (stale()) return;
             if (polls) renderPollsSection(`${chamber.key}PollsTable`, polls, chamber.key);
         } catch (err) {
+            if (err.name === 'AbortError') return;
             console.error(`loader.js: failed to show ${model} ${chamber.key} for ${date}`, err);
         }
     }
@@ -256,12 +258,51 @@ document.addEventListener("DOMContentLoaded", async () => {
             const slider = document.getElementById(`${key}DateSlider`);
             if (!row || !slider) return;
 
-            let debounce;
+            // --- Throttled slider: at most one render in flight per chamber ---
+            let rafId = null;
+            let pendingIdx = null;
+            let sliderAbort = null;       // AbortController for the in-flight showDate
+            let rendering = false;
+
+            async function flushSlider() {
+                rafId = null;
+                if (pendingIdx === null) return;
+                const i = pendingIdx;
+                pendingIdx = null;
+
+                // Cancel any previous in-flight render for this chamber
+                if (sliderAbort) sliderAbort.abort();
+                sliderAbort = new AbortController();
+
+                rendering = true;
+                try {
+                    await showDate(chamber, store(currentModel).dates[i],
+                                   { signal: sliderAbort.signal });
+                } finally {
+                    rendering = false;
+                    // If the user moved the slider while we were rendering,
+                    // kick off one more render for the final position.
+                    if (pendingIdx !== null && rafId === null) {
+                        rafId = requestAnimationFrame(flushSlider);
+                    }
+                }
+            }
+
             slider.addEventListener("input", () => {
                 const i = parseInt(slider.value);
                 setSliderLabel(key, i);
-                clearTimeout(debounce);
-                debounce = setTimeout(() => showDate(chamber, store(currentModel).dates[i]), 150);
+                pendingIdx = i;
+                if (!rendering && rafId === null) {
+                    setScrubbing(true);
+                    rafId = requestAnimationFrame(flushSlider);
+                }
+                // If we're already rendering, the finally block above will
+                // pick up the latest pendingIdx when the current render ends.
+
+                // When the user releases the slider, restore map animations.
+                // We use a short timer that keeps getting reset on each input.
+                clearTimeout(slider._scrubEnd);
+                slider._scrubEnd = setTimeout(() => setScrubbing(false), 300);
             });
 
             let autoplayTimeout = null;

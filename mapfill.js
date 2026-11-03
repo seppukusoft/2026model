@@ -14,6 +14,25 @@ const colorMapping = {
 
 let pulseEnabled = false;
 
+// --- Scrubbing mode: suppress simplemaps fade animation during slider drag ---
+let _scrubbing = false;
+function setScrubbing(on) {
+    _scrubbing = on;
+    for (const m of Object.values(mapLookup)) {
+        if (!m || !m.mapdata || !m.mapdata.main_settings) continue;
+        if (on) {
+            if (m.mapdata.main_settings._orig_fade == null) {
+                m.mapdata.main_settings._orig_fade = m.mapdata.main_settings.fade_time;
+            }
+            m.mapdata.main_settings.fade_time = 0;
+        } else {
+            if (m.mapdata.main_settings._orig_fade != null) {
+                m.mapdata.main_settings.fade_time = m.mapdata.main_settings._orig_fade;
+            }
+        }
+    }
+}
+
 function applyColor(type, state, newColor) {
     const target = mapLookup[type];
     if (!target.mapdata.state_specific[state]) {
