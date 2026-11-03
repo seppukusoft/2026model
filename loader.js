@@ -329,8 +329,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function updateLastUpdated(generated, model) {
         const updatedAt = generated ? new Date(generated).getTime() : null;
-        document.getElementById("lastUpdated").textContent =
-            "Last updated " + timeAgo(updatedAt) + " · " + MODELS[model].name;
+        if (updatedAt >= new Date("2026-11-03T00:00:00Z").getTime()) {
+            document.getElementById("lastUpdated").textContent =
+                "Last updated Nov 2, 2026 · " + MODELS[model].name;
+        } 
+        else {
+            document.getElementById("lastUpdated").textContent =
+                "Last updated " + timeAgo(updatedAt) + " · " + MODELS[model].name;
+        }
     }
 
     const toggleBtn = document.getElementById("modelToggle");
